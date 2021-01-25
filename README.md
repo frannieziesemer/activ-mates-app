@@ -8,3 +8,9 @@ To set up:
 `. venv/bin/activate`
 - install flask
 `pip3 install flask`
+
+
+
+
+deactivate venv before commiting to git etc. 
+`deactivate`
