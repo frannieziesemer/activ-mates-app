@@ -9,6 +9,26 @@ To set up:
 - install flask
 `pip3 install flask`
 
+- document code using pydocs 
+    - create docstrings with
+    `""" instert description here """`
+    - install pdoc 
+    `pip3 install pdoc3`
+    - create documentation html using the following command
+    `pdoc --html <package/directory/filename of project>`
+    `pdoc --html src --output-dir docs --skip-errors --force`
+
+- install pytest
+`pip install -U pytest`
+    - cd into directory of file and run 
+    `pytest filename.py` 
+    - example of texting = 
+    ```def func(x):
+        return x + 1
+
+
+    def test_answer():
+        assert func(3) == 5```
 
 
 
