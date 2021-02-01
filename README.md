@@ -9,6 +9,11 @@ To set up:
 - install flask
 `pip3 install flask`
 
+To run project on local host
+`$ python3 run.py`
+- when the virtual environment is active 
+
+
 - document code using pydocs 
     - create docstrings with
     `""" instert description here """`

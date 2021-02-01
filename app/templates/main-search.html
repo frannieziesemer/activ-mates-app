@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<h1>main search page</h1>
+    {% for activity in activities %}
+        <h5>{{ activity.title }}</h5>
+        <h6>{{ activity.author }}</h6>
+        <p>{{ activity.type }}</p>
+    {% endfor %}
+
+
+{% endblock %}
