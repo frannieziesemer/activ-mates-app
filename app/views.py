@@ -21,28 +21,34 @@ activities = [
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    return render_template('home.html' )
+
+@app.route('/landing-page')
+def landing-page():
+    return render_template('landing-page.html')
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    return render_template('login.html', title='Login')
 
-@app.route('/main-search')
-def main_search():
-    return render_template('main-search.html', activities=activities)
-
-@app.route('/new-activity')
-def new_activity():
-    return render_template('new-activity.html')
-
-@app.route('/profile')
-def profile():
-    return render_template('profile.html')
 
 @app.route('/signup')
 def sign_up():
-    return render_template('sign-up.html')
+    return render_template('sign-up.html', title='Sign Up')
+
+@app.route('/main-search')
+def main_search():
+    return render_template('main-search.html', title='Search', activities=activities)
+
+@app.route('/new-activity')
+def new_activity():
+    return render_template('new-activity.html', title='New Activity')
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html', title='Profile')
+
 
 @app.route('/view-activity')
 def view_activity():
-    return render_template('view-activity.html')
+    return render_template('view-activity.html', title='View Activity')

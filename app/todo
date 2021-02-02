@@ -1,0 +1,3 @@
+figure out how to make home - the main search page if you are logged in 
+if - not logged in then direct to landing page 
+else if when logged in = true direct to main search page 
