@@ -3,7 +3,8 @@
 
 
 {% block body %}
-<div>
+<div class="row">
+    <div class="col">
     <form action="" method="POST">
         {{ registrationForm.hidden_tag() }}
         <fieldset class="form-control d-grid gap-3">
@@ -67,14 +68,26 @@
                 {{ registrationForm.submit(class="btn btn-outline-info")}}
             </div>
         </fieldset>
-        
     </form>
+    <div class="message-account-created">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}"> 
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Already have an account? <a class="ml-2" href="{{ url_for('login')}}">Sign In</a>
+        </small>
+    </div>
 </div>
-<div class="border-top pt-3">
-    <small class="text-muted">
-        Already have an account? <a class="ml-2" href="{{ url_for('login')}}">Sign In</a>
-    </small>
+<div class="col">
+    <p>profile update form here::</p>
 </div>
-    </form>
 </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, flash, redirect
 from app import app
 from .forms import RegistrationForm, CreateProfileForm, LoginForm
 
@@ -39,9 +39,15 @@ def login():
     return render_template('login.html', title='Login')
 
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def sign_up():
     registrationForm = RegistrationForm()
+    if registrationForm.validate_on_submit():
+        # alert message
+        flash(
+            f'Account created for {registrationForm.username.data}!', 'success')
+        # redirect on submit and validation # !!!!!here i want new profile section to show
+        # return redirect(url_for('home'))
     createProfileForm = CreateProfileForm()
     return render_template('sign-up.html',
                            title='Sign Up',
