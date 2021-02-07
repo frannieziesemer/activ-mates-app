@@ -1,0 +1,15 @@
+body {
+    background-color: #fceff9;
+}
+
+#navbar {
+    background-color: #7bae7f;
+}
+
+#navbar a {
+    color: #284d3b;
+}
+
+.content-section {
+    margin: 30px;
+}

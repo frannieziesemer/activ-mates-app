@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+
+
+{% block body %}
+<div class="content-section">
+	<div class="row">
+		<div class="col-md-4">
+			column 1
+		</div>
+		<div class="col-md-8">
+			error col
+				{% if error %}
+						<p class=error>{{ error }} </p>
+				{% endif %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			col 1 pic here 
+		</div>
+		<div class="col-md-8">
+			<form action="" method="POST">
+					{{ loginForm.hidden_tag() }}
+					<fieldset class="form-control d-grid gap-3">
+							<legend class="border-bottom">
+									Login
+							</legend>
+							<div class="form-group email">
+									{% if loginForm.email.errors %}
+									{{ loginForm.email(class="form-control-label is-invalid", placeholder="Email") }}
+									<div class="invalid-feedback">
+											{% for error in loginForm.email.errors %}
+											<span>{{ error }}</span>
+											{% endfor %}
+									</div>
+									{% else %}
+									{{ loginForm.email(class="form-control-label", placeholder="Email") }}
+
+									{% endif %}
+							</div>
+							<div class="form-group password">
+									{% if loginForm.password.errors %}
+									{{ loginForm.password(class="form-control-label is-invalid", placeholder="Password")}}
+									<div class="invalid-feedback">
+											{% for error in loginForm.password.errors %}
+											<span>{{ error }}</span>
+											{% endfor %}
+									</div>
+									{% else %}
+									{{ loginForm.password(class="form-control-label", placeholder="Password") }}
+									{% endif %}
+							</div>
+							<small class="text-muted ml-2">
+									<a href="#">Forgot password?</a>
+							</small>
+							<div class="form-check">
+									{{ loginForm.remember(class="form-check-input")}}
+									{{ loginForm.remember.label(class="form-check-label")}}
+							</div>
+					
+					<div class="form-group">
+							{{ loginForm.submit(class="btn btn-outline-info")}}
+					</div>
+					
+					</fieldset>
+			</form>
+			<div class="border-top pt-3">
+					<small class="text-muted">
+							Don't have an account yet? <a class="ml-2" href="{{ url_for('sign_up')}}">Sign In</a>
+					</small>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

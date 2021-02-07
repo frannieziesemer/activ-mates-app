@@ -1,0 +1,120 @@
+{% extends 'layout.html' %}
+
+
+
+{% block body %}
+<div class="row">
+    <div class="col"></div>
+    <div class="col">
+    <p>profile update form here::</p>
+        <form action="" method="POST">
+        {{ createProfileForm.hidden_tag() }}
+        <fieldset class="form-control d-grid gap-3">
+            <legend>
+                Next, create your profile:
+            </legend>
+            <div class="form-group first-name">
+                {% if createProfileForm.first_name.errors %}
+                {{ createProfileForm.first_name(class="form-control-label is-invalid", placeholder="First Name") }}
+                <div class="invalid-feedback">
+                    {% for error in createProfileForm.first_name.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ createProfileForm.first_name(class="form-control-label", placeholder="First Name") }}
+                {% endif %}
+            </div>
+            <div class="form-group last-name">
+                {% if createProfileForm.last_name.errors %}
+                {{ createProfileForm.last_name(class="form-control-label is-invalid", placeholder="Last Name") }}
+                <div class="invalid-feedback">
+                    {% for error in createProfileForm.last_name.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ createProfileForm.last_name(class="form-control-label", placeholder="Last Name") }}
+                {% endif %}
+            </div>
+            <div class="form-group address">
+                {% if createProfileForm.address_line1.errors %}
+                {{ createProfileForm.address_line1(class="form-control-label is-invalid", placeholder="Street and house number") }}
+                <div class="invalid-feedback">
+                    {% for error in createProfileForm.address_line1.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ createProfileForm.address_line1(class="form-control-label", placeholder="Street and house number") }}
+                {% endif %}
+            </div>
+            <div class="form-group city">
+                {% if createProfileForm.city.errors %}
+                {{ createProfileForm.city(class="form-control-label is-invalid", placeholder="City") }}
+                <div class="invalid-feedback">
+                    {% for error in createProfileForm.city.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ createProfileForm.city(class="form-control-label", placeholder="City") }}
+                {% endif %}
+            </div>
+            <div class="form-group postcode">
+                {% if createProfileForm.postcode.errors %}
+                {{ createProfileForm.postcode(class="form-control-label is-invalid", placeholder="Postcode") }}
+                <div class="invalid-feedback">
+                    {% for error in createProfileForm.postcode.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ createProfileForm.postcode(class="form-control-label", placeholder="Postcode") }}
+                {% endif %}
+            </div>
+            <div class="form-group phone-number">
+                {% if createProfileForm.phone_number.errors %}
+                {{ createProfileForm.phone_number(class="form-control-label is-invalid", placeholder="Phone number") }}
+                <div class="invalid-feedback">
+                    {% for error in createProfileForm.phone_number.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ createProfileForm.phone_number(class="form-control-label", placeholder="Phone Number") }}
+                {% endif %}
+            </div>
+            <div class="form-group twitter">
+                {% if createProfileForm.twitter.errors %}
+                {{ createProfileForm.twitter(class="form-control-label is-invalid", placeholder="twitter handle") }}
+                <div class="invalid-feedback">
+                    {% for error in createProfileForm.twitter.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ createProfileForm.twitter(class="form-control-label", placeholder="twitter handle") }}
+                {% endif %}
+            </div>
+            <div class="form-group facebook">
+                {% if createProfileForm.facebook.errors %}
+                {{ createProfileForm.facebook(class="form-control-label is-invalid", placeholder="facebook name") }}
+                <div class="invalid-feedback">
+                    {% for error in createProfileForm.facebook.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ createProfileForm.facebook(class="form-control-label", placeholder="facebook name") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ createProfileForm.submit(class="btn btn-outline-info")}}
+            </div>
+        </fieldset>
+        </form>
+    </div>
+    
+</div>
+{% endblock %}

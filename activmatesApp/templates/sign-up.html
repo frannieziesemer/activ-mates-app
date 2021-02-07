@@ -1,0 +1,84 @@
+{% extends 'layout.html' %}
+
+
+
+{% block body %}
+<div class="row">
+	<div class="col mt-3">        
+		<form action="" method="POST">
+			{{ registrationForm.hidden_tag() }}
+			<fieldset class="form-control d-grid gap-3">
+					<legend>
+							Sign-up to get started!
+					</legend>
+					<div class="form-group username">
+							{% if registrationForm.username.errors %}
+							{{ registrationForm.username(class="form-control-label is-invalid", placeholder="Username") }}
+							<div class="invalid-feedback">
+								{% for error in registrationForm.username.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ registrationForm.username(class="form-control-label", placeholder="Username") }}
+							{% endif %}
+					</div>
+					<div class="form-group email">
+							{% if registrationForm.email.errors %}
+							{{ registrationForm.email(class="form-control-label is-invalid", placeholder="Email") }}
+							<div class="invalid-feedback">
+									{% for error in registrationForm.email.errors %}
+									<span>{{ error }}</span>
+									{% endfor %}
+							</div>
+							{% else %}
+							{{ registrationForm.email(class="form-control-label", placeholder="Email") }}
+
+							{% endif %}
+					</div>
+					<div class="form-group password">
+							{% if registrationForm.password.errors %}
+							{{ registrationForm.password(class="form-control-label is-invalid", placeholder="Password") }}
+							<div class="invalid-feedback">
+									{% for error in registrationForm.password.errors %}
+									<span>{{ error }}</span>
+									{% endfor %}
+							</div>
+							{% else %}
+							{{ registrationForm.password(class="form-control-label", placeholder="Password") }}
+
+							{% endif %}
+					</div>
+					<div class="form-group confirm-password">
+							{% if registrationForm.confirm_password.errors %}
+							{{ registrationForm.confirm_password(class="form-control-label is-invalid", placeholder="Confirm Password") }}
+							<div class="invalid-feedback">
+									{% for error in registrationForm.confirm_password.errors %}
+									<span>{{ error }}</span>
+									{% endfor %}
+							</div>
+							{% else %}
+							{{ registrationForm.confirm_password(class="form-control-label", placeholder="Confirm Password") }}
+
+							{% endif %}
+					</div>
+					<div class="form-group">
+							{{ registrationForm.submit(class="btn btn-outline-info")}}
+					</div>
+			</fieldset>
+		</form>
+		<div class="border-top pt-3">
+				<small class="text-muted">
+						Already have an account? <a class="ml-2" href="{{ url_for('login')}}">Sign In</a>
+				</small>
+		</div>
+  </div>
+
+	<div class="col">
+			<!-- {% if registrationForm.validate_on_submit %} -->
+					<!-- {% block profileForm %}
+					{% endblock %} -->
+			<!-- {% endif %} -->
+	</div>
+</div>
+{% endblock %}
