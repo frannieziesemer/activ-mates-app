@@ -6,10 +6,82 @@ body {
     background-color: #7bae7f;
 }
 
-#navbar a {
+#navbar a, h1, h2, h3, h4, h5 {
     color: #284d3b;
 }
 
 .content-section {
     margin: 30px;
+}
+
+h1, h2, h3, h4, h5, button{
+    font-family: 'Titillium Web', sans-serif;
+    line-height: 42px;
+    
+}
+h2, h3, h4, h5 {
+    font-weight: 400;
+}
+h1 {
+    font-size: 36px;
+    font-weight: 700;
+}
+h2 {
+    font-size: 34px;
+}
+h3 {
+    font-size: 28px;
+}
+h4 {
+    font-size: 20px;
+}
+h5 {
+    font-size: 16px;
+}
+
+.body, .lead-body {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 200;
+}
+
+.body {
+    font-size: 16px;
+    line-height: 24px;
+    color: #454851;
+
+}
+
+.lead-body {
+    font-size: 24px;
+    line-height: 28px;
+}
+
+button.primary, button.secondary {
+    border-radius: 30px;
+    padding: 0px 40px;
+    font-weight: 300;
+}
+
+button.primary {
+    background-color: #FB6107;
+    color: #ffff;
+    border: 1px solid #FB6107;
+}
+
+button.primary:hover {
+    background-color: #FDA572;
+    border: 1px solid #FDA572;
+    color: #ffff;
+}
+
+button.secondary {
+    border: 3px solid #7bae7f;
+    background-color: #ffff;
+    color: #7bae7f;
+}
+
+button.secondary:hover {
+    border: 3px solid #7bae7f;
+    background-color: #7bae7f;
+    color: #ffff;
 }
