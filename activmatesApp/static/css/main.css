@@ -1,5 +1,5 @@
 body {
-    background-color: #fceff9;
+    background-color: #f3ffe8;
 }
 
 #navbar {
@@ -65,12 +65,12 @@ button.primary, button.secondary {
 button.primary {
     background-color: #FB6107;
     color: #ffff;
-    border: 1px solid #FB6107;
+    border: 3px solid #FB6107;
 }
 
 button.primary:hover {
     background-color: #FDA572;
-    border: 1px solid #FDA572;
+    border: 3px solid #FB6107;
     color: #ffff;
 }
 

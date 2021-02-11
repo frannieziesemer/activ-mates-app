@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect
-from activmatesApp import app
+from activmatesApp import app, db, bcrypt
 from activmatesApp.forms import RegistrationForm, CreateProfileForm, LoginForm
 from activmatesApp.models import User, Profile, Activity, ActivityType
 
@@ -51,10 +51,14 @@ def login():
 def sign_up():
     registrationForm = RegistrationForm()
     if registrationForm.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(registrationForm.password.data).decode('utf-8')
+        user = User(username=registrationForm.username.data, email=registrationForm.password.data, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
         # alert message
         flash(
-            f'Account created for {registrationForm.username.data}!', 'success')
-        return redirect(url_for('create_profile'))
+            f'Account created for {registrationForm.username.data} you are now able to login!', 'success')
+        return redirect(url_for('login'))
     return render_template('sign-up.html',
                             title='Sign Up',
                             registrationForm=registrationForm

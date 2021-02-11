@@ -14,14 +14,23 @@
         </div>
         <div class="ms-3">
 					<p class="body">Sign up today to connect with someone in your area</p>
-					<button id="sign-up" class="primary">
-							Sign Up
-					</button>
-					<button id="login" class="secondary">Login</button>
+					
+                        <a href="{{ url_for('sign_up') }}" >
+                            <button id="sign-up" class="primary">
+                                Sign Up
+                            </button>
+                        </a>
+					
+					<a href="{{ url_for('login') }}" >
+                        <button id="login" class="secondary">
+                            Login
+                        </button>
+                    </a>
 			</div>
     </div>	
 		<div class="col-md-4">
-
+			<img src="{{ url_for('static', filename='css/open-doodles-jumping.png') }}" alt="illustration of person jumping">
+            <img src="{{ url_for('static', filename='css/open-doodles-roller-skating.png') }}" alt="illustration of person rollerskating">
 		</div>
 </div>
 

@@ -17,9 +17,10 @@
 </head>
 <body>
     <header>
-         <nav id="navbar"class="navbar navbar-expand-lg navbar-light">
+         <nav id="navbar"class="navbar navbar-expand-md navbar-light">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">ActivMates</a>
+              <!-- can i put and if signed in href = search page ???? -->
+              <a class="navbar-brand" href="{{ url_for('home') }}">ActivMates</a> 
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -29,7 +30,7 @@
                     <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Search</a>
+                    <a class="nav-link" href="{{ url_for('main_search') }}">Search</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('login') }}">Login</a>
