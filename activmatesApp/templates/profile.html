@@ -4,4 +4,155 @@
 
 {% block body %}
 <h1>profile page</h1>
+<div class="row">
+    <div class="col">
+        <div id="user-card">
+            <h4>{{ current_user.username }}</h4>
+            <p> {{current_user.email }} </p>
+            <img src=" {{ image_file }} " alt="">
+        </div>
+    </div>
+	<div class="col mt-3">        
+		<form action="" method="POST">
+			{{ editProfileForm.hidden_tag() }}
+			<fieldset class="form-control d-grid gap-3">
+					<legend>
+							Edit Profile!
+					</legend>
+					<div class="form-group username">
+							{% if editProfileForm.username.errors %}
+							{{ editProfileForm.username(class="form-control-label is-invalid", placeholder="Username") }}
+							<div class="invalid-feedback">
+								{% for error in editProfileForm.username.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ editProfileForm.username(class="form-control-label", placeholder="Username") }}
+							{% endif %}
+					</div>
+					<div class="form-group email">
+							{% if editProfileForm.email.errors %}
+							{{ editProfileForm.email(class="form-control-label is-invalid", placeholder="Email") }}
+							<div class="invalid-feedback">
+									{% for error in editProfileForm.email.errors %}
+									<span>{{ error }}</span>
+									{% endfor %}
+							</div>
+							{% else %}
+							{{ editProfileForm.email(class="form-control-label", placeholder="Email") }}
+
+							{% endif %}
+					</div>
+					<div class="form-group first-name">
+							{% if editProfileForm.first_name.errors %}
+							{{ editProfileForm.first_name(class="form-control-label is-invalid", placeholder="First Name") }}
+							<div class="invalid-feedback">
+									{% for error in editProfileForm.first_name.errors %}
+									<span>{{ error }}</span>
+									{% endfor %}
+							</div>
+							{% else %}
+							{{ editProfileForm.first_name(class="form-control-label", placeholder="First Name") }}
+
+							{% endif %}
+					</div>
+					<div class="form-group last-name">
+							{% if editProfileForm.last_name.errors %}
+							{{ editProfileForm.last_name(class="form-control-label is-invalid", placeholder="Last Name") }}
+							<div class="invalid-feedback">
+									{% for error in editProfileForm.last_name.errors %}
+									<span>{{ error }}</span>
+									{% endfor %}
+							</div>
+							{% else %}
+							{{ editProfileForm.last_name(class="form-control-label", placeholder="Last Name") }}
+
+							{% endif %}
+					</div>
+                    <div class="form-group address">
+                        {% if editProfileForm.address_line1.errors %}
+                        {{ editProfileForm.address_line1(class="form-control-label is-invalid", placeholder="Street Address") }}
+                        <div class="invalid-feedback">
+                                {% for error in editProfileForm.address_line1.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ editProfileForm.address_line1(class="form-control-label", placeholder="Street Address") }}
+
+                        {% endif %}
+                </div>
+                <div class="form-group city">
+                    {% if editProfileForm.city.errors %}
+                    {{ editProfileForm.city(class="form-control-label is-invalid", placeholder="City") }}
+                    <div class="invalid-feedback">
+                            {% for error in editProfileForm.city.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ editProfileForm.city(class="form-control-label", placeholder="City") }}
+
+                    {% endif %}
+                </div>
+                <div class="form-group postcode">
+                    {% if editProfileForm.postcode.errors %}
+                    {{ editProfileForm.postcode(class="form-control-label is-invalid", placeholder="Postcode") }}
+                    <div class="invalid-feedback">
+                            {% for error in editProfileForm.postcode.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ editProfileForm.postcode(class="form-control-label", placeholder="Postcode") }}
+
+                    {% endif %}
+                </div>
+                <div class="form-group phone-number">
+                    {% if editProfileForm.phone_number.errors %}
+                    {{ editProfileForm.phone_number(class="form-control-label is-invalid", placeholder="Phone Number") }}
+                    <div class="invalid-feedback">
+                            {% for error in editProfileForm.phone_number.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ editProfileForm.phone_number(class="form-control-label", placeholder="Phone Number") }}
+
+                    {% endif %}
+                </div>
+                <div class="form-group twitter">
+                    {% if editProfileForm.twitter.errors %}
+                    {{ editProfileForm.twitter(class="form-control-label is-invalid", placeholder="Twitter") }}
+                    <div class="invalid-feedback">
+                            {% for error in editProfileForm.twitter.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ editProfileForm.twitter(class="form-control-label", placeholder="Twitter") }}
+
+                    {% endif %}
+                </div>
+                <div class="form-group facebook">
+                    {% if editProfileForm.facebook.errors %}
+                    {{ editProfileForm.facebook(class="form-control-label is-invalid", placeholder="Facebook") }}
+                    <div class="invalid-feedback">
+                            {% for error in editProfileForm.facebook.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ editProfileForm.facebook(class="form-control-label", placeholder="Facebook") }}
+
+                    {% endif %}
+                </div>
+					<div class="form-group">
+							{{ editProfileForm.submit(class="btn btn-outline-info")}}
+					</div>
+			</fieldset>
+        </form>
+    </div>
+</div>    
 {% endblock %}

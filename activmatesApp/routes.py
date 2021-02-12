@@ -1,7 +1,8 @@
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, request
 from activmatesApp import app, db, bcrypt
 from activmatesApp.forms import RegistrationForm, CreateProfileForm, LoginForm
 from activmatesApp.models import User, Profile, Activity, ActivityType
+from flask_login import login_user, current_user, logout_user, login_required
 
 # this would be called from the database
 activities = [
@@ -30,29 +31,12 @@ def home():
 def landing_page():
     return render_template('landing-page.html')
 
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    loginForm = LoginForm()
-    error = None
-    if loginForm.validate_on_submit():
-        if loginForm.email.data == 'admin@blog.com' and loginForm.password.data == 'password':
-            flash(f'You have been logged in!', 'success')
-            return redirect(url_for('main_search'))
-        else: 
-            error = 'Login Unsuccessful. Please check username and password'
-    return render_template('login.html', 
-                            title='Login',
-                            loginForm=loginForm, 
-                            error=error
-                            )
-
 @app.route('/signup', methods=['GET', 'POST'])
 def sign_up():
     registrationForm = RegistrationForm()
     if registrationForm.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(registrationForm.password.data).decode('utf-8')
-        user = User(username=registrationForm.username.data, email=registrationForm.password.data, password=hashed_password)
+        user = User(username=registrationForm.username.data, email=registrationForm.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         # alert message
@@ -63,18 +47,43 @@ def sign_up():
                             title='Sign Up',
                             registrationForm=registrationForm
                            )
+                           
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    loginForm = LoginForm()
+    error = None
+    if loginForm.validate_on_submit():
+        user = User.query.filter_by(email=loginForm.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, loginForm.password.data):
+            login_user(user, remember=loginForm.remember.data)
+            next_page = request.args.get('next')
+            flash(f'You have been logged in!', 'success')
+            return redirect(next_page) if next_page else redirect(url_for('main_search'))
+        else: 
+            error = 'Login Unsuccessful. Please check username and password'
+    return render_template('login.html', 
+                            title='Login',
+                            loginForm=loginForm, 
+                            error=error
+                            )
+
+@app.route("/logout")
+def logout():
+	logout_user()
+	return redirect(url_for('home'))
     
-@app.route('/create_profile', methods=['GET', 'POST'])
-def create_profile():
+@app.route('/edit-profile', methods=['GET', 'POST'])
+def edit_profile():
     """User sign up page"""
-    createProfileForm = CreateProfileForm()
+    editProfileForm = editProfileForm()
+    image_file = url_for('static', filename='images/profilepics/' + current_user.image_file)
     #POST: sign user in 
     if createProfileForm.validate_on_submit():
         flash(
             f'Profile created!', 'success')
         return redirect(url_for('main_search'))
     # GET: Serve Sign-up page
-    return render_template('create-profile.html', createProfileForm=createProfileForm)
+    return render_template('edit-profile.html', editProfileForm=editProfileForm, image_file=image_file)
     
 @app.route('/main-search')
 def main_search():
@@ -87,6 +96,7 @@ def new_activity():
 
 
 @app.route('/profile')
+@login_required
 def profile():
     return render_template('profile.html', title='Profile')
 

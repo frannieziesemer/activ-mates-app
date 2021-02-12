@@ -3,3 +3,7 @@ if - not logged in then direct to landing page
 else if when logged in = true direct to main search page 
 
 
+- make the landing page not accessable if logged in because it is unneccessary 
+- or pop the login page onto the landing page 
+
+

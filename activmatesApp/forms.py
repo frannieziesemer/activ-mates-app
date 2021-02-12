@@ -1,7 +1,8 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from activmatesApp.models import User
 
 
 class RegistrationForm(FlaskForm):
@@ -18,8 +19,20 @@ class RegistrationForm(FlaskForm):
                                      EqualTo('password')])
     submit = SubmitField('Sign Up')
 
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('That username is taken, please choose a different one')
+#this function is not working 
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('That username is taken, please choose a different one')
+ 
+    
 
-class CreateProfileForm(FlaskForm):
+
+class EditProfileForm(FlaskForm):
     first_name = StringField('First Name',
                              validators=[DataRequired(), 
                              Length(min=2, max=20)])
@@ -42,7 +55,17 @@ class CreateProfileForm(FlaskForm):
     facebook = StringField('Address - street and house number',
                                 validators=[DataRequired(),
                                 Length(min=2, max=20)])
-    submit = SubmitField('Create Profile')
+    submit = SubmitField('Save')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('That username is taken, please choose a different one')
+#this function is not working 
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('That username is taken, please choose a different one')
 
 
 class LoginForm(FlaskForm):

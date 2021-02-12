@@ -90,8 +90,10 @@ is authenticated
 is active 
 is anon
 get id 
-pass UserMixin to db.Model class
 
+pass UserMixin to db.Model class `class User(db.Model, UserMixin):`
+
+above the classes 
 	@login_manager.user_loader - this is a decorator
 	def load_user(user_id):
 		return User.query.get(int(user_id))
@@ -117,7 +119,7 @@ in register route
 		return redirect(url_for('home'))
 
 CREATE LOGOUT ROUTE
-`from flask_login import logout`
+`from flask_login import logout_user`
 
 @app.route("/logout")
 def logout():

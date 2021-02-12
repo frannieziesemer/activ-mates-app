@@ -26,15 +26,25 @@
               </button>
               <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main_search') }}">Search</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                  </li>
+                  
+                  {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('main_search') }}">Search</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+                    </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                      </li>
+                  {% else %}  
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('sign_up') }}">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                  {% endif %}
                   
                 </ul>
               </div>
