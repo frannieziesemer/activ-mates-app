@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request
 from activmatesApp import app, db, bcrypt
-from activmatesApp.forms import RegistrationForm, CreateProfileForm, LoginForm
+from activmatesApp.forms import RegistrationForm, EditProfileForm, LoginForm
 from activmatesApp.models import User, Profile, Activity, ActivityType
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -75,10 +75,10 @@ def logout():
 @app.route('/edit-profile', methods=['GET', 'POST'])
 def edit_profile():
     """User sign up page"""
-    editProfileForm = editProfileForm()
+    editProfileForm = EditProfileForm()
     image_file = url_for('static', filename='images/profilepics/' + current_user.image_file)
     #POST: sign user in 
-    if createProfileForm.validate_on_submit():
+    if editProfileForm.validate_on_submit():
         flash(
             f'Profile created!', 'success')
         return redirect(url_for('main_search'))

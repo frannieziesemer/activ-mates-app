@@ -17,6 +17,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     type = db.Column(db.Enum(UserTypes), nullable=False, default=UserTypes.Regular)
+    image_file = db.Column(db.String(20), nullable=False,
+                           default='default.jpg')
     created_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.utcnow)
     profile = db.relationship('Profile', backref='account_holder', lazy=True)

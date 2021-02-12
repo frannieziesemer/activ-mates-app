@@ -1,5 +1,6 @@
 
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from activmatesApp.models import User
@@ -39,6 +40,7 @@ class EditProfileForm(FlaskForm):
     last_name = StringField('Last Name',
                             validators=[DataRequired(), 
                             Length(min=2, max=20)])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])]) 
     address_line1 = StringField('Address - street and house number',
                                 validators=[DataRequired(),
                                 Length(min=2, max=20)])
