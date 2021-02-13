@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request
 from activmatesApp import app, db, bcrypt
-from activmatesApp.forms import RegistrationForm, EditProfileForm, LoginForm
+from activmatesApp.forms import RegistrationForm, EditProfileForm, LoginForm, UpdateAccountForm
 from activmatesApp.models import User, Profile, Activity, ActivityType
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -73,24 +73,53 @@ def logout():
 	return redirect(url_for('home'))
     
 @app.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
 def edit_profile():
-    """User sign up page"""
     editProfileForm = EditProfileForm()
-    image_file = url_for('static', filename='images/profilepics/' + current_user.image_file)
-    #POST: sign user in 
     if editProfileForm.validate_on_submit():
+        profile = Profile(  first_name=editProfileForm.first_name.data, 
+                            last_name=editProfileForm.last_name.data, 
+                            street_address=editProfileForm.street_address.data,
+                            city=editProfileForm.city.data,
+                            postcode=editProfileForm.postcode.data,
+                            phone_number=editProfileForm.phone_number.data,
+                            twitter=editProfileForm.twitter.data,
+                            facebook=editProfileForm.facebook.data, user_id=current_user.id)
+        db.session.add(profile)
+        db.session.commit()
         flash(
             f'Profile created!', 'success')
-        return redirect(url_for('main_search'))
+        return redirect(url_for('edit_profile')) #- can i render a button here?
     # GET: Serve Sign-up page
+    image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
     return render_template('edit-profile.html', editProfileForm=editProfileForm, image_file=image_file)
-    
+
+@app.route('/update-account', methods=['GET', 'POST'])
+@login_required
+def update_account():
+    updateAccountForm = UpdateAccountForm()
+    if updateAccountForm.validate_on_submit():
+        current_user.username = updateAccountForm.username.data
+        current_user.email = updateAccountForm.email.data
+        db.session.commit()
+        flash(
+            f'account updated!', 'success')
+        return redirect(url_for('update_account')) #- can i render a button here? on no redirect at all?
+    elif request.method == 'GET': # populates form field with current data
+        updateAccountForm.username.data = current_user.username
+        updateAccountForm.email.data = current_user.email
+    #remove image? i think this should only be in profile
+    image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
+    return render_template('update-account.html', updateAccountForm=updateAccountForm, image_file=image_file)
+
 @app.route('/main-search')
+@login_required
 def main_search():
     return render_template('main-search.html', title='Search', activities=activities)
 
 
 @app.route('/new-activity')
+@login_required
 def new_activity():
     return render_template('new-activity.html', title='New Activity')
 
@@ -102,5 +131,6 @@ def profile():
 
 
 @app.route('/view-activity')
+@login_required
 def view_activity():
     return render_template('view-activity.html', title='View Activity')

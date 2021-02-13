@@ -3,7 +3,8 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from activmatesApp.models import User
+from activmatesApp.models import User, Profile
+from flask_login import current_user
 
 
 class RegistrationForm(FlaskForm):
@@ -24,12 +25,32 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(username=username.data).first()
         if user:
             raise ValidationError('That username is taken, please choose a different one')
-#this function is not working 
+
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
-            raise ValidationError('That username is taken, please choose a different one')
- 
+            raise ValidationError('That email is taken, please choose a different one')
+
+
+class UpdateAccountForm(FlaskForm):
+    username = StringField('Username',
+                           validators=[DataRequired(), 
+                           Length(min=2, max=20)])
+    email = StringField('Email',
+                        validators=[DataRequired(), 
+                        Email()]) 
+    submit = SubmitField('Save')
+
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('That username is taken, please choose a different one')
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('That username is taken, please choose a different one')
     
 
 
@@ -41,7 +62,7 @@ class EditProfileForm(FlaskForm):
                             validators=[DataRequired(), 
                             Length(min=2, max=20)])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])]) 
-    address_line1 = StringField('Address - street and house number',
+    street_address = StringField('Address - street and house number',
                                 validators=[DataRequired(),
                                 Length(min=2, max=20)])
     postcode = IntegerField('Postcode',
@@ -59,15 +80,16 @@ class EditProfileForm(FlaskForm):
                                 Length(min=2, max=20)])
     submit = SubmitField('Save')
 
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user:
-            raise ValidationError('That username is taken, please choose a different one')
-#this function is not working 
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user:
-            raise ValidationError('That username is taken, please choose a different one')
+    # def validate_username(self, username):
+    #         if username.data != current_user.username:
+    #             user = User.query.filter_by(username=username.data).first()
+    #             if user:
+    #                 raise ValidationError('That username is taken, please choose a different one')
+    # def validate_email(self, email):
+    #     if email.data != current_user.email:
+    #         user = User.query.filter_by(email=email.data).first()
+    #         if user:
+    #             raise ValidationError('That username is taken, please choose a different one')    
 
 
 class LoginForm(FlaskForm):

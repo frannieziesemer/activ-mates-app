@@ -4,14 +4,20 @@
 
 {% block body %}
 <h1>profile page</h1>
-<div class="row">
-    <div class="col">
+    <div class="row content-section">
         <div id="user-card">
             <h4>{{ current_user.username }}</h4>
-            <p> {{ current_user.email }} </p>
+            <p> {{ current_user.first_name }} </p>
+            <p> {{ current_user.last_name }} </p>
+            <p> {{ current_user.street_address }} </p>
+            <p> {{ current_user.city }} </p>
+            <p> {{ current_user.postcode }} </p>
+            <p> {{ current_user.phone_number }} </p>
+            <p> {{ current_user.twitter }} </p>
+            <p> {{ current_user.facebook }} </p>
+
             <img src=" {{ image_file }} " alt="">
         </div>
-    </div>
 	<div class="col mt-3">        
 		<form action="" method="POST">
 			{{ editProfileForm.hidden_tag() }}
@@ -47,15 +53,15 @@
 							{% endif %}
 					</div>
                     <div class="form-group address">
-                        {% if editProfileForm.address_line1.errors %}
-                        {{ editProfileForm.address_line1(class="form-control-label is-invalid", placeholder="Street Address") }}
+                        {% if editProfileForm.street_address.errors %}
+                        {{ editProfileForm.street_address(class="form-control-label is-invalid", placeholder="Street Address") }}
                         <div class="invalid-feedback">
-                                {% for error in editProfileForm.address_line1.errors %}
+                                {% for error in editProfileForm.street_address.errors %}
                                 <span>{{ error }}</span>
                                 {% endfor %}
                         </div>
                         {% else %}
-                        {{ editProfileForm.address_line1(class="form-control-label", placeholder="Street Address") }}
+                        {{ editProfileForm.street_address(class="form-control-label", placeholder="Street Address") }}
 
                         {% endif %}
                 </div>

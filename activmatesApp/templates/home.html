@@ -3,8 +3,8 @@
 
 
 {% block body %}
-<div class="row">
-    <div class="col-md-8 content-section">
+<div class="row p-5">
+    <div class="col-lg-6 ">
         <h1>ActivMates - time to find an exercise buddy!</h1>
         <div class="ms-4 mb-4">
             <h4>New to a city, and want to meet people in a different way?</h4>
@@ -28,10 +28,11 @@
                     </a>
 			</div>
     </div>	
-		<div class="col-md-4">
-			<img src="{{ url_for('static', filename='css/open-doodles-jumping.png') }}" alt="illustration of person jumping">
-            <img src="{{ url_for('static', filename='css/open-doodles-roller-skating.png') }}" alt="illustration of person rollerskating">
-		</div>
+    <div class="col-lg-6">
+        
+        <img src="{{ url_for('static', filename='images/open-doodles-roller-skating.png') }}" height="150px" alt="illustration of person rollerskating">
+        <img src="{{ url_for('static', filename='images/open-doodles-jumping.png') }}" height="150px" alt="illustration of person jumping">
+    </div>
 </div>
 
 {% endblock %}
