@@ -48,7 +48,7 @@ class Profile(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __repr__(self):
-        return f"User('{self.first_name}', '{self.last_name}', '{self.image_file}', '{self.street_address}', , '{self.city}', '{self.postcode}', '{self.phone_number}', '{self.twitter}', , '{self.facebook}')"
+        return f"Profile('{self.user_id}', '{self.first_name}', '{self.last_name}', '{self.image_file}', '{self.street_address}', , '{self.city}', '{self.postcode}', '{self.phone_number}', '{self.twitter}',  '{self.facebook}')"
 
 
 class Activity(db.Model):

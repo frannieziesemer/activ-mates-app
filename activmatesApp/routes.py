@@ -1,6 +1,8 @@
+import secrets
+import os
 from flask import render_template, url_for, flash, redirect, request
 from activmatesApp import app, db, bcrypt
-from activmatesApp.forms import RegistrationForm, EditProfileForm, LoginForm, UpdateAccountForm
+from activmatesApp.forms import RegistrationForm, EditProfileForm, LoginForm, UpdateAccountForm, CreateProfileForm
 from activmatesApp.models import User, Profile, Activity, ActivityType
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -71,28 +73,61 @@ def login():
 def logout():
 	logout_user()
 	return redirect(url_for('home'))
+
+def save_picutre(form_picture):
+        random_hex = secrets.token_hex(8) #- creates secret hex to save file 
+        _, f_ext = os.path.splitext(form.picture.filename)   # - returns  file extension
+        picture_filename = random_hex + f_ext    #- changes filename to a hex
+        picture_path = os.path.join(app.route_path, 'static/profile_pics', picture_filename) #- creates path to where we want to save the file 
+        form_picture.save(picture_path)
+        return picture_filename
+
+
+#HOW DO I ACCESS DATA INSIDE PROFILE 
+    #HOW CAN I CHECK IF PROFILE IS CREATED OR NOT - for if else 
+    #buttons here link to edit_profile and update_account
+@app.route('/account-profile')
+@login_required
+def account_profile():
+    current_user_id = current_user.id
+    profile_data = Profile.query.filter_by(user_id=current_user_id).all()
+    image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
+    return render_template('account-profile.html', 
+                            title='Account and Profile',
+                            image_file=image_file,
+							current_user_id=current_user_id,
+                            profile_data=profile_data
+                            )
+
+
+@app.route('/create-profile', methods=['GET', 'POST'])
+@login_required
+def create_profile():
+	createProfileForm = CreateProfileForm()
+	if createProfileForm.validate_on_submit():
+		profile = Profile(first_name=createProfileForm.first_name.data,
+						last_name=createProfileForm.last_name.data, 
+						street_address=createProfileForm.street_address.data,
+						city=createProfileForm.city.data,
+						postcode=createProfileForm.postcode.data,
+						phone_number=createProfileForm.phone_number.data,
+						twitter=createProfileForm.twitter.data,
+						facebook=createProfileForm.facebook.data, 
+						user_id=current_user.id)
+		db.session.add(profile)
+		db.session.commit()
+		flash(f'Profile created!', 'success')
+		return redirect(url_for('account_profile')) 
+	return render_template('create-profile.html', createProfileForm=createProfileForm)
+
     
 @app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     editProfileForm = EditProfileForm()
-    if editProfileForm.validate_on_submit():
-        profile = Profile(  first_name=editProfileForm.first_name.data, 
-                            last_name=editProfileForm.last_name.data, 
-                            street_address=editProfileForm.street_address.data,
-                            city=editProfileForm.city.data,
-                            postcode=editProfileForm.postcode.data,
-                            phone_number=editProfileForm.phone_number.data,
-                            twitter=editProfileForm.twitter.data,
-                            facebook=editProfileForm.facebook.data, user_id=current_user.id)
-        db.session.add(profile)
-        db.session.commit()
-        flash(
-            f'Profile created!', 'success')
-        return redirect(url_for('edit_profile')) #- can i render a button here?
-    # GET: Serve Sign-up page
+
     image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
-    return render_template('edit-profile.html', editProfileForm=editProfileForm, image_file=image_file)
+    return render_template('edit-profile.html', editProfileForm=editProfileForm, image_file=image_file, title='Update profile')
 
 @app.route('/update-account', methods=['GET', 'POST'])
 @login_required
@@ -104,7 +139,7 @@ def update_account():
         db.session.commit()
         flash(
             f'account updated!', 'success')
-        return redirect(url_for('update_account')) #- can i render a button here? on no redirect at all?
+        return redirect(url_for('account_profile')) #- can i render a button here? on no redirect at all?
     elif request.method == 'GET': # populates form field with current data
         updateAccountForm.username.data = current_user.username
         updateAccountForm.email.data = current_user.email
@@ -122,12 +157,6 @@ def main_search():
 @login_required
 def new_activity():
     return render_template('new-activity.html', title='New Activity')
-
-
-@app.route('/profile')
-@login_required
-def profile():
-    return render_template('profile.html', title='Profile')
 
 
 @app.route('/view-activity')

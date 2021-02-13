@@ -2,26 +2,25 @@
 
 
 {% block body %}
-<div class="content-section">
+<div class="content-section p-5 ">
 	<div class="row">
-		<div class="col-md-4">
-			column 1
+		<div class="col-md-6">
+
 		</div>
-		<div class="col-md-8">
-			error col
+		<div class="col-md-6">
 				{% if error %}
 						<p class=error>{{ error }} </p>
 				{% endif %}
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-4">
-			col 1 pic here 
+		<div class="col-md-6">
+			<img src="{{ url_for('static', filename='images/open-doodles-rolling.png') }}" class="float-md-end me-5" height="250px" alt="illustration of person rollerskating">
 		</div>
-		<div class="col-md-8">
-			<form action="" method="POST">
+		<div class="col-md-6 pe-5">
+			<form action="" method="POST" id="login-form">
 					{{ loginForm.hidden_tag() }}
-					<fieldset class="form-control d-grid gap-3">
+					<fieldset class="form-control d-grid gap-3 me-5">
 							<legend class="border-bottom">
 									Login
 							</legend>
@@ -64,7 +63,7 @@
 					
 					</fieldset>
 			</form>
-			<div class="border-top pt-3">
+			<div class="pt-3">
 					<small class="text-muted">
 							Don't have an account yet? <a class="ml-2" href="{{ url_for('sign_up')}}">Sign In</a>
 					</small>

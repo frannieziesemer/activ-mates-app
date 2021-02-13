@@ -15,6 +15,9 @@ logo link to be search page if logged in - sign in page if not
 
 - cancel edit account info - maybe just render page 
 
+- create profile form and edit profile form the same?? problems with foutes function updating and creating 
+
+
 <!-- <div class="form-group username">
 							{% if editProfileForm.username.errors %}
 							{{ editProfileForm.username(class="form-control-label is-invalid", placeholder="Username") }}

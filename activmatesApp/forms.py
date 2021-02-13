@@ -52,7 +52,31 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That username is taken, please choose a different one')
     
-
+class CreateProfileForm(FlaskForm):
+    first_name = StringField('First Name',
+                             validators=[DataRequired(), 
+                             Length(min=2, max=20)])
+    last_name = StringField('Last Name',
+                            validators=[DataRequired(), 
+                            Length(min=2, max=20)])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])]) 
+    street_address = StringField('Address - street and house number',
+                                validators=[DataRequired(),
+                                Length(min=2, max=20)])
+    postcode = IntegerField('Postcode',
+                            validators=[DataRequired(),
+                            ])
+    city = StringField('City',
+                       validators=[DataRequired()])
+    phone_number = IntegerField('Phone Number',
+                               validators=[DataRequired(), ])
+    twitter = StringField('Address - street and house number',
+                                validators=[DataRequired(),
+                                Length(min=2, max=20)])
+    facebook = StringField('Address - street and house number',
+                                validators=[DataRequired(),
+                                Length(min=2, max=20)])
+    submit = SubmitField('Save')
 
 class EditProfileForm(FlaskForm):
     first_name = StringField('First Name',
@@ -78,7 +102,7 @@ class EditProfileForm(FlaskForm):
     facebook = StringField('Address - street and house number',
                                 validators=[DataRequired(),
                                 Length(min=2, max=20)])
-    submit = SubmitField('Save')
+    submit = SubmitField('Update')
 
     # def validate_username(self, username):
     #         if username.data != current_user.username:

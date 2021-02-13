@@ -32,7 +32,7 @@
                       <a class="nav-link" href="{{ url_for('main_search') }}">Search</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{{ url_for('edit_profile') }}">Profile</a>
+                      <a class="nav-link" href="{{ url_for('account_profile') }}">Profile</a>
                     </li>
                       <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
@@ -56,6 +56,8 @@
       
       <div class="row ">
         <div class="col">
+        </div>
+        <div class="col">
           {% with messages = get_flashed_messages(with_categories=true)%}
             {% if messages %}
               {% for category, message in messages %}
@@ -69,7 +71,6 @@
         <div class="col">
         </div>
       </div>
-    </div>
   {% block body %}{% endblock %}
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>

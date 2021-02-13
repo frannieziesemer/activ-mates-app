@@ -85,3 +85,7 @@ button.secondary:hover {
     background-color: #7bae7f;
     color: #ffff;
 }
+
+#login-form fieldset{
+    width: 60%;
+}
