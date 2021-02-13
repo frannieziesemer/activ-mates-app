@@ -18,7 +18,14 @@
 		<div id="user-card">
 			<img src=" {{ image_file }} " alt="">
 			{% for item in profile_data %}
-			<h4>{{ item.first_name }}</h4>
+			<h4>{{ item.first_name }} {{ item.last_name }}</h4>
+			<p>{{ item.street_address }}</p>
+			<p>{{ item.city }}</p>
+			<p>{{ item.postcode }}</p>
+			<p>{{ item.phone_number }}</p>
+			<p>{{ item.facebook }}</p>
+			<p>{{ item.twitter }}</p>
+
 			{% endfor %}
 	</div>
 	<!-- {% if profile_id  %}
