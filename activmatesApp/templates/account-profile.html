@@ -8,7 +8,7 @@
 		<h2>Account Login Details</h2>
 		<div id="user-card">
 			<h4>Username: {{ current_user.username }}</h4>
-			<p>Email: {{ current_user.email }} </p>
+			<h4>Email: {{ current_user.email }} </h4>
 			<a href="{{ url_for('update_account') }}">Update account</a>
 			
 	</div>
@@ -25,14 +25,13 @@
 			<p>{{ item.phone_number }}</p>
 			<p>{{ item.facebook }}</p>
 			<p>{{ item.twitter }}</p>
-
 			{% endfor %}
 	</div>
-	<!-- {% if profile_id  %}
+	{% if profile_data %}
+		<a href="{{ url_for('edit_profile') }}">Update Profile</a>
 	{% else %}
-	{% endif %} -->
-	<a href="{{ url_for('create_profile') }}">Create profile</a>
-	<a href="{{ url_for('edit_profile') }}">Update Profile</a>
+		<a href="{{ url_for('create_profile') }}">Create profile</a>
+	{% endif %}
 	
 	</div>  
 </div>

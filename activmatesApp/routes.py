@@ -83,9 +83,7 @@ def save_picutre(form_picture):
         return picture_filename
 
 
-#HOW DO I ACCESS DATA INSIDE PROFILE 
-    #HOW CAN I CHECK IF PROFILE IS CREATED OR NOT - for if else 
-    #buttons here link to edit_profile and update_account
+
 @app.route('/account-profile')
 @login_required
 def account_profile():
@@ -125,7 +123,34 @@ def create_profile():
 @login_required
 def edit_profile():
     editProfileForm = EditProfileForm()
-
+    current_user_id = current_user.id
+    profile_data = Profile.query.filter_by(user_id=current_user_id).all()
+    #update database info
+    if editProfileForm.validate_on_submit():
+        for item in profile_data:
+            item.first_name = editProfileForm.first_name.data
+            item.last_name=editProfileForm.last_name.data
+            item.street_address=editProfileForm.street_address.data
+            item.city=editProfileForm.city.data
+            item.postcode=editProfileForm.postcode.data
+            item.phone_number=editProfileForm.phone_number.data
+            item.twitter=editProfileForm.twitter.data
+            item.facebook=editProfileForm.facebook.data
+        db.session.commit()
+        flash(
+            f'profile updated!', 'success')
+    # display info inside form 
+    elif request.method == 'GET':
+        for item in profile_data:
+            editProfileForm.first_name.data = item.first_name
+            editProfileForm.first_name.data = item.first_name 
+            editProfileForm.last_name.data =  item.last_name
+            editProfileForm.street_address.data = item.street_address
+            editProfileForm.city.data = item.city
+            editProfileForm.postcode.data = item.postcode
+            editProfileForm.phone_number.data = item.phone_number
+            editProfileForm.twitter.data = item.twitter
+            editProfileForm.facebook.data = item.facebook
     image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
     return render_template('edit-profile.html', editProfileForm=editProfileForm, image_file=image_file, title='Update profile')
 

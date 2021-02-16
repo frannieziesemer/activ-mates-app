@@ -9,37 +9,11 @@ else if when logged in = true direct to main search page
 
 - login is accessible when 
 
-add button to edit account
 
 logo link to be search page if logged in - sign in page if not 
 
-- cancel edit account info - maybe just render page 
+
 
 - create profile form and edit profile form the same?? problems with foutes function updating and creating 
 
 
-<!-- <div class="form-group username">
-							{% if editProfileForm.username.errors %}
-							{{ editProfileForm.username(class="form-control-label is-invalid", placeholder="Username") }}
-							<div class="invalid-feedback">
-								{% for error in editProfileForm.username.errors %}
-								<span>{{ error }}</span>
-								{% endfor %}
-							</div>
-							{% else %}
-							{{ editProfileForm.username(class="form-control-label", placeholder="Username") }}
-							{% endif %}
-					</div>
-					<div class="form-group email">
-							{% if editProfileForm.email.errors %}
-							{{ editProfileForm.email(class="form-control-label is-invalid", placeholder="Email") }}
-							<div class="invalid-feedback">
-									{% for error in editProfileForm.email.errors %}
-									<span>{{ error }}</span>
-									{% endfor %}
-							</div>
-							{% else %}
-							{{ editProfileForm.email(class="form-control-label", placeholder="Email") }}
-
-							{% endif %}
-					</div> -->
