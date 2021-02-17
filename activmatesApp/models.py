@@ -40,15 +40,15 @@ class Profile(db.Model):
     image_file = db.Column(db.String(20), nullable=False,
                            default='default.png')
     street_address = db.Column(db.String(60), nullable=False)
-    city = db.Column(db.String(30), nullable=False)
-    postcode = db.Column(db.Integer, nullable=False)
+    lat = db.Column(db.Integer, nullable=False)
+    lng = db.Column(db.Integer, nullable=False)
     phone_number = db.Column(db.Integer, nullable=False)
     twitter = db.Column(db.String(20), nullable=False)
     facebook = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __repr__(self):
-        return f"Profile('{self.user_id}', '{self.first_name}', '{self.last_name}', '{self.image_file}', '{self.street_address}', , '{self.city}', '{self.postcode}', '{self.phone_number}', '{self.twitter}',  '{self.facebook}')"
+        return f"Profile('{self.user_id}', '{self.first_name}', '{self.last_name}', '{self.image_file}', '{self.street_address}', '{self.phone_number}', '{self.twitter}',  '{self.facebook}')"
 
 
 class Activity(db.Model):

@@ -1,135 +1,135 @@
 {% extends 'layout.html' %}
 
-
+{% block head %}
+<script src="{{ url_for('static', filename='javascript/map-address-field.js') }}"></script>
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initAutocomplete">
+</script>
+{% endblock %}
 
 {% block body %}
 <h1>profile page</h1>
     <div class="row content-section">
-     
+     {{ error }}
+     {{ saved }}
+     {{ address_data }}
 	<div class="col mt-3">        
 		<form action="" enctype="multipart/form-data" method="POST">
-			{{ createProfileForm.hidden_tag() }}
+			{{ profileForm.hidden_tag() }}
 			<fieldset class="form-control d-grid gap-3">
 					<legend>
 							Create a Profile!
 					</legend>
 					<div class="form-group first-name">
-							{{ createProfileForm.picture.label(class="form-control-label") }}
-								{{ createProfileForm.picture(class="") }}
+							{{ profileForm.picture.label(class="form-control-label") }}
+								{{ profileForm.picture(class="") }}
 								<div class="invalid-feedback">
-									{% if createProfileForm.picture.errors %}
-									{% for error in createProfileForm.picture.errors %}
+									{% if profileForm.picture.errors %}
+									{% for error in profileForm.picture.errors %}
 									<span>{{ error }}</span>
 												{% endfor %}
 								</div>
 								{% endif %}
 					</div>
 					<div class="form-group first-name">
-							{% if createProfileForm.first_name.errors %}
-							{{ createProfileForm.first_name(class="form-control-label is-invalid", placeholder="First Name") }}
+                        {{ profileForm.first_name.label(class="form-control-label") }}
+
+							{% if profileForm.first_name.errors %}
+							{{ profileForm.first_name(class="form-control-label is-invalid", placeholder="First Name") }}
 							<div class="invalid-feedback">
-									{% for error in createProfileForm.first_name.errors %}
+									{% for error in profileForm.first_name.errors %}
 									<span>{{ error }}</span>
 									{% endfor %}
 							</div>
 							{% else %}
-							{{ createProfileForm.first_name(class="form-control-label", placeholder="First Name") }}
+							{{ profileForm.first_name(class="form-control-label", placeholder="First Name") }}
 
 							{% endif %}
 					</div>
 					<div class="form-group last-name">
-							{% if createProfileForm.last_name.errors %}
-							{{ createProfileForm.last_name(class="form-control-label is-invalid", placeholder="Last Name") }}
+                        {{ profileForm.last_name.label(class="form-control-label") }}
+
+							{% if profileForm.last_name.errors %}
+							{{ profileForm.last_name(class="form-control-label is-invalid", placeholder="Last Name") }}
 							<div class="invalid-feedback">
-									{% for error in createProfileForm.last_name.errors %}
+									{% for error in profileForm.last_name.errors %}
 									<span>{{ error }}</span>
 									{% endfor %}
 							</div>
 							{% else %}
-							{{ createProfileForm.last_name(class="form-control-label", placeholder="Last Name") }}
+							{{ profileForm.last_name(class="form-control-label", placeholder="Last Name") }}
 
 							{% endif %}
 					</div>
                     <div class="form-group address">
-                        {% if createProfileForm.street_address.errors %}
-                        {{ createProfileForm.street_address(class="form-control-label is-invalid", placeholder="Street Address") }}
+                        {{ profileForm.street_address.label(class="form-control-label") }}
+
+                        {% if profileForm.street_address.errors %}
+                        <div id="locationField">
+                            <input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
+                          </div>
+                            <p id="details"></p>
                         <div class="invalid-feedback">
-                                {% for error in createProfileForm.street_address.errors %}
+                                {% for error in profileForm.street_address.errors %}
                                 <span>{{ error }}</span>
                                 {% endfor %}
                         </div>
                         {% else %}
-                        {{ createProfileForm.street_address(class="form-control-label", placeholder="Street Address") }}
+                        <div id="locationField">
+                            <input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
+                          </div>
+                            <p id="details"></p>
 
                         {% endif %}
                 </div>
-                <div class="form-group city">
-                    {% if createProfileForm.city.errors %}
-                    {{ createProfileForm.city(class="form-control-label is-invalid", placeholder="City") }}
-                    <div class="invalid-feedback">
-                            {% for error in createProfileForm.city.errors %}
-                            <span>{{ error }}</span>
-                            {% endfor %}
-                    </div>
-                    {% else %}
-                    {{ createProfileForm.city(class="form-control-label", placeholder="City") }}
-
-                    {% endif %}
-                </div>
-                <div class="form-group postcode">
-                    {% if createProfileForm.postcode.errors %}
-                    {{ createProfileForm.postcode(class="form-control-label is-invalid", placeholder="Postcode") }}
-                    <div class="invalid-feedback">
-                            {% for error in createProfileForm.postcode.errors %}
-                            <span>{{ error }}</span>
-                            {% endfor %}
-                    </div>
-                    {% else %}
-                    {{ createProfileForm.postcode(class="form-control-label", placeholder="Postcode") }}
-
-                    {% endif %}
-                </div>
+                    
                 <div class="form-group phone-number">
-                    {% if createProfileForm.phone_number.errors %}
-                    {{ createProfileForm.phone_number(class="form-control-label is-invalid", placeholder="Phone Number") }}
+                    {{ profileForm.phone_number.label(class="form-control-label") }}
+
+                    {% if profileForm.phone_number.errors %}
+                    {{ profileForm.phone_number(class="form-control-label is-invalid", placeholder="Phone Number") }}
                     <div class="invalid-feedback">
-                            {% for error in createProfileForm.phone_number.errors %}
+                            {% for error in profileForm.phone_number.errors %}
                             <span>{{ error }}</span>
                             {% endfor %}
                     </div>
                     {% else %}
-                    {{ createProfileForm.phone_number(class="form-control-label", placeholder="Phone Number") }}
+                    {{ profileForm.phone_number(class="form-control-label", placeholder="Phone Number") }}
 
                     {% endif %}
                 </div>
                 <div class="form-group twitter">
-                    {% if createProfileForm.twitter.errors %}
-                    {{ createProfileForm.twitter(class="form-control-label is-invalid", placeholder="Twitter") }}
+                    {{ profileForm.twitter.label(class="form-control-label") }}
+
+                    {% if profileForm.twitter.errors %}
+                    {{ profileForm.twitter(class="form-control-label is-invalid", placeholder="Twitter") }}
                     <div class="invalid-feedback">
-                            {% for error in createProfileForm.twitter.errors %}
+                            {% for error in profileForm.twitter.errors %}
                             <span>{{ error }}</span>
                             {% endfor %}
                     </div>
                     {% else %}
-                    {{ createProfileForm.twitter(class="form-control-label", placeholder="Twitter") }}
+                    {{ profileForm.twitter(class="form-control-label", placeholder="Twitter") }}
 
                     {% endif %}
                 </div>
                 <div class="form-group facebook">
-                    {% if createProfileForm.facebook.errors %}
-                    {{ createProfileForm.facebook(class="form-control-label is-invalid", placeholder="Facebook") }}
+                    {{ profileForm.facebook.label(class="form-control-label") }}
+
+                    {% if profileForm.facebook.errors %}
+                    {{ profileForm.facebook(class="form-control-label is-invalid", placeholder="Facebook") }}
                     <div class="invalid-feedback">
-                            {% for error in createProfileForm.facebook.errors %}
+                            {% for error in profileForm.facebook.errors %}
                             <span>{{ error }}</span>
                             {% endfor %}
                     </div>
                     {% else %}
-                    {{ createProfileForm.facebook(class="form-control-label", placeholder="Facebook") }}
+                    {{ profileForm.facebook(class="form-control-label", placeholder="Facebook") }}
 
                     {% endif %}
                 </div>
 					<div class="form-group">
-							{{ createProfileForm.submit(class="btn btn-outline-info")}}
+							{{ profileForm.submit(class="btn btn-outline-info")}}
 					</div>
 			</fieldset>
         </form>

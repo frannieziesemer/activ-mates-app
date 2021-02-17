@@ -52,9 +52,9 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That username is taken, please choose a different one')
     
-class CreateProfileForm(FlaskForm):
-    lat = HiddenField('lat')
-    lng = HiddenField('lng')
+class ProfileForm(FlaskForm):
+    lat = HiddenField('lat', validators=[DataRequired()])
+    lng = HiddenField('lng', validators=[DataRequired()])
     first_name = StringField('First Name',
                              validators=[DataRequired(), 
                              Length(min=2, max=20)])
@@ -62,53 +62,19 @@ class CreateProfileForm(FlaskForm):
                             validators=[DataRequired(), 
                             Length(min=2, max=20)])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])]) 
-
-    # street_address = StringField('Address - street and house number',
-    #                             validators=[DataRequired(),
-    #                             Length(min=2, max=20)])
+## direct the info from google maps to the address field
+    street_address = HiddenField('address',
+                                validators=[DataRequired(),
+                                Length(min=2, max=60)])
     phone_number = IntegerField('Phone Number',
-                               validators=[DataRequired(), ])
-    twitter = StringField('Address - street and house number',
+                               validators=[DataRequired()])
+    twitter = StringField('Twitter',
                                 validators=[DataRequired(),
                                 Length(min=2, max=20)])
-    facebook = StringField('Address - street and house number',
+    facebook = StringField('Facebook',
                                 validators=[DataRequired(),
                                 Length(min=2, max=20)])
     submit = SubmitField('Save')
-
-class EditProfileForm(FlaskForm):
-    lat = HiddenField('lat')
-    lng = HiddenField('lng')
-    first_name = StringField('First Name',
-                             validators=[DataRequired(), 
-                             Length(min=2, max=20)])
-    last_name = StringField('Last Name',
-                            validators=[DataRequired(), 
-                            Length(min=2, max=20)])
-    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])]) 
-    # street_address = StringField('Address - street and house number',
-    #                             validators=[DataRequired(),
-    #                             Length(min=2, max=20)])
-    phone_number = IntegerField('Phone Number',
-                               validators=[DataRequired(), ])
-    twitter = StringField('Address - street and house number',
-                                validators=[DataRequired(),
-                                Length(min=2, max=20)])
-    facebook = StringField('Address - street and house number',
-                                validators=[DataRequired(),
-                                Length(min=2, max=20)])
-    submit = SubmitField('Update')
-
-    # def validate_username(self, username):
-    #         if username.data != current_user.username:
-    #             user = User.query.filter_by(username=username.data).first()
-    #             if user:
-    #                 raise ValidationError('That username is taken, please choose a different one')
-    # def validate_email(self, email):
-    #     if email.data != current_user.email:
-    #         user = User.query.filter_by(email=email.data).first()
-    #         if user:
-    #             raise ValidationError('That username is taken, please choose a different one')    
 
 
 class LoginForm(FlaskForm):

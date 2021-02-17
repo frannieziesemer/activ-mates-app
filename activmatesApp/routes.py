@@ -2,7 +2,7 @@ import secrets
 import os
 from flask import render_template, url_for, flash, redirect, request
 from activmatesApp import app, db, bcrypt
-from activmatesApp.forms import RegistrationForm, EditProfileForm, LoginForm, UpdateAccountForm, CreateProfileForm
+from activmatesApp.forms import RegistrationForm, ProfileForm, LoginForm, UpdateAccountForm
 from activmatesApp.models import User, Profile, Activity, ActivityType
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -49,7 +49,7 @@ def sign_up():
                             title='Sign Up',
                             registrationForm=registrationForm
                            )
-                           
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     loginForm = LoginForm()
@@ -61,24 +61,24 @@ def login():
             next_page = request.args.get('next')
             flash(f'You have been logged in!', 'success')
             return redirect(next_page) if next_page else redirect(url_for('main_search'))
-        else: 
+        else:
             error = 'Login Unsuccessful. Please check username and password'
-    return render_template('login.html', 
+    return render_template('login.html',
                             title='Login',
-                            loginForm=loginForm, 
+                            loginForm=loginForm,
                             error=error
                             )
 
 @app.route("/logout")
 def logout():
-	logout_user()
-	return redirect(url_for('home'))
+    logout_user()
+    return redirect(url_for('home'))
 
 def save_picutre(form_picture):
-        random_hex = secrets.token_hex(8) #- creates secret hex to save file 
+        random_hex = secrets.token_hex(8) #- creates secret hex to save file
         _, f_ext = os.path.splitext(form.picture.filename)   # - returns  file extension
         picture_filename = random_hex + f_ext    #- changes filename to a hex
-        picture_path = os.path.join(app.route_path, 'static/profile_pics', picture_filename) #- creates path to where we want to save the file 
+        picture_path = os.path.join(app.route_path, 'static/profile_pics', picture_filename) #- creates path to where we want to save the file
         form_picture.save(picture_path)
         return picture_filename
 
@@ -90,10 +90,10 @@ def account_profile():
     current_user_id = current_user.id
     profile_data = Profile.query.filter_by(user_id=current_user_id).all()
     image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
-    return render_template('account-profile.html', 
+    return render_template('account-profile.html',
                             title='Account and Profile',
                             image_file=image_file,
-							current_user_id=current_user_id,
+                            current_user_id=current_user_id,
                             profile_data=profile_data
                             )
 
@@ -101,50 +101,67 @@ def account_profile():
 @app.route('/create-profile', methods=['GET', 'POST'])
 @login_required
 def create_profile():
-	createProfileForm = CreateProfileForm()
-	if createProfileForm.validate_on_submit():
-		profile = Profile(first_name=createProfileForm.first_name.data,
-						last_name=createProfileForm.last_name.data, 
-						street_address=createProfileForm.street_address.data,
-						phone_number=createProfileForm.phone_number.data,
-						twitter=createProfileForm.twitter.data,
-						facebook=createProfileForm.facebook.data, 
-						user_id=current_user.id)
-		db.session.add(profile)
-		db.session.commit()
-		flash(f'Profile created!', 'success')
-		return redirect(url_for('account_profile')) 
-	return render_template('create-profile.html', createProfileForm=createProfileForm)
+    profileForm = ProfileForm()
+    address_data = profileForm.street_address.data
+    if profileForm.validate_on_submit():
+        profile = Profile(first_name=profileForm.first_name.data,
+                        last_name=profileForm.last_name.data,
+                        street_address=profileForm.street_address.data,
+                        phone_number=profileForm.phone_number.data,
+                        twitter=profileForm.twitter.data,
+                        facebook=profileForm.facebook.data,
+                        lat=profileForm.lat.data,
+                        lng=profileForm.lng.data,
+                        user_id=current_user.id)
+        db.session.add(profile)
+        db.session.commit()
+        flash(f'Profile created!', 'success')
+        return redirect(url_for('account_profile'))
+    return render_template('create-profile.html',
+                            profileForm=profileForm,
+                            map_key=app.config['GOOGLE_MAPS_API_KEY'],
+                            address_data=address_data
+                            )
 
-    
+
 @app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    editProfileForm = EditProfileForm()
+    profileForm = ProfileForm()
     current_user_id = current_user.id
     profile_data = Profile.query.filter_by(user_id=current_user_id).all()
     #update database info
-    if editProfileForm.validate_on_submit():
+    if profileForm.validate_on_submit():
         for item in profile_data:
-            item.first_name = editProfileForm.first_name.data
-            item.last_name=editProfileForm.last_name.data
-            item.phone_number=editProfileForm.phone_number.data
-            item.twitter=editProfileForm.twitter.data
-            item.facebook=editProfileForm.facebook.data
+            item.first_name = profileForm.first_name.data
+            item.last_name=profileForm.last_name.data
+            item.phone_number=profileForm.phone_number.data
+            item.twitter=profileForm.twitter.data
+            item.facebook=profileForm.facebook.data
+            item.street_address=profileForm.street_address.data
+            item.lat=profileForm.lat.data
+            item.lng=profileForm.lng.data
         db.session.commit()
         flash(
             f'profile updated!', 'success')
-    # display info inside form 
+    # display info inside form
     elif request.method == 'GET':
         for item in profile_data:
-            editProfileForm.first_name.data = item.first_name
-            editProfileForm.first_name.data = item.first_name 
-            editProfileForm.last_name.data =  item.last_name
-            editProfileForm.phone_number.data = item.phone_number
-            editProfileForm.twitter.data = item.twitter
-            editProfileForm.facebook.data = item.facebook
+            profileForm.first_name.data = item.first_name
+            profileForm.first_name.data = item.first_name
+            profileForm.last_name.data =  item.last_name
+            profileForm.phone_number.data = item.phone_number
+            profileForm.twitter.data = item.twitter
+            profileForm.facebook.data = item.facebook
+            profileForm.street_address.data = item.street_address
     image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
-    return render_template('edit-profile.html', editProfileForm=editProfileForm, image_file=image_file, title='Update profile', map_key=app.config['GOOGLE_MAPS_API_KEY'])
+    return render_template('edit-profile.html',
+                            profileForm=profileForm,
+                            image_file=image_file,
+                            title='Update profile',
+                            map_key=app.config['GOOGLE_MAPS_API_KEY']
+                            )
+
 
 @app.route('/update-account', methods=['GET', 'POST'])
 @login_required

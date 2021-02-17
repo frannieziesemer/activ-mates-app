@@ -18,6 +18,7 @@ function initAutocomplete() {
 
 function onPlaceChanged() {
   let place = autocomplete.getPlace();
+  let address = 
   console.log(place)
   console.log(place.geometry.location.lat())
   console.log(place.geometry.location.lng())
@@ -27,7 +28,11 @@ function onPlaceChanged() {
     document.getElementById('autocomplete').placeholder = 'Enter your address';
   } else {
     //Display detials about the valid place
-    document.getElementById('details').innerHTML = place.name;
+    document.getElementById('details').innerHTML = place.formatted_address;
+    document.getElementById('lat').value = place.geometry.location.lat();
+    document.getElementById('lng').value = place.geometry.location.lng();
+    document.getElementById('street_address').value = place.formatted_address;
+
   }
 }
 // Bias the autocomplete object to the user's geographical location,
