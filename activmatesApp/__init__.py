@@ -13,7 +13,6 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'info'
-maps_api_key = os.environ.get('MAPS_API_KEY')
 
 
 from activmatesApp import routes

@@ -9,5 +9,7 @@
         <p>{{ activity.type }}</p>
     {% endfor %}
 
-
+    <script async
+    src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&libraries=places&callback=initMap">
+    </script>
 {% endblock %}

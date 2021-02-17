@@ -106,8 +106,6 @@ def create_profile():
 		profile = Profile(first_name=createProfileForm.first_name.data,
 						last_name=createProfileForm.last_name.data, 
 						street_address=createProfileForm.street_address.data,
-						city=createProfileForm.city.data,
-						postcode=createProfileForm.postcode.data,
 						phone_number=createProfileForm.phone_number.data,
 						twitter=createProfileForm.twitter.data,
 						facebook=createProfileForm.facebook.data, 
@@ -130,9 +128,6 @@ def edit_profile():
         for item in profile_data:
             item.first_name = editProfileForm.first_name.data
             item.last_name=editProfileForm.last_name.data
-            item.street_address=editProfileForm.street_address.data
-            item.city=editProfileForm.city.data
-            item.postcode=editProfileForm.postcode.data
             item.phone_number=editProfileForm.phone_number.data
             item.twitter=editProfileForm.twitter.data
             item.facebook=editProfileForm.facebook.data
@@ -145,14 +140,11 @@ def edit_profile():
             editProfileForm.first_name.data = item.first_name
             editProfileForm.first_name.data = item.first_name 
             editProfileForm.last_name.data =  item.last_name
-            editProfileForm.street_address.data = item.street_address
-            editProfileForm.city.data = item.city
-            editProfileForm.postcode.data = item.postcode
             editProfileForm.phone_number.data = item.phone_number
             editProfileForm.twitter.data = item.twitter
             editProfileForm.facebook.data = item.facebook
     image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
-    return render_template('edit-profile.html', editProfileForm=editProfileForm, image_file=image_file, title='Update profile')
+    return render_template('edit-profile.html', editProfileForm=editProfileForm, image_file=image_file, title='Update profile', map_key=app.config['GOOGLE_MAPS_API_KEY'])
 
 @app.route('/update-account', methods=['GET', 'POST'])
 @login_required
@@ -175,6 +167,7 @@ def update_account():
 @app.route('/main-search')
 @login_required
 def main_search():
+
     return render_template('main-search.html', title='Search', activities=activities)
 
 

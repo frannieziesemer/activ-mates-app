@@ -1,7 +1,7 @@
 
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, HiddenField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from activmatesApp.models import User, Profile
 from flask_login import current_user
@@ -53,6 +53,8 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That username is taken, please choose a different one')
     
 class CreateProfileForm(FlaskForm):
+    lat = HiddenField('lat')
+    lng = HiddenField('lng')
     first_name = StringField('First Name',
                              validators=[DataRequired(), 
                              Length(min=2, max=20)])
@@ -60,14 +62,10 @@ class CreateProfileForm(FlaskForm):
                             validators=[DataRequired(), 
                             Length(min=2, max=20)])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])]) 
-    street_address = StringField('Address - street and house number',
-                                validators=[DataRequired(),
-                                Length(min=2, max=20)])
-    postcode = IntegerField('Postcode',
-                            validators=[DataRequired(),
-                            ])
-    city = StringField('City',
-                       validators=[DataRequired()])
+
+    # street_address = StringField('Address - street and house number',
+    #                             validators=[DataRequired(),
+    #                             Length(min=2, max=20)])
     phone_number = IntegerField('Phone Number',
                                validators=[DataRequired(), ])
     twitter = StringField('Address - street and house number',
@@ -79,6 +77,8 @@ class CreateProfileForm(FlaskForm):
     submit = SubmitField('Save')
 
 class EditProfileForm(FlaskForm):
+    lat = HiddenField('lat')
+    lng = HiddenField('lng')
     first_name = StringField('First Name',
                              validators=[DataRequired(), 
                              Length(min=2, max=20)])
@@ -86,14 +86,9 @@ class EditProfileForm(FlaskForm):
                             validators=[DataRequired(), 
                             Length(min=2, max=20)])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])]) 
-    street_address = StringField('Address - street and house number',
-                                validators=[DataRequired(),
-                                Length(min=2, max=20)])
-    postcode = IntegerField('Postcode',
-                            validators=[DataRequired(),
-                            ])
-    city = StringField('City',
-                       validators=[DataRequired()])
+    # street_address = StringField('Address - street and house number',
+    #                             validators=[DataRequired(),
+    #                             Length(min=2, max=20)])
     phone_number = IntegerField('Phone Number',
                                validators=[DataRequired(), ])
     twitter = StringField('Address - street and house number',
