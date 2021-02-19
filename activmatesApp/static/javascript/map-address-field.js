@@ -18,7 +18,6 @@ function initAutocomplete() {
 
 function onPlaceChanged() {
   let place = autocomplete.getPlace();
-  let address = 
   console.log(place)
   console.log(place.geometry.location.lat())
   console.log(place.geometry.location.lng())

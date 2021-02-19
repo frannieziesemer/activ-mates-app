@@ -8,44 +8,42 @@
 <h1>Account</h1>
 <div class="row content-section">
 <div class="col">
-    
+    <a class="nav-link" href="{{ url_for('account_profile') }}"><button class="btn info">back</button> </a>
     <form action="" method="POST">
         {{ updateAccountForm.hidden_tag() }}
         <fieldset class="form-control d-grid gap-3">
-                <legend>
-                        Account Info
-                </legend>
-                <div class="form-group username">
-                    {{ updateAccountForm.username.label(class="form-control-label") }}
-                        {% if updateAccountForm.username.errors %}
-                        {{ updateAccountForm.username(class="form-control-label is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in updateAccountForm.username.errors %}
+            <legend>
+                Account Info
+            </legend>
+            <div class="form-group username">
+                {{ updateAccountForm.username.label(class="form-control-label") }}
+                {% if updateAccountForm.username.errors %}
+                    {{ updateAccountForm.username(class="form-control-label is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in updateAccountForm.username.errors %}
                             <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
+                        {% endfor %}
+                    </div>
                         {% else %}
                         {{ updateAccountForm.username(class="form-control-label") }}
-                        {% endif %}
+                {% endif %}
+            </div>
+            <div class="form-group email">
+                {{ updateAccountForm.email.label(class="form-control-label") }}
+                {% if updateAccountForm.email.errors %}
+                {{ updateAccountForm.email(class="form-control-label is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in updateAccountForm.email.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
                 </div>
-                <div class="form-group email">
-                    {{ updateAccountForm.email.label(class="form-control-label") }}
-                        {% if updateAccountForm.email.errors %}
-                        {{ updateAccountForm.email(class="form-control-label is-invalid") }}
-                        <div class="invalid-feedback">
-                                {% for error in updateAccountForm.email.errors %}
-                                <span>{{ error }}</span>
-                                {% endfor %}
-                        </div>
-                        {% else %}
-                        {{ updateAccountForm.email(class="form-control-label") }}
-
-                        {% endif %}
-                </div>
-                
-                <div class="form-group">
-                        {{ updateAccountForm.submit(class="btn btn-outline-info")}}
-                </div>
+                {% else %}
+                {{ updateAccountForm.email(class="form-control-label") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                 {{ updateAccountForm.submit(class="btn btn-outline-info")}}
+            </div>
         </fieldset>
     </form>
 </div>

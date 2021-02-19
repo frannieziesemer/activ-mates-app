@@ -10,9 +10,12 @@
 {% block body %}
 <h1>profile page</h1>
     <div class="row content-section">
-
+        
      
-	<div class="col mt-3">        
+	<div class="col mt-3">   
+        <a class="nav-link" href="{{ url_for('account_profile') }}"><button class="btn info">back</button> </a>
+
+        
 		<form action="" enctype="multipart/form-data" method="POST">
 			{{ profileForm.hidden_tag() }}
 			<fieldset class="form-control d-grid gap-3">

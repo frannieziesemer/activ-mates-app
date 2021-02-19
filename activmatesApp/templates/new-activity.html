@@ -3,4 +3,63 @@
 
 {% block body %}
 <h1>new activity page</h1>
+<div class="row">
+	<div class="col mt-3">        
+		<form action="" method="POST">
+			{{ newActivityForm.hidden_tag() }}
+			<fieldset class="form-control d-grid gap-3">
+					<legend>
+							Upload your activity
+					</legend>
+          <div class="form-group activity-title">
+            {{ newActivityForm.title.label() }}
+
+							{% if newActivityForm.title.errors %}
+							{{ newActivityForm.title(class="form-control-label is-invalid", placeholder="title") }}
+							<div class="invalid-feedback">
+								{% for error in newActivityForm.title.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ newActivityForm.title(class="form-control-label", placeholder="title") }}
+							{% endif %}
+					</div>
+					<div class="form-group activity-type">
+            {{ newActivityForm.type.label() }}
+
+							{% if newActivityForm.type.errors %}
+							{{ newActivityForm.type(class="form-control-label is-invalid", placeholder="Type") }}
+							<div class="invalid-feedback">
+								{% for error in newActivityForm.type.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ newActivityForm.type(class="form-control-label", placeholder="Type") }}
+							{% endif %}
+					</div>
+					<div class="form-group description">
+            {{ newActivityForm.description.label() }}
+							{% if newActivityForm.description.errors %}
+							{{ newActivityForm.description(class="form-control-label is-invalid", placeholder="description") }}
+							<div class="invalid-feedback">
+									{% for error in newActivityForm.description.errors %}
+									<span>{{ error }}</span>
+									{% endfor %}
+							</div>
+							{% else %}
+							{{ newActivityForm.description(class="form-control-label", placeholder="description") }}
+
+							{% endif %}
+					</div>
+				
+					<div class="form-group">
+							{{ newActivityForm.submit(class="btn btn-outline-info")}}
+					</div>
+			</fieldset>
+		</form>
+  </div>
+</div>
+
 {% endblock %}

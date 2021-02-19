@@ -3,25 +3,9 @@ import os
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from activmatesApp import app, db, bcrypt
-from activmatesApp.forms import RegistrationForm, ProfileForm, LoginForm, UpdateAccountForm
+from activmatesApp.forms import RegistrationForm, ProfileForm, LoginForm, UpdateAccountForm, CreateActivityForm
 from activmatesApp.models import User, Profile, Activity, ActivityType
 from flask_login import login_user, current_user, logout_user, login_required
-
-# this would be called from the database
-activities = [
-    {
-        'author': 'Frannie Ziesemer',
-        'type': 'Running',
-        'description': '....',
-        'date_posted': 'February 1, 2021'
-    },
-    {
-        'author': 'Jonas Bischof',
-        'type': 'Tennis',
-        'description': '....',
-        'date_posted': 'February 1, 2021'
-    }
-]
 
 
 @app.route('/')
@@ -210,13 +194,31 @@ def main_search():
     return render_template('main-search.html', title='Search', activities=activities)
 
 
-@app.route('/new-activity')
+@app.route('/new-activity', methods=['GET', 'POST'])
 @login_required
 def new_activity():
-    return render_template('new-activity.html', title='New Activity')
+    current_user_id = current_user.id
+    profile_data = Profile.query.filter_by(user_id=current_user_id).all()
+    newActivityForm = CreateActivityForm()
+    if newActivityForm.validate_on_submit():
+        flash(
+            f'new activity posted!', 'success')
+        return redirect(url_for('main_search')) 
+        activity = Activity(
+            title=newActivityForm.title.data, 
+            type=newActivityForm.type.data, 
+            description=newActivityForm.description.data,
+            author=current_user
+            )
+        db.session.add(activity)
+        db.session.commit()
+    return render_template('new-activity.html', 
+                            title='New Activity',
+                            newActivityForm=newActivityForm)
 
 
 @app.route('/view-activity')
 @login_required
 def view_activity():
+    
     return render_template('view-activity.html', title='View Activity')
