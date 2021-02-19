@@ -61,11 +61,11 @@ class ProfileForm(FlaskForm):
     last_name = StringField('Last Name',
                             validators=[DataRequired(), 
                             Length(min=2, max=20)])
-    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])]) 
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])]) 
 ## direct the info from google maps to the address field
     street_address = HiddenField('address',
                                 validators=[DataRequired(),
-                                Length(min=2, max=60)])
+                                Length(min=2, max=100)])
     phone_number = IntegerField('Phone Number',
                                validators=[DataRequired()])
     twitter = StringField('Twitter',

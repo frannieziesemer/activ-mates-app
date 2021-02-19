@@ -1,5 +1,6 @@
 import secrets
 import os
+from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from activmatesApp import app, db, bcrypt
 from activmatesApp.forms import RegistrationForm, ProfileForm, LoginForm, UpdateAccountForm
@@ -74,13 +75,6 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-def save_picutre(form_picture):
-        random_hex = secrets.token_hex(8) #- creates secret hex to save file
-        _, f_ext = os.path.splitext(form.picture.filename)   # - returns  file extension
-        picture_filename = random_hex + f_ext    #- changes filename to a hex
-        picture_path = os.path.join(app.route_path, 'static/profile_pics', picture_filename) #- creates path to where we want to save the file
-        form_picture.save(picture_path)
-        return picture_filename
 
 
 
@@ -89,7 +83,9 @@ def save_picutre(form_picture):
 def account_profile():
     current_user_id = current_user.id
     profile_data = Profile.query.filter_by(user_id=current_user_id).all()
-    image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
+    for item in profile_data:
+        profile_image = item.image_file
+    image_file = url_for('static', filename='images/profile-pics/' + profile_image)
     return render_template('account-profile.html',
                             title='Account and Profile',
                             image_file=image_file,
@@ -97,12 +93,27 @@ def account_profile():
                             profile_data=profile_data
                             )
 
+def save_picture(form_picture):
+        random_hex = secrets.token_hex(8) #- creates secret hex to save file
+        _, f_ext = os.path.splitext(form_picture.filename)   # - returns  file extension
+        picture_filename = random_hex + f_ext    #- changes filename to a hex
+        picture_path = os.path.join(app.root_path, 'static/images/profile-pics', picture_filename) #- creates path to where we want to save the file
+        
+        #resize image
+        output_size = (125, 125)
+        i = Image.open(form_picture)
+        i.thumbnail(output_size)
+        i.save(picture_path)
+        
+        return picture_filename
+
 
 @app.route('/create-profile', methods=['GET', 'POST'])
 @login_required
 def create_profile():
     profileForm = ProfileForm()
     address_data = profileForm.street_address.data
+    image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
     if profileForm.validate_on_submit():
         profile = Profile(first_name=profileForm.first_name.data,
                         last_name=profileForm.last_name.data,
@@ -132,6 +143,10 @@ def edit_profile():
     profile_data = Profile.query.filter_by(user_id=current_user_id).all()
     #update database info
     if profileForm.validate_on_submit():
+        if profileForm.picture.data:
+            picture_file = save_picture(profileForm.picture.data)
+            for item in profile_data:
+                item.image_file=picture_file
         for item in profile_data:
             item.first_name = profileForm.first_name.data
             item.last_name=profileForm.last_name.data
@@ -144,6 +159,7 @@ def edit_profile():
         db.session.commit()
         flash(
             f'profile updated!', 'success')
+        return redirect(url_for('account_profile'))
     # display info inside form
     elif request.method == 'GET':
         for item in profile_data:
@@ -154,7 +170,8 @@ def edit_profile():
             profileForm.twitter.data = item.twitter
             profileForm.facebook.data = item.facebook
             profileForm.street_address.data = item.street_address
-    image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
+            profile_picture = item.image_file
+    image_file = url_for('static', filename='images/profile-pics/' + profile_picture)
     return render_template('edit-profile.html',
                             profileForm=profileForm,
                             image_file=image_file,
