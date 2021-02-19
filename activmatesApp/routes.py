@@ -141,6 +141,9 @@ def edit_profile():
     profileForm = ProfileForm()
     current_user_id = current_user.id
     profile_data = Profile.query.filter_by(user_id=current_user_id).all()
+    for item in profile_data:
+                display_profile_picture = item.image_file
+                display_address = item.street_address
     #update database info
     if profileForm.validate_on_submit():
         if profileForm.picture.data:
@@ -170,11 +173,13 @@ def edit_profile():
             profileForm.twitter.data = item.twitter
             profileForm.facebook.data = item.facebook
             profileForm.street_address.data = item.street_address
-            profile_picture = item.image_file
-    image_file = url_for('static', filename='images/profile-pics/' + profile_picture)
+            profileForm.lat.data = item.lat
+            profileForm.lng.data = item.lng
+    image_file = url_for('static', filename='images/profile-pics/' + display_profile_picture)
     return render_template('edit-profile.html',
                             profileForm=profileForm,
                             image_file=image_file,
+                            display_address=display_address,
                             title='Update profile',
                             map_key=app.config['GOOGLE_MAPS_API_KEY']
                             )

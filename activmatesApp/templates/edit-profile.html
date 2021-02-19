@@ -60,10 +60,19 @@
 					</div>
                 
                 <div class="form-group" id="locationField">
-                    {{ profileForm.first_name.label(class="form-control-label") }}
-
-                    <input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
+                    {{ profileForm.street_address.label(class="form-control-label") }}
+                    <input id="autocomplete" placeholder="{{display_address}}"  type="text" class="form-control">
                     <p id="details">{{ address }}</p>
+                    {% if profileForm.street_address.errors %}
+                    {% for error in profileForm.street_address.errors %}
+                        <span class="text-danger">{{ error }}</span><br/>
+                    {% endfor %}
+                {% endif %}
+                {% if profileForm.lat.errors %}
+                    {% for error in profileForm.lat.errors %}
+                        <span class="text-danger">{{ error }}</span><br/>
+                    {% endfor %}
+                {% endif %}
                 </div>
                 <div class="form-group phone-number">
                     {{ profileForm.phone_number.label(class="form-control-label") }}
