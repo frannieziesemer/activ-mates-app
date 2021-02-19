@@ -65,15 +65,16 @@ def logout():
 @app.route('/account-profile')
 @login_required
 def account_profile():
-    current_user_id = current_user.id
-    profile_data = Profile.query.filter_by(user_id=current_user_id).all()
-    for item in profile_data:
-        profile_image = item.image_file
+    profile_data = current_user.profile
+    if profile_data:
+        for item in profile_data:
+            profile_image = item.image_file
+    else: 
+        profile_image='default.jpg'
     image_file = url_for('static', filename='images/profile-pics/' + profile_image)
     return render_template('account-profile.html',
                             title='Account and Profile',
                             image_file=image_file,
-                            current_user_id=current_user_id,
                             profile_data=profile_data
                             )
 
@@ -107,7 +108,7 @@ def create_profile():
                         facebook=profileForm.facebook.data,
                         lat=profileForm.lat.data,
                         lng=profileForm.lng.data,
-                        user_id=current_user.id)
+                        user=current_user)
         db.session.add(profile)
         db.session.commit()
         flash(f'Profile created!', 'success')
@@ -115,7 +116,7 @@ def create_profile():
     return render_template('create-profile.html',
                             profileForm=profileForm,
                             map_key=app.config['GOOGLE_MAPS_API_KEY'],
-                            address_data=address_data
+                            address_data=address_data,
                             )
 
 
@@ -123,13 +124,13 @@ def create_profile():
 @login_required
 def edit_profile():
     profileForm = ProfileForm()
-    current_user_id = current_user.id
-    profile_data = Profile.query.filter_by(user_id=current_user_id).all()
+    profile_data = current_user.profile
     for item in profile_data:
                 display_profile_picture = item.image_file
                 display_address = item.street_address
     #update database info
     if profileForm.validate_on_submit():
+        #check if new picture 
         if profileForm.picture.data:
             picture_file = save_picture(profileForm.picture.data)
             for item in profile_data:
@@ -190,31 +191,40 @@ def update_account():
 @app.route('/main-search')
 @login_required
 def main_search():
-
-    return render_template('main-search.html', title='Search', activities=activities)
+    # activities = Activity.query.all()
+    profiles = Profile.query.all()
+    user=current_user
+    activities = Activity.query.all();
+    return render_template('main-search.html', 
+                            title='Search', 
+                            profiles=profiles, 
+                            user=user,
+                            activities=activities
+                            )
 
 
 @app.route('/new-activity', methods=['GET', 'POST'])
 @login_required
 def new_activity():
-    current_user_id = current_user.id
-    profile_data = Profile.query.filter_by(user_id=current_user_id).all()
+    profile=current_user.profile
+    for item in profile:
+        profile_id = item.id
     newActivityForm = CreateActivityForm()
     if newActivityForm.validate_on_submit():
-        flash(
-            f'new activity posted!', 'success')
-        return redirect(url_for('main_search')) 
         activity = Activity(
             title=newActivityForm.title.data, 
-            type=newActivityForm.type.data, 
             description=newActivityForm.description.data,
-            author=current_user
+            profile_id=profile_id
             )
         db.session.add(activity)
         db.session.commit()
+        flash(
+            f'new activity posted!', 'success')
+        return redirect(url_for('main_search')) 
     return render_template('new-activity.html', 
                             title='New Activity',
-                            newActivityForm=newActivityForm)
+                            newActivityForm=newActivityForm,
+                            profile=profile)
 
 
 @app.route('/view-activity')

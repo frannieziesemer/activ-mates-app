@@ -4,7 +4,11 @@
 {% block body %}
 <h1>new activity page</h1>
 <div class="row">
-	<div class="col mt-3">        
+	<div class="col mt-3">    
+		{{ profile }}
+		
+      {{ current_user.id }}
+
 		<form action="" method="POST">
 			{{ newActivityForm.hidden_tag() }}
 			<fieldset class="form-control d-grid gap-3">
