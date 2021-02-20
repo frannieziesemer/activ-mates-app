@@ -15,60 +15,60 @@
      {{ address_data }}
 	<div class="col mt-3">        
 		<form action="" enctype="multipart/form-data" method="POST">
-			{{ profileForm.hidden_tag() }}
+			{{ form.hidden_tag() }}
 			<fieldset class="form-control d-grid gap-3">
 					<legend>
 							Create a Profile!
 					</legend>
 					<div class="form-group profile-picture">
-                        {{ profileForm.picture.label() }}
-                        {{ profileForm.picture(class="form-control-label") }}
-                        {% if profileForm.picture.errors %}
-                            {% for error in profileForm.picture.errors %}
+                        {{ form.picture.label() }}
+                        {{ form.picture(class="form-control-label") }}
+                        {% if form.picture.errors %}
+                            {% for error in form.picture.errors %}
                                 <span class="text-danger">{{ error }}</span><br/>
                             {% endfor %}
                         {% endif %}
 					</div>
 					<div class="form-group first-name">
-                        {{ profileForm.first_name.label(class="form-control-label") }}
+                        {{ form.first_name.label(class="form-control-label") }}
 
-							{% if profileForm.first_name.errors %}
-							{{ profileForm.first_name(class="form-control-label is-invalid", placeholder="First Name") }}
+							{% if form.first_name.errors %}
+							{{ form.first_name(class="form-control-label is-invalid", placeholder="First Name") }}
 							<div class="invalid-feedback">
-									{% for error in profileForm.first_name.errors %}
+									{% for error in form.first_name.errors %}
 									<span>{{ error }}</span>
 									{% endfor %}
 							</div>
 							{% else %}
-							{{ profileForm.first_name(class="form-control-label", placeholder="First Name") }}
+							{{ form.first_name(class="form-control-label", placeholder="First Name") }}
 
 							{% endif %}
 					</div>
 					<div class="form-group last-name">
-                        {{ profileForm.last_name.label(class="form-control-label") }}
+                        {{ form.last_name.label(class="form-control-label") }}
 
-							{% if profileForm.last_name.errors %}
-							{{ profileForm.last_name(class="form-control-label is-invalid", placeholder="Last Name") }}
+							{% if form.last_name.errors %}
+							{{ form.last_name(class="form-control-label is-invalid", placeholder="Last Name") }}
 							<div class="invalid-feedback">
-									{% for error in profileForm.last_name.errors %}
+									{% for error in form.last_name.errors %}
 									<span>{{ error }}</span>
 									{% endfor %}
 							</div>
 							{% else %}
-							{{ profileForm.last_name(class="form-control-label", placeholder="Last Name") }}
+							{{ form.last_name(class="form-control-label", placeholder="Last Name") }}
 
 							{% endif %}
 					</div>
                     <div class="form-group address">
-                        {{ profileForm.street_address.label(class="form-control-label") }}
+                        {{ form.street_address.label(class="form-control-label") }}
 
-                        {% if profileForm.street_address.errors %}
+                        {% if form.street_address.errors %}
                         <div id="locationField">
                             <input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
                           </div>
                             <p id="details"></p>
                         <div class="invalid-feedback">
-                                {% for error in profileForm.street_address.errors %}
+                                {% for error in form.street_address.errors %}
                                 <span>{{ error }}</span>
                                 {% endfor %}
                         </div>
@@ -82,52 +82,52 @@
                 </div>
                     
                 <div class="form-group phone-number">
-                    {{ profileForm.phone_number.label(class="form-control-label") }}
+                    {{ form.phone_number.label(class="form-control-label") }}
 
-                    {% if profileForm.phone_number.errors %}
-                    {{ profileForm.phone_number(class="form-control-label is-invalid", placeholder="Phone Number") }}
+                    {% if form.phone_number.errors %}
+                    {{ form.phone_number(class="form-control-label is-invalid", placeholder="Phone Number") }}
                     <div class="invalid-feedback">
-                            {% for error in profileForm.phone_number.errors %}
+                            {% for error in form.phone_number.errors %}
                             <span>{{ error }}</span>
                             {% endfor %}
                     </div>
                     {% else %}
-                    {{ profileForm.phone_number(class="form-control-label", placeholder="Phone Number") }}
+                    {{ form.phone_number(class="form-control-label", placeholder="Phone Number") }}
 
                     {% endif %}
                 </div>
                 <div class="form-group twitter">
-                    {{ profileForm.twitter.label(class="form-control-label") }}
+                    {{ form.twitter.label(class="form-control-label") }}
 
-                    {% if profileForm.twitter.errors %}
-                    {{ profileForm.twitter(class="form-control-label is-invalid", placeholder="Twitter") }}
+                    {% if form.twitter.errors %}
+                    {{ form.twitter(class="form-control-label is-invalid", placeholder="Twitter") }}
                     <div class="invalid-feedback">
-                            {% for error in profileForm.twitter.errors %}
+                            {% for error in form.twitter.errors %}
                             <span>{{ error }}</span>
                             {% endfor %}
                     </div>
                     {% else %}
-                    {{ profileForm.twitter(class="form-control-label", placeholder="Twitter") }}
+                    {{ form.twitter(class="form-control-label", placeholder="Twitter") }}
 
                     {% endif %}
                 </div>
                 <div class="form-group facebook">
-                    {{ profileForm.facebook.label(class="form-control-label") }}
+                    {{ form.facebook.label(class="form-control-label") }}
 
-                    {% if profileForm.facebook.errors %}
-                    {{ profileForm.facebook(class="form-control-label is-invalid", placeholder="Facebook") }}
+                    {% if form.facebook.errors %}
+                    {{ form.facebook(class="form-control-label is-invalid", placeholder="Facebook") }}
                     <div class="invalid-feedback">
-                            {% for error in profileForm.facebook.errors %}
+                            {% for error in form.facebook.errors %}
                             <span>{{ error }}</span>
                             {% endfor %}
                     </div>
                     {% else %}
-                    {{ profileForm.facebook(class="form-control-label", placeholder="Facebook") }}
+                    {{ form.facebook(class="form-control-label", placeholder="Facebook") }}
 
                     {% endif %}
                 </div>
 					<div class="form-group">
-							{{ profileForm.submit(class="btn btn-outline-info")}}
+							{{ form.submit(class="btn btn-outline-info")}}
 					</div>
 			</fieldset>
         </form>

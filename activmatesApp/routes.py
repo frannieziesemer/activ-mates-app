@@ -1,7 +1,7 @@
 import secrets
 import os
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 from activmatesApp import app, db, bcrypt
 from activmatesApp.forms import RegistrationForm, ProfileForm, LoginForm, UpdateAccountForm, CreateActivityForm
 from activmatesApp.models import User, Profile, Activity, ActivityType
@@ -20,29 +20,29 @@ def landing_page():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def sign_up():
-    registrationForm = RegistrationForm()
-    if registrationForm.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(registrationForm.password.data).decode('utf-8')
-        user = User(username=registrationForm.username.data, email=registrationForm.email.data, password=hashed_password)
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         # alert message
         flash(
-            f'Account created for {registrationForm.username.data} you are now able to login!', 'success')
+            f'Account created for {form.username.data} you are now able to login!', 'success')
         return redirect(url_for('login'))
     return render_template('sign-up.html',
                             title='Sign Up',
-                            registrationForm=registrationForm
+                            form=form
                            )
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    loginForm = LoginForm()
+    form = LoginForm()
     error = None
-    if loginForm.validate_on_submit():
-        user = User.query.filter_by(email=loginForm.email.data).first()
-        if user and bcrypt.check_password_hash(user.password, loginForm.password.data):
-            login_user(user, remember=loginForm.remember.data)
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             flash(f'You have been logged in!', 'success')
             return redirect(next_page) if next_page else redirect(url_for('main_search'))
@@ -50,7 +50,7 @@ def login():
             error = 'Login Unsuccessful. Please check username and password'
     return render_template('login.html',
                             title='Login',
-                            loginForm=loginForm,
+                            form=form,
                             error=error
                             )
 
@@ -96,25 +96,25 @@ def save_picture(form_picture):
 @app.route('/create-profile', methods=['GET', 'POST'])
 @login_required
 def create_profile():
-    profileForm = ProfileForm()
-    address_data = profileForm.street_address.data
+    form = ProfileForm()
+    address_data = form.street_address.data
     image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
-    if profileForm.validate_on_submit():
-        profile = Profile(first_name=profileForm.first_name.data,
-                        last_name=profileForm.last_name.data,
-                        street_address=profileForm.street_address.data,
-                        phone_number=profileForm.phone_number.data,
-                        twitter=profileForm.twitter.data,
-                        facebook=profileForm.facebook.data,
-                        lat=profileForm.lat.data,
-                        lng=profileForm.lng.data,
+    if form.validate_on_submit():
+        profile = Profile(first_name=form.first_name.data,
+                        last_name=form.last_name.data,
+                        street_address=form.street_address.data,
+                        phone_number=form.phone_number.data,
+                        twitter=form.twitter.data,
+                        facebook=form.facebook.data,
+                        lat=form.lat.data,
+                        lng=form.lng.data,
                         user=current_user)
         db.session.add(profile)
         db.session.commit()
         flash(f'Profile created!', 'success')
         return redirect(url_for('account_profile'))
     return render_template('create-profile.html',
-                            profileForm=profileForm,
+                            form=form,
                             map_key=app.config['GOOGLE_MAPS_API_KEY'],
                             address_data=address_data,
                             )
@@ -123,27 +123,27 @@ def create_profile():
 @app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    profileForm = ProfileForm()
+    form = ProfileForm()
     profile_data = current_user.profile
     for item in profile_data:
                 display_profile_picture = item.image_file
                 display_address = item.street_address
     #update database info
-    if profileForm.validate_on_submit():
+    if form.validate_on_submit():
         #check if new picture 
-        if profileForm.picture.data:
-            picture_file = save_picture(profileForm.picture.data)
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
             for item in profile_data:
                 item.image_file=picture_file
         for item in profile_data:
-            item.first_name = profileForm.first_name.data
-            item.last_name=profileForm.last_name.data
-            item.phone_number=profileForm.phone_number.data
-            item.twitter=profileForm.twitter.data
-            item.facebook=profileForm.facebook.data
-            item.street_address=profileForm.street_address.data
-            item.lat=profileForm.lat.data
-            item.lng=profileForm.lng.data
+            item.first_name = form.first_name.data
+            item.last_name=form.last_name.data
+            item.phone_number=form.phone_number.data
+            item.twitter=form.twitter.data
+            item.facebook=form.facebook.data
+            item.street_address=form.street_address.data
+            item.lat=form.lat.data
+            item.lng=form.lng.data
         db.session.commit()
         flash(
             f'profile updated!', 'success')
@@ -151,18 +151,18 @@ def edit_profile():
     # display info inside form
     elif request.method == 'GET':
         for item in profile_data:
-            profileForm.first_name.data = item.first_name
-            profileForm.first_name.data = item.first_name
-            profileForm.last_name.data =  item.last_name
-            profileForm.phone_number.data = item.phone_number
-            profileForm.twitter.data = item.twitter
-            profileForm.facebook.data = item.facebook
-            profileForm.street_address.data = item.street_address
-            profileForm.lat.data = item.lat
-            profileForm.lng.data = item.lng
+            form.first_name.data = item.first_name
+            form.first_name.data = item.first_name
+            form.last_name.data =  item.last_name
+            form.phone_number.data = item.phone_number
+            form.twitter.data = item.twitter
+            form.facebook.data = item.facebook
+            form.street_address.data = item.street_address
+            form.lat.data = item.lat
+            form.lng.data = item.lng
     image_file = url_for('static', filename='images/profile-pics/' + display_profile_picture)
     return render_template('edit-profile.html',
-                            profileForm=profileForm,
+                            form=form,
                             image_file=image_file,
                             display_address=display_address,
                             title='Update profile',
@@ -173,47 +173,44 @@ def edit_profile():
 @app.route('/update-account', methods=['GET', 'POST'])
 @login_required
 def update_account():
-    updateAccountForm = UpdateAccountForm()
-    if updateAccountForm.validate_on_submit():
-        current_user.username = updateAccountForm.username.data
-        current_user.email = updateAccountForm.email.data
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
         db.session.commit()
         flash(
             f'account updated!', 'success')
         return redirect(url_for('account_profile')) #- can i render a button here? on no redirect at all?
     elif request.method == 'GET': # populates form field with current data
-        updateAccountForm.username.data = current_user.username
-        updateAccountForm.email.data = current_user.email
+        form.username.data = current_user.username
+        form.email.data = current_user.email
     #remove image? i think this should only be in profile
     image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
-    return render_template('update-account.html', updateAccountForm=updateAccountForm, image_file=image_file)
+    return render_template('update-account.html', form=form, image_file=image_file)
 
 @app.route('/main-search')
 @login_required
 def main_search():
-    # activities = Activity.query.all()
     profiles = Profile.query.all()
-    user=current_user
     activities = Activity.query.all();
     return render_template('main-search.html', 
                             title='Search', 
                             profiles=profiles, 
-                            user=user,
                             activities=activities
                             )
 
 
-@app.route('/new-activity', methods=['GET', 'POST'])
+@app.route('/activity/new', methods=['GET', 'POST'])
 @login_required
 def new_activity():
     profile=current_user.profile
     for item in profile:
         profile_id = item.id
-    newActivityForm = CreateActivityForm()
-    if newActivityForm.validate_on_submit():
+    form = CreateActivityForm()
+    if form.validate_on_submit():
         activity = Activity(
-            title=newActivityForm.title.data, 
-            description=newActivityForm.description.data,
+            title=form.title.data, 
+            description=form.description.data,
             profile_id=profile_id
             )
         db.session.add(activity)
@@ -223,12 +220,52 @@ def new_activity():
         return redirect(url_for('main_search')) 
     return render_template('new-activity.html', 
                             title='New Activity',
-                            newActivityForm=newActivityForm,
-                            profile=profile)
+                            form=form,
+                            profile=profile,
+                            legend='New Activity',
+                            )
 
 
-@app.route('/view-activity')
+
+@app.route('/activity/<int:activity_id>')
 @login_required
-def view_activity():
-    
-    return render_template('view-activity.html', title='View Activity')
+def view_activity(activity_id):
+    activity = Activity.query.get_or_404(activity_id)
+    return render_template('view-activity.html', 
+                            title=activity.title, 
+                            activity=activity)
+
+@app.route('/activity/<int:activity_id>/update', methods=['GET', 'POST'])
+@login_required
+def update_activity(activity_id):
+    activity = Activity.query.get_or_404(activity_id)
+    #checks that only the owner of post can update this 
+    if activity.profile.id != current_user.profile[0].id:
+        abort(403)
+    form = CreateActivityForm()
+    if form.validate_on_submit():
+        activity.title = form.title.data
+        activity.description = form.description.data
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('view_activity', activity_id=activity.id))
+    elif request.method == 'GET':
+        form.title.data = activity.title
+        form.description.data = activity.description
+    return render_template('new-activity.html', 
+                            title='Update Activity',
+                            form=form,
+                            legend='Update Post',
+                            activity=activity)
+
+@app.route('/activity/<int:activity_id>/delete', methods=['POST'])
+@login_required
+def delete_activity(activity_id):
+    activity = Activity.query.get_or_404(activity_id)
+    if activity.profile.id != current_user.profile[0].id:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your post has been deleted!', 'success')
+    return redirect(url_for('main_search'))
+

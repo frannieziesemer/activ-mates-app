@@ -6,64 +6,64 @@
 <div class="row">
 	<div class="col mt-3">        
 		<form action="" method="POST">
-			{{ registrationForm.hidden_tag() }}
+			{{ form.hidden_tag() }}
 			<fieldset class="form-control d-grid gap-3">
 					<legend>
 							Sign-up to get started!
 					</legend>
 					<div class="form-group username">
-							{% if registrationForm.username.errors %}
-							{{ registrationForm.username(class="form-control-label is-invalid", placeholder="Username") }}
+							{% if form.username.errors %}
+							{{ form.username(class="form-control-label is-invalid", placeholder="Username") }}
 							<div class="invalid-feedback">
-								{% for error in registrationForm.username.errors %}
+								{% for error in form.username.errors %}
 								<span>{{ error }}</span>
 								{% endfor %}
 							</div>
 							{% else %}
-							{{ registrationForm.username(class="form-control-label", placeholder="Username") }}
+							{{ form.username(class="form-control-label", placeholder="Username") }}
 							{% endif %}
 					</div>
 					<div class="form-group email">
-							{% if registrationForm.email.errors %}
-							{{ registrationForm.email(class="form-control-label is-invalid", placeholder="Email") }}
+							{% if form.email.errors %}
+							{{ form.email(class="form-control-label is-invalid", placeholder="Email") }}
 							<div class="invalid-feedback">
-									{% for error in registrationForm.email.errors %}
+									{% for error in form.email.errors %}
 									<span>{{ error }}</span>
 									{% endfor %}
 							</div>
 							{% else %}
-							{{ registrationForm.email(class="form-control-label", placeholder="Email") }}
+							{{ form.email(class="form-control-label", placeholder="Email") }}
 
 							{% endif %}
 					</div>
 					<div class="form-group password">
-							{% if registrationForm.password.errors %}
-							{{ registrationForm.password(class="form-control-label is-invalid", placeholder="Password") }}
+							{% if form.password.errors %}
+							{{ form.password(class="form-control-label is-invalid", placeholder="Password") }}
 							<div class="invalid-feedback">
-									{% for error in registrationForm.password.errors %}
+									{% for error in form.password.errors %}
 									<span>{{ error }}</span>
 									{% endfor %}
 							</div>
 							{% else %}
-							{{ registrationForm.password(class="form-control-label", placeholder="Password") }}
+							{{ form.password(class="form-control-label", placeholder="Password") }}
 
 							{% endif %}
 					</div>
 					<div class="form-group confirm-password">
-							{% if registrationForm.confirm_password.errors %}
-							{{ registrationForm.confirm_password(class="form-control-label is-invalid", placeholder="Confirm Password") }}
+							{% if form.confirm_password.errors %}
+							{{ form.confirm_password(class="form-control-label is-invalid", placeholder="Confirm Password") }}
 							<div class="invalid-feedback">
-									{% for error in registrationForm.confirm_password.errors %}
+									{% for error in form.confirm_password.errors %}
 									<span>{{ error }}</span>
 									{% endfor %}
 							</div>
 							{% else %}
-							{{ registrationForm.confirm_password(class="form-control-label", placeholder="Confirm Password") }}
+							{{ form.confirm_password(class="form-control-label", placeholder="Confirm Password") }}
 
 							{% endif %}
 					</div>
 					<div class="form-group">
-							{{ registrationForm.submit(class="btn btn-outline-info")}}
+							{{ form.submit(class="btn btn-outline-info")}}
 					</div>
 			</fieldset>
 		</form>
@@ -75,7 +75,7 @@
   </div>
 
 	<div class="col">
-			<!-- {% if registrationForm.validate_on_submit %} -->
+			<!-- {% if form.validate_on_submit %} -->
 					<!-- {% block profileForm %}
 					{% endblock %} -->
 			<!-- {% endif %} -->

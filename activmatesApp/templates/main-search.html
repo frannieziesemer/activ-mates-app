@@ -10,10 +10,10 @@
             <div class="card-body">
               <h5 class="card-title">{{ activity.title }}</h5>
               <h6 class="card-subtitle mb-2 text-muted">{{ activity.type}}</h6>
-              <h6 class="card-subtitle mb-2 text-muted">{{ user.username }}</h6>
+              <h6 class="card-subtitle mb-2 text-muted">{{ current_user.username }}</h6>
 
               <p class="card-text">{{ activity.description}}</p>
-              <a href="#" class="card-link">Card link</a>
+              <a href="{{ url_for('view_activity', activity_id=activity.id) }}" class="card-link">Card link</a>
               <a href="#" class="card-link">Another link</a>
             </div>
           </div>
