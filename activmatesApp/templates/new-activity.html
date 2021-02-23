@@ -1,5 +1,12 @@
 {% extends 'layout.html' %}
 
+{% block head %}
+
+<script src="{{ url_for('static', filename='javascript/map-address-field.js') }}"></script>
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initAutocomplete">
+</script>
+{% endblock %}
 
 {% block body %}
 <h1>new activity page</h1>
@@ -30,19 +37,40 @@
 							{% endif %}
 					</div>
 					<div class="form-group activity-type">
-            {{ form.type.label() }}
+            {{ form.activity_type.label() }}
 
-							{% if form.type.errors %}
-							{{ form.type(class="form-control-label is-invalid", placeholder="Type") }}
+							{% if form.activity_type.errors %}
+							{{ form.activity_type(class="form-control-label is-invalid", placeholder="activity_type") }}
 							<div class="invalid-feedback">
-								{% for error in form.type.errors %}
+								{% for error in form.activity_type.errors %}
 								<span>{{ error }}</span>
 								{% endfor %}
 							</div>
 							{% else %}
-							{{ form.type(class="form-control-label", placeholder="Type") }}
+							{{ form.activity_type(class="form-control-label", placeholder="Type") }}
 							{% endif %}
 					</div>
+					<div class="form-group address">
+						{{ form.address.label(class="form-control-label") }}
+
+						{% if form.address.errors %}
+						<div id="addressField">
+								<input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
+							</div>
+								<p id="details"></p>
+						<div class="invalid-feedback">
+										{% for error in form.address.errors %}
+										<span>{{ error }}</span>
+										{% endfor %}
+						</div>
+						{% else %}
+						<div id="addressField">
+								<input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
+							</div>
+								<p id="details"></p>
+
+						{% endif %}
+		</div>
 					<div class="form-group description">
             {{ form.description.label() }}
 							{% if form.description.errors %}

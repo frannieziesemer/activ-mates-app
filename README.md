@@ -15,3 +15,8 @@ Lucid Chart - [Database ER Diagram ](https://lucid.app/lucidchart/invitations/ac
 3. Run the Flask app:
   ```python run.py```
 
+
+
+###### Challenges and reflections 
+- this is the first time working with databases. Initially, I found it challenging to grasp the concepts of retreiving data from form interfaces and connecting the informatio with routes, and databases. With patience, I was able to implement user registration, profile creation and post creation - with interconnectivity fucntioning well. 
+- it was very interesting to use the google maps API, autocorrect to store location inputs. This feature also improves the user experience in making it easier and quicker to find the users address. 

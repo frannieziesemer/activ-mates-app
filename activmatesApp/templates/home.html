@@ -3,36 +3,22 @@
 
 
 {% block body %}
-<div class="row p-5">
-    <div class="col-lg-6 ">
-        <h1>ActivMates - time to find an exercise buddy!</h1>
-        <div class="ms-4 mb-4">
-            <h4>New to a city, and want to meet people in a different way?</h4>
-            <h4>Don't feel safe running alone at night?</h4>
-            <h4>Want to learn a new sport?</h4>
-            <h4>Need someone else to motivate you?</h4>
+<h1>main search page</h1>
+    {% for activity in activities %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ activity.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ activity.activity_type.name }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">{{ activity.profile.user.username }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">{{ activity.address }}</h6>
+            <p class="card-text">{{ activity.description}}</p>
+            <a href="{{ url_for('view_activity', activity_id=activity.id) }}" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
         </div>
-        <div class="ms-3">
-					<p class="body">Sign up today to connect with someone in your area</p>
-					
-                        <a href="{{ url_for('sign_up') }}" >
-                            <button id="sign-up" class="primary">
-                                Sign Up
-                            </button>
-                        </a>
-					
-					<a href="{{ url_for('login') }}" >
-                        <button id="login" class="secondary">
-                            Login
-                        </button>
-                    </a>
-			</div>
-    </div>	
-    <div class="col-lg-6">
-        
-        <img src="{{ url_for('static', filename='images/open-doodles-roller-skating.png') }}" height="150px" alt="illustration of person rollerskating">
-        <img src="{{ url_for('static', filename='images/open-doodles-jumping.png') }}" height="150px" alt="illustration of person jumping">
-    </div>
-</div>
-
+        </div>
+            
+        {% endfor %}
+    <!-- <script async
+    src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&libraries=places&callback=initMap">
+    </script> -->
 {% endblock %}

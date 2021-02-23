@@ -30,7 +30,7 @@
                   
                   {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                      <a class="nav-link" href="{{ url_for('main_search') }}">Search</a>
+                      <a class="nav-link" href="{{ url_for('home') }}">Search</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{{ url_for('new_activity') }}">Post an activity</a>

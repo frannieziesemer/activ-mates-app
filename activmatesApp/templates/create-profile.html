@@ -1,11 +1,5 @@
 {% extends 'layout.html' %}
 
-{% block head %}
-<script src="{{ url_for('static', filename='javascript/map-address-field.js') }}"></script>
-<script async
-        src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initAutocomplete">
-</script>
-{% endblock %}
 
 {% block body %}
 <h1>profile page</h1>
@@ -59,27 +53,7 @@
 
 							{% endif %}
 					</div>
-                    <div class="form-group address">
-                        {{ form.street_address.label(class="form-control-label") }}
-
-                        {% if form.street_address.errors %}
-                        <div id="locationField">
-                            <input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
-                          </div>
-                            <p id="details"></p>
-                        <div class="invalid-feedback">
-                                {% for error in form.street_address.errors %}
-                                <span>{{ error }}</span>
-                                {% endfor %}
-                        </div>
-                        {% else %}
-                        <div id="locationField">
-                            <input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
-                          </div>
-                            <p id="details"></p>
-
-                        {% endif %}
-                </div>
+                    
                     
                 <div class="form-group phone-number">
                     {{ form.phone_number.label(class="form-control-label") }}

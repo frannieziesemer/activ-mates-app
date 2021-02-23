@@ -61,12 +61,7 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That username is taken, please choose a different one')
     
 class ProfileForm(FlaskForm):
-    lat = HiddenField('lat', validators=[
-                                DataRequired()
-                                ])
-    lng = HiddenField('lng', validators=[
-                                DataRequired()
-                                ])
+    
     first_name = StringField('First Name',
                              validators=[
                                  DataRequired(), 
@@ -82,11 +77,7 @@ class ProfileForm(FlaskForm):
                                 FileAllowed(['jpg', 'png', 'jpeg'])
                                 ]) 
 ## direct the info from google maps to the address field
-    street_address = HiddenField('address',
-                                    validators=[
-                                        DataRequired(),
-                                        Length(min=2, max=100)
-                                        ])
+    
     phone_number = IntegerField('Phone Number',
                                     validators=[
                                         DataRequired()
@@ -106,12 +97,19 @@ class CreateActivityForm(FlaskForm):
                             validators=[
                                 DataRequired()
                             ])
-    type = SelectField(u'Type of activity', 
-                                choices=[
-                                    ('run', 'Running'), 
-                                    ('ping_pong', 'Ping Pong'), 
-                                    ('walk', 'Walking')
-                                    ],
+    lat = HiddenField('lat', validators=[
+                                DataRequired()
+                                ])
+    lng = HiddenField('lng', validators=[
+                                DataRequired()
+                                ])
+    address = HiddenField('address',
+                                validators=[
+                                DataRequired(),
+                                Length(min=2, max=200)
+                                ])
+    activity_type = SelectField(u'Type of activity', 
+                                choices=[],
                                 validators=[
                                     DataRequired()
                                     ])

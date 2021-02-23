@@ -60,22 +60,6 @@
 							{{ form.last_name(class="form-control-label", placeholder="Last Name") }}
 							{% endif %}
 					</div>
-                
-                <div class="form-group" id="locationField">
-                    {{ form.street_address.label(class="form-control-label") }}
-                    <input id="autocomplete" placeholder="{{display_address}}"  type="text" class="form-control">
-                    <p id="details">{{ address }}</p>
-                    {% if form.street_address.errors %}
-                    {% for error in form.street_address.errors %}
-                        <span class="text-danger">{{ error }}</span><br/>
-                    {% endfor %}
-                {% endif %}
-                {% if form.lat.errors %}
-                    {% for error in form.lat.errors %}
-                        <span class="text-danger">{{ error }}</span><br/>
-                    {% endfor %}
-                {% endif %}
-                </div>
                 <div class="form-group phone-number">
                     {{ form.phone_number.label(class="form-control-label") }}
 

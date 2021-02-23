@@ -10,13 +10,15 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route('/')
 @app.route('/home')
+@login_required
 def home():
-    return render_template('home.html')
-
-
-@app.route('/landing-page')
-def landing_page():
-    return render_template('landing-page.html')
+    profiles = Profile.query.all()
+    activities = Activity.query.all();
+    return render_template('home.html', 
+                            title='Search', 
+                            profiles=profiles, 
+                            activities=activities
+                            )
 
 @app.route('/signup', methods=['GET', 'POST'])
 def sign_up():
@@ -45,7 +47,7 @@ def login():
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             flash(f'You have been logged in!', 'success')
-            return redirect(next_page) if next_page else redirect(url_for('main_search'))
+            return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             error = 'Login Unsuccessful. Please check username and password'
     return render_template('login.html',
@@ -58,8 +60,6 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('home'))
-
-
 
 
 @app.route('/account-profile')
@@ -97,17 +97,13 @@ def save_picture(form_picture):
 @login_required
 def create_profile():
     form = ProfileForm()
-    address_data = form.street_address.data
     image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
     if form.validate_on_submit():
         profile = Profile(first_name=form.first_name.data,
                         last_name=form.last_name.data,
-                        street_address=form.street_address.data,
                         phone_number=form.phone_number.data,
                         twitter=form.twitter.data,
                         facebook=form.facebook.data,
-                        lat=form.lat.data,
-                        lng=form.lng.data,
                         user=current_user)
         db.session.add(profile)
         db.session.commit()
@@ -115,8 +111,6 @@ def create_profile():
         return redirect(url_for('account_profile'))
     return render_template('create-profile.html',
                             form=form,
-                            map_key=app.config['GOOGLE_MAPS_API_KEY'],
-                            address_data=address_data,
                             )
 
 
@@ -127,7 +121,6 @@ def edit_profile():
     profile_data = current_user.profile
     for item in profile_data:
                 display_profile_picture = item.image_file
-                display_address = item.street_address
     #update database info
     if form.validate_on_submit():
         #check if new picture 
@@ -141,9 +134,7 @@ def edit_profile():
             item.phone_number=form.phone_number.data
             item.twitter=form.twitter.data
             item.facebook=form.facebook.data
-            item.street_address=form.street_address.data
-            item.lat=form.lat.data
-            item.lng=form.lng.data
+            
         db.session.commit()
         flash(
             f'profile updated!', 'success')
@@ -156,15 +147,11 @@ def edit_profile():
             form.last_name.data =  item.last_name
             form.phone_number.data = item.phone_number
             form.twitter.data = item.twitter
-            form.facebook.data = item.facebook
-            form.street_address.data = item.street_address
-            form.lat.data = item.lat
-            form.lng.data = item.lng
+            form.facebook.data = item.facebook    
     image_file = url_for('static', filename='images/profile-pics/' + display_profile_picture)
     return render_template('edit-profile.html',
                             form=form,
                             image_file=image_file,
-                            display_address=display_address,
                             title='Update profile',
                             map_key=app.config['GOOGLE_MAPS_API_KEY']
                             )
@@ -188,16 +175,6 @@ def update_account():
     image_file = url_for('static', filename='images/profile-pics/' + current_user.image_file)
     return render_template('update-account.html', form=form, image_file=image_file)
 
-@app.route('/main-search')
-@login_required
-def main_search():
-    profiles = Profile.query.all()
-    activities = Activity.query.all();
-    return render_template('main-search.html', 
-                            title='Search', 
-                            profiles=profiles, 
-                            activities=activities
-                            )
 
 
 @app.route('/activity/new', methods=['GET', 'POST'])
@@ -207,24 +184,29 @@ def new_activity():
     for item in profile:
         profile_id = item.id
     form = CreateActivityForm()
+    form.activity_type.choices = [(item.id, item.name) for item in ActivityType.query.all()]
     if form.validate_on_submit():
         activity = Activity(
             title=form.title.data, 
             description=form.description.data,
+            lat=form.lat.data,
+            lng=form.lng.data,
+            address=form.address.data,
+            activity_id=form.activity_type.data,
             profile_id=profile_id
             )
         db.session.add(activity)
         db.session.commit()
         flash(
             f'new activity posted!', 'success')
-        return redirect(url_for('main_search')) 
+        return redirect(url_for('home')) 
     return render_template('new-activity.html', 
                             title='New Activity',
                             form=form,
                             profile=profile,
+                            map_key=app.config['GOOGLE_MAPS_API_KEY'],
                             legend='New Activity',
                             )
-
 
 
 @app.route('/activity/<int:activity_id>')
@@ -246,12 +228,18 @@ def update_activity(activity_id):
     if form.validate_on_submit():
         activity.title = form.title.data
         activity.description = form.description.data
+        activity.street_address=form.street_address.data
+        activity.lat=form.lat.data
+        activity.lng=form.lng.data
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('view_activity', activity_id=activity.id))
     elif request.method == 'GET':
         form.title.data = activity.title
         form.description.data = activity.description
+        form.street_address.data = activity.street_address
+        form.lat.data = activity.lat
+        form.lng.data = activity.lng
     return render_template('new-activity.html', 
                             title='Update Activity',
                             form=form,
@@ -267,5 +255,5 @@ def delete_activity(activity_id):
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
-    return redirect(url_for('main_search'))
+    return redirect(url_for('home'))
 
