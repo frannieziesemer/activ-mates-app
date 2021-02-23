@@ -2,7 +2,7 @@ import enum
 from datetime import datetime
 from activmatesApp import db, login_manager
 from flask_login import UserMixin
-#from geoalchemy2 import Geometry
+from geoalchemy2 import Geometry
 
 @login_manager.user_loader 
 def load_user(user_id):
@@ -62,6 +62,7 @@ class ActivityType(db.Model):
         return f"activitytype('{self.number}', '{self.name}')"
 
 
+
 class Activity(db.Model):
     __tablename__ = 'activities'
 
@@ -72,7 +73,7 @@ class Activity(db.Model):
     address = db.Column(db.String(150), nullable=False)
     lat = db.Column(db.Integer, nullable=False)
     lng = db.Column(db.Integer, nullable=False)
-    #location = db.Column(Geometry('POINT'))
+    location = db.Column(Geometry("POINT", srid=4326, dimension=2, management=True)) 
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
     profile_id = db.Column(db.Integer, db.ForeignKey('profiles.id'), nullable=False)
