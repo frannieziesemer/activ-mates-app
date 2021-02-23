@@ -3,6 +3,8 @@ from datetime import datetime
 from activmatesApp import db, login_manager
 from flask_login import UserMixin
 from geoalchemy2 import Geometry
+from geoalchemy2.elements import WKTElement
+
 
 @login_manager.user_loader 
 def load_user(user_id):
@@ -83,4 +85,11 @@ class Activity(db.Model):
     def __repr__(self):
         return f"Activity('{self.title}', '{self.date_posted}', '{self.location}', '{self.lat}', '{self.lng}', '{self.description}')"
 
-
+    #this is a method to format the lat and lng. So that it can be added to the table. 
+    #The method will be called in routes.py when we push the models to db 
+    #https://geoalchemy-2.readthedocs.io/en/0.3/elements.html#geoalchemy2.elements.WKBElement"""
+    @staticmethod
+    def point_representation(lat, lng):
+        point = 'POINT(%s %s)' % (lng, lng)
+        wkb_element = WKTElement(point, srid=4326)
+        return wkb_element

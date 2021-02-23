@@ -185,7 +185,6 @@ def new_activity():
         profile_id = item.id
     form = CreateActivityForm()
     form.activity_type.choices = [(item.id, item.name) for item in ActivityType.query.all()]
-    geo = 'POINT({}, {})'.format(form.lng.data, form.lat.data)
     if form.validate_on_submit():
         activity = Activity(
             title=form.title.data, 
@@ -193,7 +192,7 @@ def new_activity():
             lat=form.lat.data,
             lng=form.lng.data,
             address=form.address.data,
-            location=geo,
+            location=Activity.point_representation(form.lat.data, form.lng.data),
             activity_id=form.activity_type.data,
             profile_id=profile_id
             )
