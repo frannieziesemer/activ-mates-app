@@ -1,16 +1,22 @@
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from sqlalchemy import event
 from sqlalchemy.sql import select, func
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_marshmallow import Marshmallow
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('activmatesApp.default_settings')
 app.config.from_envvar('YOURAPPLICATIONSETTNGS')
+app.config['SQLALCHEMY_ECHO'] = True
+
 
 db = SQLAlchemy(app)
+ma = Marshmallow(app)
+
 
 @event.listens_for(db.engine, "connect")
 def load_spatialite(dbapi_conn, connection_record):

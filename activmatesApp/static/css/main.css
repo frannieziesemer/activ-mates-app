@@ -89,3 +89,10 @@ button.secondary:hover {
 #login-form fieldset{
     width: 100%;
 }
+
+#map {
+    height: 75vmin;
+    width: 75%;
+    margin: 0 auto;
+  }
+       

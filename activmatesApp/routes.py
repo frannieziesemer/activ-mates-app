@@ -1,12 +1,20 @@
 import secrets
 import os
+import sqlite3
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request, abort
+from flask import render_template, url_for, flash, redirect, request, abort, jsonify
+from sys import stderr
 from activmatesApp import app, db, bcrypt
 from activmatesApp.forms import RegistrationForm, ProfileForm, LoginForm, UpdateAccountForm, CreateActivityForm
 from activmatesApp.models import User, Profile, Activity, ActivityType
 from flask_login import login_user, current_user, logout_user, login_required
 
+#creates a dictionary structure 
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
 
 @app.route('/')
 @app.route('/home')
@@ -17,7 +25,8 @@ def home():
     return render_template('home.html', 
                             title='Search', 
                             profiles=profiles, 
-                            activities=activities
+                            activities=activities,
+                            map_key=app.config['GOOGLE_MAPS_API_KEY']
                             )
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -257,4 +266,20 @@ def delete_activity(activity_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
+
+
+
+#JSON API route 
+# here i can set a route to create an api url 
+# within the function i will create a dictionary using the db data and return this dictionary as json (jsonify) 
+
+# @app.route('/api/get_activities_within_radius', methods=['GET'])
+# def api_all():
+#     conn = sqlite3.connect('site.db')
+#     conn.row_factory = dict_factory
+#     cur = conn.cursor()
+#     all_activities = cur.execute('SELECT * FROM activites;').fetchall()
+
+#     return jsonify(all_activities)
+
 

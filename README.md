@@ -15,7 +15,9 @@ Lucid Chart - [Database ER Diagram ](https://lucid.app/lucidchart/invitations/ac
 3. Run the Flask app:
   ```python run.py```
 
-
+###### What did I learn? 
+- local settings and secure password / API key storage 
+- 
 
 ###### Challenges and reflections 
 - this is the first time working with databases. Initially, I found it challenging to grasp the concepts of retreiving data from form interfaces and connecting the informatio with routes, and databases. With patience, I was able to implement user registration, profile creation and post creation - with interconnectivity fucntioning well. 

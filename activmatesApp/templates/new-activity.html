@@ -3,9 +3,7 @@
 {% block head %}
 
 <script src="{{ url_for('static', filename='javascript/map-address-field.js') }}"></script>
-<script async
-        src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initAutocomplete">
-</script>
+
 {% endblock %}
 
 {% block body %}
@@ -93,5 +91,7 @@
 		</form>
   </div>
 </div>
-
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initAutocomplete">
+</script>
 {% endblock %}

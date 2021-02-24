@@ -1,6 +1,7 @@
 import enum
 from datetime import datetime
-from activmatesApp import db, login_manager
+from activmatesApp import db, login_manager, ma
+from flask_marshmallow import Marshmallow
 from flask_login import UserMixin
 from geoalchemy2 import Geometry
 from geoalchemy2.elements import WKTElement
@@ -88,8 +89,14 @@ class Activity(db.Model):
     #this is a method to format the lat and lng. So that it can be added to the table. 
     #The method will be called in routes.py when we push the models to db 
     #https://geoalchemy-2.readthedocs.io/en/0.3/elements.html#geoalchemy2.elements.WKBElement"""
+    #https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry
     @staticmethod
     def point_representation(lat, lng):
         point = 'POINT(%s %s)' % (lng, lng)
         wkb_element = WKTElement(point, srid=4326)
         return wkb_element
+
+class ActivitySchema(ma.ModelSchema):
+    class Meta:
+        model = Activity
+        sqla_session = db.session   
