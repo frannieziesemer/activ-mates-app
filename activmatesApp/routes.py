@@ -6,7 +6,7 @@ from flask import render_template, url_for, flash, redirect, request, abort, jso
 from sys import stderr
 from activmatesApp import app, db, bcrypt
 from activmatesApp.forms import RegistrationForm, ProfileForm, LoginForm, UpdateAccountForm, CreateActivityForm
-from activmatesApp.models import User, Profile, Activity, ActivityType
+from activmatesApp.models import User, Profile, Activity, ActivityType, ActivitySchema, ProfileSchema
 from flask_login import login_user, current_user, logout_user, login_required
 
 #creates a dictionary structure 
@@ -201,8 +201,8 @@ def new_activity():
             lat=form.lat.data,
             lng=form.lng.data,
             address=form.address.data,
-            location=Activity.point_representation(form.lat.data, form.lng.data),
-            activity_id=form.activity_type.data,
+            #location=Activity.point_representation(form.lat.data, form.lng.data),
+            activity_type_id=form.activity_type.data,
             profile_id=profile_id
             )
         db.session.add(activity)
@@ -273,13 +273,13 @@ def delete_activity(activity_id):
 # here i can set a route to create an api url 
 # within the function i will create a dictionary using the db data and return this dictionary as json (jsonify) 
 
-# @app.route('/api/get_activities_within_radius', methods=['GET'])
-# def api_all():
-#     conn = sqlite3.connect('site.db')
-#     conn.row_factory = dict_factory
-#     cur = conn.cursor()
-#     all_activities = cur.execute('SELECT * FROM activites;').fetchall()
-
-#     return jsonify(all_activities)
+@app.route('/api/get_activities')
+def api_all():
+    #create list of activities from db
+    profiles = Profile.query.all()
+    #serialise the data for the response
+    profile_schema = ProfileSchema(many=True)
+    result = profile_schema.dump(profiles)
+    return jsonify({'profles': result})
 
 

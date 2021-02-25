@@ -1,10 +1,10 @@
 import enum
 from datetime import datetime
 from activmatesApp import db, login_manager, ma
-from flask_marshmallow import Marshmallow
 from flask_login import UserMixin
 from geoalchemy2 import Geometry
 from geoalchemy2.elements import WKTElement
+from marshmallow import fields
 
 
 @login_manager.user_loader 
@@ -69,6 +69,7 @@ class ActivityType(db.Model):
 class Activity(db.Model):
     __tablename__ = 'activities'
 
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     # image_file = db.Column(db.String(20), nullable=False)
@@ -76,12 +77,11 @@ class Activity(db.Model):
     address = db.Column(db.String(150), nullable=False)
     lat = db.Column(db.Integer, nullable=False)
     lng = db.Column(db.Integer, nullable=False)
-    location = db.Column(Geometry("POINT", srid=4326, dimension=2, management=True)) 
+    #location = db.Column(Geometry("POINT", srid=4326, dimension=2, management=True)) 
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
     profile_id = db.Column(db.Integer, db.ForeignKey('profiles.id'), nullable=False)
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity_types.id'), nullable=False)
-    # activity_type = db.relationship('ActivityType', backref='activity', lazy=True)
+    activity_type_id = db.Column(db.Integer, db.ForeignKey('activity_types.id'), nullable=False)
 
     def __repr__(self):
         return f"Activity('{self.title}', '{self.date_posted}', '{self.location}', '{self.lat}', '{self.lng}', '{self.description}')"
@@ -90,13 +90,22 @@ class Activity(db.Model):
     #The method will be called in routes.py when we push the models to db 
     #https://geoalchemy-2.readthedocs.io/en/0.3/elements.html#geoalchemy2.elements.WKBElement"""
     #https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry
-    @staticmethod
-    def point_representation(lat, lng):
-        point = 'POINT(%s %s)' % (lng, lng)
-        wkb_element = WKTElement(point, srid=4326)
-        return wkb_element
+#     @staticmethod
+#     def point_representation(lat, lng):
+#         point = 'POINT(%s %s)' % (lng, lng)
+#         wkb_element = WKTElement(point, srid=4326)
+#         return wkb_element
 
-class ActivitySchema(ma.ModelSchema):
+#these chemas create serialisabel data to then dump to json using marshmallow plugin
+
+class ActivitySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Activity
-        sqla_session = db.session   
+        load_instance = True
+
+        
+class ProfileSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Profile
+        author = fields.Nested(ActivitySchema, required=True)
+        load_instance = True

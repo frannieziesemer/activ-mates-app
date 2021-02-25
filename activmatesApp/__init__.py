@@ -1,7 +1,6 @@
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 from sqlalchemy import event
 from sqlalchemy.sql import select, func
 from flask_bcrypt import Bcrypt
