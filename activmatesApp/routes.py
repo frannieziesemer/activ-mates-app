@@ -271,7 +271,6 @@ def delete_activity(activity_id):
 @app.route('/api/get_activities')
 def api_all():
     #here the lat, lng, and radius is called from the API url created in js file  
-
     lat = float(request.args.get('lat'))
     lon = float(request.args.get('lng'))
     radius = int(request.args.get('radius'))
