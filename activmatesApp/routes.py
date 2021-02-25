@@ -6,7 +6,7 @@ from flask import render_template, url_for, flash, redirect, request, abort, jso
 from sys import stderr
 from activmatesApp import app, db, bcrypt
 from activmatesApp.forms import RegistrationForm, ProfileForm, LoginForm, UpdateAccountForm, CreateActivityForm
-from activmatesApp.models import User, Profile, Activity, ActivityType, ActivitySchema, ProfileSchema
+from activmatesApp.models import User, Profile, Activity, ActivityType
 from flask_login import login_user, current_user, logout_user, login_required
 
 #creates a dictionary structure 
@@ -198,10 +198,8 @@ def new_activity():
         activity = Activity(
             title=form.title.data, 
             description=form.description.data,
-            lat=form.lat.data,
-            lng=form.lng.data,
             address=form.address.data,
-            #location=Activity.point_representation(form.lat.data, form.lng.data),
+            location=Activity.point_representation(form.lat.data, form.lng.data),
             activity_type_id=form.activity_type.data,
             profile_id=profile_id
             )
@@ -239,8 +237,7 @@ def update_activity(activity_id):
         activity.title = form.title.data
         activity.description = form.description.data
         activity.street_address=form.street_address.data
-        activity.lat=form.lat.data
-        activity.lng=form.lng.data
+        activity.location=Activity.point_representation(form.lat.data, form.lng.data),
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('view_activity', activity_id=activity.id))
@@ -248,8 +245,6 @@ def update_activity(activity_id):
         form.title.data = activity.title
         form.description.data = activity.description
         form.street_address.data = activity.street_address
-        form.lat.data = activity.lat
-        form.lng.data = activity.lng
     return render_template('new-activity.html', 
                             title='Update Activity',
                             form=form,
@@ -275,11 +270,15 @@ def delete_activity(activity_id):
 
 @app.route('/api/get_activities')
 def api_all():
-    #create list of activities from db
-    profiles = Profile.query.all()
-    #serialise the data for the response
-    profile_schema = ProfileSchema(many=True)
-    result = profile_schema.dump(profiles)
-    return jsonify({'profles': result})
+    #here the lat, lng, and radius is called from the API url created in js file  
 
+    lat = float(request.args.get('lat'))
+    lon = float(request.args.get('lng'))
+    radius = int(request.args.get('radius'))
 
+    activites = Activity.get_activities_within_radius(lat=lat, lon=lon, radius=radius)
+    output = []
+    for item in activites:
+        output.append(item.to_dict())
+    return jsonify(output)
+  

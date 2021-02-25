@@ -5,7 +5,6 @@ from sqlalchemy import event
 from sqlalchemy.sql import select, func
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from flask_marshmallow import Marshmallow
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('activmatesApp.default_settings')
@@ -14,7 +13,6 @@ app.config['SQLALCHEMY_ECHO'] = True
 
 
 db = SQLAlchemy(app)
-ma = Marshmallow(app)
 
 
 @event.listens_for(db.engine, "connect")
