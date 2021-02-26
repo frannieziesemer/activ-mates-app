@@ -113,8 +113,8 @@ class Activity(db.Model):
             'title': self.title,
             'address': self.address,
             'location': {
-                'lat': self.lat,
-                'lng': self.lng,
+                'lat': self.get_activity_location_lat(),
+                'lng': self.get_activity_location_lng(),
             },
             'description': self.description,
             'activity_type': self.activity_type.name
@@ -127,7 +127,7 @@ class Activity(db.Model):
         return Activity.query.filter(
             func.PtDistWithin(
                 Activity.location, 
-                func.MakePoint(lng, lat, SpatialConstants.SRID), 
+                func.MakePoint(lng, lat, 4326), 
                 radius)
             ).limit(100).all() #TODO: do I need to limit?
 

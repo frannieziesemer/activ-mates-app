@@ -270,12 +270,14 @@ def delete_activity(activity_id):
 
 @app.route('/api/get_activities')
 def api_all():
-    #here the lat, lng, and radius is called from the API url created in js file  
+   # here the lat, lng, and radius is called from the API url created in js file  
     lat = float(request.args.get('lat'))
-    lon = float(request.args.get('lng'))
+    lng = float(request.args.get('lng'))
     radius = int(request.args.get('radius'))
+ 
 
-    activites = Activity.get_activities_within_radius(lat=lat, lon=lon, radius=radius)
+    activites = Activity.get_activities_within_radius(lat=lat, lng=lng, radius=radius)
+    # activites = Activity.query.all()
     output = []
     for item in activites:
         output.append(item.to_dict())

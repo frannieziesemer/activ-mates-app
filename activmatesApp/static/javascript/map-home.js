@@ -14,6 +14,14 @@ function initMap() {
   locationButton.textContent = "Pan to Current Location";
   locationButton.classList.add("custom-map-control-button");
   map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+
+  google.maps.event.addListener(map, 'idle', function() {
+    let center = map.getCenter();
+    console.log('center point' + center)
+    renderData(center);
+  });
+
+
   locationButton.addEventListener("click", () => {
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
@@ -37,7 +45,49 @@ function initMap() {
       handleLocationError(false, infoWindow, map.getCenter());
     }
   });
+ 
+const renderData = (center) => {
+  const params = {
+    'lat': center.lat(),
+    'lng': center.lng(),
+    'radius': 5000000
+  }
+//add parameters to url
+  const url = new URL('http://127.0.0.1:5000/api/get_activities');
+  const searchParams = url.searchParams;
+  for (const prop in params) {
+    searchParams.set(encodeURIComponent(prop), encodeURIComponent(params[prop]));
+  }
+  url.search = searchParams.toString();
+  const newUrl = url.toString() 
+  
+
+  loadJSON(newUrl);
+  //loadJSON - send new url - also fetch 
 }
+
+//add idle event listener 
+  //call clear markers function 
+  //call querey markers function - 
+
+}
+
+const loadJSON = (url) => {
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+
+  xhr.onload = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      // Request finished. Do processing here 
+      console.log('request finished', xhr.responseText)
+    } else {
+      console.log('request failed');
+    }
+  };
+  //no data is being sent back 
+  xhr.send(null);
+}
+
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
@@ -52,6 +102,9 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 
 
+// load the markers 
+// call the api url = /api/get_activities
+//add params to the api ?lat=111111&lng=22222
 
 
 
@@ -60,3 +113,6 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 //tutorial - how to make json request
 //https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON
+
+//info - edit map controls
+// https://www.w3schools.com/graphics/google_maps_controls.asp 
