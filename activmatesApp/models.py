@@ -127,9 +127,9 @@ class Activity(db.Model):
         return Activity.query.filter(
             func.PtDistWithin(
                 Activity.location, 
-                func.MakePoint(lng, lat, 4326), 
+                func.MakePoint(lat, lng, 4326), 
                 radius)
-            ).limit(100).all() #TODO: do I need to limit?
+            ).all() 
 
 
 

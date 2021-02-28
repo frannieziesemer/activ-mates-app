@@ -274,6 +274,8 @@ def api_all():
     lat = float(request.args.get('lat'))
     lng = float(request.args.get('lng'))
     radius = int(request.args.get('radius'))
+ #explanation of request.args.get():
+ # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
  
 
     activites = Activity.get_activities_within_radius(lat=lat, lng=lng, radius=radius)

@@ -2,7 +2,7 @@
 // prompted by your browser. If you see the error "The Geolocation service
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
-let map, infoWindow;
+let map, infoWindow, markers;
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
@@ -47,11 +47,13 @@ function initMap() {
   });
  
 const renderData = (center) => {
-  //clearMarketr
+  if(markers) {
+  clearMarkers(activities);
+  }
   const params = {
     'lat': center.lat(),
     'lng': center.lng(),
-    'radius': 6000000
+    'radius': 6000
   }
 //add parameters to url
   const url = new URL('http://127.0.0.1:5000/api/get_activities');
@@ -100,17 +102,21 @@ const loadJSON = (url, parseJSON) => {
 function addMarkersToMap(activities) {
   activities.forEach(activity => {
     // const latLng = { lat: activity.location.lat, lng: activity.location.lng }
-    const markers =  new google.maps.Marker({
+    markers =  new google.maps.Marker({
       position: { lat: activity.location.lat, lng: activity.location.lng },
       map,
       title: activity.description,
     });
   });
 
-  
+  //TODO add click functionality to marker - to display activity info when clicked 
 }
 
-
+function clearMarkers(activities) {
+  activities.forEach(activity => {
+    markers.setMap(null);
+  })
+}
 
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
