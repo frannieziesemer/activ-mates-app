@@ -6,8 +6,8 @@ let map, infoWindow;
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: -34.397, lng: 150.644 },
-    zoom: 6,
+    center: { lat: 52.5200, lng: 13.4050 }, 
+    zoom: 10,
   });
   infoWindow = new google.maps.InfoWindow();
   const locationButton = document.createElement("button");
@@ -17,11 +17,11 @@ function initMap() {
 
   google.maps.event.addListener(map, 'idle', function() {
     let center = map.getCenter();
-    console.log('center point' + center)
+    //let zoom = map.getZoom();
+    
     renderData(center);
   });
-
-
+// event listene for pan to current location
   locationButton.addEventListener("click", () => {
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
@@ -47,10 +47,11 @@ function initMap() {
   });
  
 const renderData = (center) => {
+  //clearMarketr
   const params = {
     'lat': center.lat(),
     'lng': center.lng(),
-    'radius': 5000000
+    'radius': 6000000
   }
 //add parameters to url
   const url = new URL('http://127.0.0.1:5000/api/get_activities');
@@ -60,33 +61,56 @@ const renderData = (center) => {
   }
   url.search = searchParams.toString();
   const newUrl = url.toString() 
+  // is it better to have a callback ? 
+  //- yes because now all of the functions to render the data are being called inside RenderData function -
+  // clearMarkers - addMarkers
+  loadJSON(newUrl, function parseJSON(response) {
+    activities = JSON.parse(response);
+    //JSPN parse response data 
+    //call place markers on map function - passing JSON response in
+    addMarkersToMap(activities);
+  });
   
-
-  loadJSON(newUrl);
-  //loadJSON - send new url - also fetch 
 }
 
-//add idle event listener 
-  //call clear markers function 
-  //call querey markers function - 
 
 }
-
-const loadJSON = (url) => {
+//https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/send#example_get
+const loadJSON = (url, parseJSON) => {
   let xhr = new XMLHttpRequest();
+  // 'open' the http request
+  console.log(url)
   xhr.open('GET', url, true);
-
+  // function handles what to do when the data is loaded / handles a failed request 
   xhr.onload = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      // Request finished. Do processing here 
-      console.log('request finished', xhr.responseText)
+      // Request finished. Do processing here  //response text = string 
+      response = xhr.responseText;
+      parseJSON(response);
     } else {
       console.log('request failed');
+      //TODO: a more meaningful response on failed data 
     }
   };
-  //no data is being sent back 
+  //no data is being sent back becasue we want to fetch
   xhr.send(null);
 }
+
+
+function addMarkersToMap(activities) {
+  activities.forEach(activity => {
+    // const latLng = { lat: activity.location.lat, lng: activity.location.lng }
+    const markers =  new google.maps.Marker({
+      position: { lat: activity.location.lat, lng: activity.location.lng },
+      map,
+      title: activity.description,
+    });
+  });
+
+  
+}
+
+
 
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {

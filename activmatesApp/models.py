@@ -85,11 +85,11 @@ class Activity(db.Model):
 
     def get_activity_location_lat(self):
         point = to_shape(self.location)
-        return point.y
+        return point.x
 
     def get_activity_location_lng(self):
         point = to_shape(self.location)
-        return point.x
+        return point.y
 
     def __repr__(self):
         return f"Activity('{self.title}', '{self.date_posted}', '{self.location}', '{self.description}')"
@@ -102,7 +102,7 @@ class Activity(db.Model):
     # https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry
     @staticmethod
     def point_representation(lat, lng):
-        point = 'POINT(%s %s)' % (lng, lng)
+        point = 'POINT(%s %s)' % (lat, lng)
         wkb_element = WKTElement(point, srid=4326)
         return wkb_element
 
