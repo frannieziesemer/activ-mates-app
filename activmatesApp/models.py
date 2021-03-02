@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
                            default='default.png')
     created_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.utcnow)
-    profile = db.relationship('Profile', backref='user', lazy=True)
+    profile = db.relationship('Profile', backref='user', lazy=True) 
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
@@ -47,6 +47,8 @@ class Profile(db.Model):
     twitter = db.Column(db.String(20), nullable=False)
     facebook = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    activity = db.relationship('Activity', backref='profile', lazy=True) 
+
 
     def __repr__(self):
         return f"Profile('{self.user_id}', '{self.first_name}', '{self.last_name}', '{self.image_file}', '{self.phone_number}', '{self.twitter}', '{self.facebook}')"
@@ -81,7 +83,7 @@ class Activity(db.Model):
                             default=datetime.utcnow)
     profile_id = db.Column(db.Integer, db.ForeignKey('profiles.id'), nullable=False)
     activity_type_id = db.Column(db.Integer, db.ForeignKey('activity_types.id'), nullable=False)
-    profile = db.relationship('Profile', backref='activity', lazy=True)
+    # profile = db.relationship('Profile', backref='activity', lazy=True) 
 
     def get_activity_location_lat(self):
         point = to_shape(self.location)
@@ -95,7 +97,7 @@ class Activity(db.Model):
         return f"Activity('{self.title}', '{self.date_posted}', '{self.location}', '{self.description}')"
     
     
-    # we need to do this because of spatial requirements and to get posts within a radius 
+    # I need to do this because of spatial requirements and to get posts within a radius 
     # this is a method to format the lat and lng. So that it can be added to the table. 
     # The method will be called in routes.py when we push the models to db 
     # https://geoalchemy-2.readthedocs.io/en/0.3/elements.html#geoalchemy2.elements.WKBElement"""

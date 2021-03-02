@@ -2,21 +2,13 @@
 
 {% block head %}
 
-<script src="{{ url_for('static', filename='javascript/map-home.js') }}"></script>
+
 
 {% endblock %}
 
 {% block body %}
-<h1>main search page</h1>
-    <div id="map-section">
-        <div id="locationField">
-            <input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
-          </div>
-            <p id="details"></p>
-          <div id="map">
-            
-          </div>
-    </div>
+<h1>user activities page</h1>
+    <h2>Activities from {{ user.username }} ({{ activities.total }})</h2>
 
     {% for activity in activities.items %}
     <div class="card" style="width: 18rem;">
@@ -24,7 +16,6 @@
             <h5 class="card-title">{{ activity.title }}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{ activity.activity_type.name }}</h6>
             <h6 class="card-subtitle mb-2 text-muted">{{ activity.profile.user.username }}</h6>
-            <a href="{{ url_for('user_activities', username=activity.profile.user.username) }}">other posts by user</a>
             <h6 class="card-subtitle mb-2 text-muted">{{ activity.address }}</h6>
             <p class="card-text">{{ activity.description}}</p>
             <p class="card-text">{{ activity.location}}</p>
@@ -38,14 +29,11 @@
         {% for page_num in activities.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
             {% if page_num %}
                 {% if activities.page == page_num %}
-                    <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+                    <a class="btn btn-info mb-4" href="{{ url_for('user_activities', username=user.username, page=page_num) }}">{{ page_num }}</a>
                 {% else %}
-                    <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+                    <a class="btn btn-info-outline mb-4" href="{{ url_for('user_activities', username=user.username, page=page_num) }}">{{ page_num }}</a>
                 {% endif %}
             {% else %}
             {% endif %}
         {% endfor %}
-    <script async
-    src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&libraries=places&callback=initMap">
-</script>
 {% endblock %}

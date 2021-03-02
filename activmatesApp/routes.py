@@ -21,7 +21,8 @@ def dict_factory(cursor, row):
 @login_required
 def home():
     profiles = Profile.query.all()
-    activities = Activity.query.all();
+    page = request.args.get('page', 1, type=int)
+    activities = Activity.query.order_by(Activity.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', 
                             title='Search', 
                             profiles=profiles, 
@@ -262,7 +263,22 @@ def delete_activity(activity_id):
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
 
-
+@app.route('/user/<string:username>')
+@login_required
+def user_activities(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    profile = Profile.query.filter_by(user=user).first_or_404()
+    activities = Activity.query.filter_by(profile=profile)\
+        .order_by(Activity.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template('user-activities.html', 
+                            title='Search', 
+                            user=user,
+                            profiles=profile, 
+                            activities=activities,
+                            map_key=app.config['GOOGLE_MAPS_API_KEY']
+                            )
 
 #JSON API route 
 # here i can set a route to create an api url 

@@ -71,11 +71,8 @@ const renderData = (center) => {
     //JSPN parse response data 
     //call place markers on map function - passing JSON response in
     addMarkersToMap(activities);
-  });
-  
+  }); 
 }
-
-
 }
 //https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/send#example_get
 const loadJSON = (url, parseJSON) => {
@@ -114,8 +111,12 @@ function addMarkersToMap(activities) {
       icon: 'http://127.0.0.1:5000/static/images/icons/run.svg',
       title: activity.description,
     });
-    markers.push(marker);
-
+    
+    marker.addListener('click', () => {
+      displayActivity(activities);
+    })
+    
+    
     //add event listener to each marker 
 
   });
@@ -129,6 +130,13 @@ function clearMarkers() {
 
 
 }
+
+function displayActivity (activities) {
+  console.log(activities)
+}
+
+
+
 
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {

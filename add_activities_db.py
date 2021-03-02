@@ -38,4 +38,8 @@ db.session.add(ping_pong)
 db.session.add(walking)
 db.session.add(swimming)
 
+
+
+
+
 db.session.commit()
