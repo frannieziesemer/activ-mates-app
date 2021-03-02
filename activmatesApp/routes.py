@@ -30,6 +30,21 @@ def home():
                             map_key=app.config['GOOGLE_MAPS_API_KEY']
                             )
 
+
+@app.route('/home/list-activities')
+@login_required
+def home_list_view():
+    profiles = Profile.query.all()
+    page = request.args.get('page', 1, type=int)
+    activities = Activity.query.order_by(Activity.date_posted.desc()).paginate(page=page, per_page=5)
+    return render_template('home-list-view.html', 
+                            title='Search', 
+                            profiles=profiles, 
+                            activities=activities,
+                            map_key=app.config['GOOGLE_MAPS_API_KEY']
+                            )
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def sign_up():
     form = RegistrationForm()
@@ -217,7 +232,7 @@ def new_activity():
                             legend='New Activity',
                             )
 
-
+home_list_view
 @app.route('/activity/<int:activity_id>')
 @login_required
 def view_activity(activity_id):

@@ -45,7 +45,11 @@ function initMap() {
       handleLocationError(false, infoWindow, map.getCenter());
     }
   });
- 
+
+  
+
+
+
 const renderData = (center) => {
 
   clearMarkers();
@@ -71,14 +75,17 @@ const renderData = (center) => {
     //JSPN parse response data 
     //call place markers on map function - passing JSON response in
     addMarkersToMap(activities);
+    console.log(activities)
   }); 
 }
 }
+
+
+
 //https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/send#example_get
 const loadJSON = (url, parseJSON) => {
   let xhr = new XMLHttpRequest();
   // 'open' the http request
-  console.log(url);
   xhr.open('GET', url, true);
   // function handles what to do when the data is loaded / handles a failed request 
   xhr.onload = function () {
@@ -99,11 +106,9 @@ const loadJSON = (url, parseJSON) => {
 
 
 function addMarkersToMap(activities) {
-  //markers need to be stored in an array so I can access and manipulate without overwriting on forEach loop 
-  markers = [];
-
+  
 //maybe it is better to use map here.. 
-  activities.forEach(activity => {
+  activities.map(activity => {
     const latLng = { lat: activity.location.lat, lng: activity.location.lng }
     const marker =  new google.maps.Marker({
       position: latLng,
@@ -111,28 +116,35 @@ function addMarkersToMap(activities) {
       icon: 'http://127.0.0.1:5000/static/images/icons/run.svg',
       title: activity.description,
     });
-    
-    marker.addListener('click', () => {
-      displayActivity(activities);
-    })
-    
-    
     //add event listener to each marker 
-
+    marker.addListener('click', () => {
+      displayActivity(activity);
+    })
+    return markers.push(marker);
   });
   //TODO add click functionality to marker - to display activity info when clicked 
 }
 
 function clearMarkers() {
   if(markers) {
-    markers.forEach(marker => marker.setMap(null));
+    markers.map(marker => marker.setMap(null));
+    console.log('markers cleared')
+  } else {
+    markers = [];
   }
-
-
 }
 
-function displayActivity (activities) {
-  console.log(activities)
+function displayActivity (activity) {
+  //when clicked i want to display information below 
+  document.getElementById('title').textContent = activity.title;
+  document.getElementById('userName').textContent = activity.user_name;
+  document.getElementById('activityType').textContent = activity.activity_type;
+  document.getElementById('address').textConent = activity.address;
+  document.getElementById('description').textContent = activity.description;
+
+  
+
+  console.log(activity);
 }
 
 
