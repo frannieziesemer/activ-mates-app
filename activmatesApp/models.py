@@ -1,6 +1,7 @@
 import enum
 from datetime import datetime
-from activmatesApp import db, login_manager
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from activmatesApp import db, login_manager, app
 from flask_login import UserMixin
 from sqlalchemy import func
 from geoalchemy2 import Geometry
@@ -30,6 +31,20 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.utcnow)
     profile = db.relationship('Profile', backref='user', lazy=True) 
+
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"

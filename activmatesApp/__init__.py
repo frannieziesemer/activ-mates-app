@@ -5,11 +5,13 @@ from sqlalchemy import event
 from sqlalchemy.sql import select, func
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_mail import Mail
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('activmatesApp.default_settings')
-app.config.from_envvar('YOURAPPLICATIONSETTNGS')
+app.config.from_envvar('APPLICATIONSETTNGS')
 app.config['SQLALCHEMY_ECHO'] = False
+
 
 
 db = SQLAlchemy(app)
@@ -27,6 +29,20 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'info'
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+
+email_user = app.config['EMAIL_USER']
+print(email_user)
+email_password = app.config['EMAIL_PASSWORD']
+print(email_password)
+
+app.config['MAIL_USERNAME'] = email_user
+app.config['MAIL_PASSWORD'] = email_password
+mail = Mail(app)
+
 
 
 from activmatesApp import routes

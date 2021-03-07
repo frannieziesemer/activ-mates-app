@@ -70,7 +70,7 @@
 									{% endif %}
 							</div>
 							<small class="text-muted ml-2">
-									<a href="#">Forgot password?</a>
+									<a href="{{ url_for('reset_request') }}">Forgot password?</a>
 							</small>
 							<div class="form-check">
 									{{ form.remember(class="form-check-input")}}

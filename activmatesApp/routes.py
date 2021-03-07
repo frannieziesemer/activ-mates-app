@@ -4,12 +4,15 @@ import sqlite3
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort, jsonify
 from sys import stderr
-from activmatesApp import app, db, bcrypt
-from activmatesApp.forms import RegistrationForm, ProfileForm, LoginForm, UpdateAccountForm, CreateActivityForm
+from activmatesApp import app, db, bcrypt, mail
+from activmatesApp.forms import (RegistrationForm, ProfileForm, LoginForm,
+                                UpdateAccountForm, CreateActivityForm,
+                                RequestPasswordResetForm, ResetPasswordForm)
 from activmatesApp.models import User, Profile, Activity, ActivityType
 from flask_login import login_user, current_user, logout_user, login_required
+from flask_mail import Message
 
-#creates a dictionary structure 
+#creates a dictionary structure
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
@@ -23,9 +26,9 @@ def home():
     profiles = Profile.query.all()
     page = request.args.get('page', 1, type=int)
     activities = Activity.query.order_by(Activity.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('home.html', 
-                            title='Search', 
-                            profiles=profiles, 
+    return render_template('home.html',
+                            title='Search',
+                            profiles=profiles,
                             activities=activities,
                             map_key=app.config['GOOGLE_MAPS_API_KEY']
                             )
@@ -37,9 +40,9 @@ def home_list_view():
     profiles = Profile.query.all()
     page = request.args.get('page', 1, type=int)
     activities = Activity.query.order_by(Activity.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('home-list-view.html', 
-                            title='Search', 
-                            profiles=profiles, 
+    return render_template('home-list-view.html',
+                            title='Search',
+                            profiles=profiles,
                             activities=activities,
                             map_key=app.config['GOOGLE_MAPS_API_KEY']
                             )
@@ -64,6 +67,8 @@ def sign_up():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = LoginForm()
     error = None
     if form.validate_on_submit():
@@ -94,7 +99,7 @@ def account_profile():
     if profile_data:
         for item in profile_data:
             profile_image = item.image_file
-    else: 
+    else:
         profile_image='default.jpg'
     image_file = url_for('static', filename='images/profile-pics/' + profile_image)
     return render_template('account-profile.html',
@@ -108,13 +113,13 @@ def save_picture(form_picture):
         _, f_ext = os.path.splitext(form_picture.filename)   # - returns  file extension
         picture_filename = random_hex + f_ext    #- changes filename to a hex
         picture_path = os.path.join(app.root_path, 'static/images/profile-pics', picture_filename) #- creates path to where we want to save the file
-        
+
         #resize image
         output_size = (125, 125)
         i = Image.open(form_picture)
         i.thumbnail(output_size)
         i.save(picture_path)
-        
+
         return picture_filename
 
 
@@ -148,7 +153,7 @@ def edit_profile():
                 display_profile_picture = item.image_file
     #update database info
     if form.validate_on_submit():
-        #check if new picture 
+        #check if new picture
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             for item in profile_data:
@@ -159,7 +164,7 @@ def edit_profile():
             item.phone_number=form.phone_number.data
             item.twitter=form.twitter.data
             item.facebook=form.facebook.data
-            
+
         db.session.commit()
         flash(
             f'profile updated!', 'success')
@@ -172,7 +177,7 @@ def edit_profile():
             form.last_name.data =  item.last_name
             form.phone_number.data = item.phone_number
             form.twitter.data = item.twitter
-            form.facebook.data = item.facebook    
+            form.facebook.data = item.facebook
     image_file = url_for('static', filename='images/profile-pics/' + display_profile_picture)
     return render_template('edit-profile.html',
                             form=form,
@@ -212,7 +217,7 @@ def new_activity():
     form.activity_type.choices = [(item.id, item.name) for item in ActivityType.query.all()]
     if form.validate_on_submit():
         activity = Activity(
-            title=form.title.data, 
+            title=form.title.data,
             description=form.description.data,
             address=form.address.data,
             location=Activity.point_representation(form.lat.data, form.lng.data),
@@ -223,8 +228,8 @@ def new_activity():
         db.session.commit()
         flash(
             f'new activity posted!', 'success')
-        return redirect(url_for('home')) 
-    return render_template('new-activity.html', 
+        return redirect(url_for('home'))
+    return render_template('new-activity.html',
                             title='New Activity',
                             form=form,
                             profile=profile,
@@ -237,15 +242,15 @@ home_list_view
 @login_required
 def view_activity(activity_id):
     activity = Activity.query.get_or_404(activity_id)
-    return render_template('view-activity.html', 
-                            title=activity.title, 
+    return render_template('view-activity.html',
+                            title=activity.title,
                             activity=activity)
 
 @app.route('/activity/<int:activity_id>/update', methods=['GET', 'POST'])
 @login_required
 def update_activity(activity_id):
     activity = Activity.query.get_or_404(activity_id)
-    #checks that only the owner of post can update this 
+    #checks that only the owner of post can update this
     if activity.profile.id != current_user.profile[0].id:
         abort(403)
     form = CreateActivityForm()
@@ -261,7 +266,7 @@ def update_activity(activity_id):
         form.title.data = activity.title
         form.description.data = activity.description
         form.street_address.data = activity.street_address
-    return render_template('new-activity.html', 
+    return render_template('new-activity.html',
                             title='Update Activity',
                             form=form,
                             legend='Update Post',
@@ -287,32 +292,75 @@ def user_activities(username):
     activities = Activity.query.filter_by(profile=profile)\
         .order_by(Activity.date_posted.desc())\
         .paginate(page=page, per_page=5)
-    return render_template('user-activities.html', 
-                            title='Search', 
+    return render_template('user-activities.html',
+                            title='Search',
                             user=user,
-                            profiles=profile, 
+                            profiles=profile,
                             activities=activities,
                             map_key=app.config['GOOGLE_MAPS_API_KEY']
                             )
 
-#JSON API route 
-# here i can set a route to create an api url 
-# within the function i will create a dictionary using the db data and return this dictionary as json (jsonify) 
+
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request', 
+                sender='noreply@activmates.com', 
+                recipients=[user.email])
+    msg.body = f'''To reset your password, visit the following link:
+    {url_for('reset_token', token=token, _external=True)}
+
+If you did not make this request, then simply ignore this email and no changes will be made.
+''' 
+    mail.send(msg)
+
+@app.route('/reset-password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RequestPasswordResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash('email has been sent with instructions to reset your password', 'info')
+        return redirect(url_for('login'))
+    return render_template('reset-password-request.html', title='Reset Password', form=form)
+
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning');
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        # alert message
+        flash(
+            f'Password changed, you are now able to login!', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_token.html', title='Reset Password', form=form)
+
+
+#JSON API route
+# here i can set a route to create an api url
+# within the function i will create a dictionary using the db data and return this dictionary as json (jsonify)
 
 @app.route('/api/get_activities')
 def api_all():
-   # here the lat, lng, and radius is called from the API url created in js file  
+   # here the lat, lng, and radius is called from the API url created in js file
     lat = float(request.args.get('lat'))
     lng = float(request.args.get('lng'))
     radius = int(request.args.get('radius'))
  #explanation of request.args.get():
  # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
- 
+
 
     activites = Activity.get_activities_within_radius(lat=lat, lng=lng, radius=radius)
-    # activites = Activity.query.all()
     output = []
     for item in activites:
         output.append(item.to_dict())
     return jsonify(output)
-  
