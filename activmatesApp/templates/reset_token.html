@@ -1,49 +1,34 @@
-{% extends 'layout.html' %}
-
-{% block head %}
-
-
-{% endblock %}
-
-{% block body %}
+{% extends 'layout.html' %} {% block head %} {% endblock %} {% block body %}
 <h1>{{ title }}</h1>
-
 
 <form action="" method="POST" id="login-form">
   {{ form.hidden_tag() }}
   <fieldset class="form-control d-grid gap-3">
-      <legend class="border-bottom">
-          Reset Password
-      </legend>
-      <div class="form-group password">
-          {% if form.password.errors %}
-          {{ form.password(class="form-control-label is-invalid", placeholder="password") }}
-          <div class="invalid-feedback">
-              {% for error in form.password.errors %}
-              <span>{{ error }}</span>
-              {% endfor %}
-          </div>
-          {% else %}
-          {{ form.password(class="form-control-label", placeholder="password") }}
-
-          {% endif %}
+    <legend class="border-bottom">Reset Password</legend>
+    <div class="form-group password">
+      {% if form.password.errors %} {{ form.password(class="form-control-label
+      is-invalid", placeholder="password") }}
+      <div class="invalid-feedback">
+        {% for error in form.password.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
       </div>
-      <div class="form-group confirm_password">
-        {% if form.confirm_password.errors %}
-        {{ form.confirm_password(class="form-control-label is-invalid", placeholder="confirm password") }}
-        <div class="invalid-feedback">
-            {% for error in form.confirm_password.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
-        </div>
-        {% else %}
-        {{ form.confirm_password(class="form-control-label", placeholder="confirm password") }}
-
-        {% endif %}
+      {% else %} {{ form.password(class="form-control-label",
+      placeholder="password") }} {% endif %}
     </div>
-  <div class="form-group">
-      {{ form.submit(class="btn btn-outline-info")}}
-  </div>
+    <div class="form-group confirm_password">
+      {% if form.confirm_password.errors %} {{
+      form.confirm_password(class="form-control-label is-invalid",
+      placeholder="confirm password") }}
+      <div class="invalid-feedback">
+        {% for error in form.confirm_password.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% else %} {{ form.confirm_password(class="form-control-label",
+      placeholder="confirm password") }} {% endif %}
+    </div>
+    <div class="form-group">{{ form.submit(class="btn btn-outline-info")}}</div>
   </fieldset>
 </form>
 {% endblock %}

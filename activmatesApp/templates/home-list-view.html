@@ -1,41 +1,50 @@
-{% extends 'layout.html' %}
-
-{% block head %}
+{% extends 'layout.html' %} {% block head %}
 
 <script src="{{ url_for('static', filename='javascript/map-home.js') }}"></script>
 
-{% endblock %}
-
-{% block body %}
+{% endblock %} {% block body %}
 <h1>main search page</h1>
 <a href="{{ url_for('home_list_view') }}"> map view </a>
-  <div class="content-section list-activities">  
-    {% for activity in activities.items %}
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">{{ activity.title }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ activity.activity_type.name }}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">{{ activity.profile.user.username }}</h6>
-            <a href="{{ url_for('user_activities', username=activity.profile.user.username) }}">other posts by user</a>
-            <h6 class="card-subtitle mb-2 text-muted">{{ activity.address }}</h6>
-            <p class="card-text">{{ activity.description}}</p>
-            <p class="card-text">{{ activity.location}}</p>
+<div class="content-section list-activities">
+  {% for activity in activities.items %}
+  <div class="card" style="width: 18rem">
+    <div class="card-body">
+      <h5 class="card-title">{{ activity.title }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">
+        {{ activity.activity_type.name }}
+      </h6>
+      <h6 class="card-subtitle mb-2 text-muted">
+        {{ activity.profile.user.username }}
+      </h6>
+      <a
+        href="{{ url_for('user_activities', username=activity.profile.user.username) }}"
+        >other posts by user</a
+      >
+      <h6 class="card-subtitle mb-2 text-muted">{{ activity.address }}</h6>
+      <p class="card-text">{{ activity.description}}</p>
+      <p class="card-text">{{ activity.location}}</p>
 
-            <a href="{{ url_for('view_activity', activity_id=activity.id) }}" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
-        </div>
-        </div>
-            
-        {% endfor %}
-        {% for page_num in activities.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-            {% if page_num %}
-                {% if activities.page == page_num %}
-                    <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
-                {% else %}
-                    <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
-                {% endif %}
-            {% else %}
-            {% endif %}
-        {% endfor %}
-      </div>
+      <a
+        href="{{ url_for('view_activity', activity_id=activity.id) }}"
+        class="card-link"
+        >Card link</a
+      >
+      <a href="#" class="card-link">Another link</a>
+    </div>
+  </div>
+
+  {% endfor %} {% for page_num in activities.iter_pages(left_edge=1,
+  right_edge=1, left_current=1, right_current=2) %} {% if page_num %} {% if
+  activities.page == page_num %}
+  <a
+    class="btn btn-outline-info mb-4"
+    href="{{ url_for('home', page=page_num) }}"
+    >{{ page_num }}</a
+  >
+  {% else %}
+  <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}"
+    >{{ page_num }}</a
+  >
+  {% endif %} {% else %} {% endif %} {% endfor %}
+</div>
 {% endblock %}

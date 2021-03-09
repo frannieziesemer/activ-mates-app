@@ -1,51 +1,41 @@
-{% extends 'layout.html' %}
-
-{% block head %}
-
-{% endblock %}
-
-{% block body %}
+{% extends 'layout.html' %} {% block head %} {% endblock %} {% block body %}
 <h1>Account</h1>
 <div class="row content-section">
-<div class="col">
-    <a class="nav-link" href="{{ url_for('account_profile') }}"><button class="btn info">back</button> </a>
+  <div class="col">
+    <a class="nav-link" href="{{ url_for('account_profile') }}"
+      ><button class="btn info">back</button>
+    </a>
     <form action="" method="POST">
-        {{ form.hidden_tag() }}
-        <fieldset class="form-control d-grid gap-3">
-            <legend>
-                Account Info
-            </legend>
-            <div class="form-group username">
-                {{ form.username.label(class="form-control-label") }}
-                {% if form.username.errors %}
-                    {{ form.username(class="form-control-label is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.username.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                        {% else %}
-                        {{ form.username(class="form-control-label") }}
-                {% endif %}
-            </div>
-            <div class="form-group email">
-                {{ form.email.label(class="form-control-label") }}
-                {% if form.email.errors %}
-                {{ form.email(class="form-control-label is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.email.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                {{ form.email(class="form-control-label") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
-                 {{ form.submit(class="btn btn-outline-info")}}
-            </div>
-        </fieldset>
+      {{ form.hidden_tag() }}
+      <fieldset class="form-control d-grid gap-3">
+        <legend>Account Info</legend>
+        <div class="form-group username">
+          {{ form.username.label(class="form-control-label") }} {% if
+          form.username.errors %} {{ form.username(class="form-control-label
+          is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.username.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.username(class="form-control-label") }} {% endif %}
+        </div>
+        <div class="form-group email">
+          {{ form.email.label(class="form-control-label") }} {% if
+          form.email.errors %} {{ form.email(class="form-control-label
+          is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.email.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.email(class="form-control-label") }} {% endif %}
+        </div>
+        <div class="form-group">
+          {{ form.submit(class="btn btn-outline-info")}}
+        </div>
+      </fieldset>
     </form>
-</div>
+  </div>
 </div>
 {% endblock %}

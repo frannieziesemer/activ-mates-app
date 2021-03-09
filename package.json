@@ -1,0 +1,25 @@
+{
+  "name": "activ-mates",
+  "version": "1.0.0",
+  "description": "this app is a project completed with FrauenLoop end-2-end web developlemt cohort Jan-March 2021",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frannieziesemer/activ-mates-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frannieziesemer/activ-mates-app/issues"
+  },
+  "homepage": "https://github.com/frannieziesemer/activ-mates-app#readme",
+  "devDependencies": {
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-react": "^7.22.0",
+    "prettier": "2.2.1"
+  }
+}

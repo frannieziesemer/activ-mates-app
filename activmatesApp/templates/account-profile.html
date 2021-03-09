@@ -1,38 +1,32 @@
-{% extends 'layout.html' %}
-
-
-
-{% block body %}
+{% extends 'layout.html' %} {% block body %}
 <div class="row content-section">
   <div class="col">
-		<h2>Account Login Details</h2>
-		<div id="user-card">
-			<h4>Username: {{ current_user.username }}</h4>
-			<h4>Email: {{ current_user.email }} </h4>
-			<a href="{{ url_for('update_account') }}">Update account</a>
-			
-	</div>
-	</div>
+    <h2>Account Login Details</h2>
+    <div id="user-card">
+      <h4>Username: {{ current_user.username }}</h4>
+      <h4>Email: {{ current_user.email }}</h4>
+      <a href="{{ url_for('update_account') }}">Update account</a>
+    </div>
+  </div>
   <div class="col">
-		<h2>Profile</h2>
-		<div id="user-card">
-			<img src=" {{ image_file }} " alt="">
-			{% for item in profile_data %}
-			<h4>{{ item.first_name }} {{ item.last_name }}</h4>
-			<p>{{ item.street_address }}</p>
-			<p>{{ item.city }}</p>
-			<p>{{ item.postcode }}</p>
-			<p>{{ item.phone_number }}</p>
-			<p>{{ item.facebook }}</p>
-			<p>{{ item.twitter }}</p>
-			{% endfor %}
-	</div>
-	{% if profile_data %}
-		<a href="{{ url_for('edit_profile') }}">Update Profile</a>
-	{% else %}
-		<a href="{{ url_for('create_profile') }}">Create profile</a>
-	{% endif %}
-	
-	</div>  
+    <h2>Profile</h2>
+    <div id="user-card">
+      <img src=" {{ image_file }} " alt="" />
+      {% for item in profile_data %}
+      <h4>{{ item.first_name }} {{ item.last_name }}</h4>
+      <p>{{ item.street_address }}</p>
+      <p>{{ item.city }}</p>
+      <p>{{ item.postcode }}</p>
+      <p>{{ item.phone_number }}</p>
+      <p>{{ item.facebook }}</p>
+      <p>{{ item.twitter }}</p>
+      {% endfor %}
+    </div>
+    {% if profile_data %}
+    <a href="{{ url_for('edit_profile') }}">Update Profile</a>
+    {% else %}
+    <a href="{{ url_for('create_profile') }}">Create profile</a>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

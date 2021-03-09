@@ -1,97 +1,93 @@
-{% extends 'layout.html' %}
-
-{% block head %}
+{% extends 'layout.html' %} {% block head %}
 
 <script src="{{ url_for('static', filename='javascript/map-address-field.js') }}"></script>
 
-{% endblock %}
-
-{% block body %}
+{% endblock %} {% block body %}
 <h1>new activity page</h1>
 <div class="row">
-	<div class="col mt-3">    
-		{{ profile }}
-	
-      {{ current_user.id }}
+  <div class="col mt-3">
+    {{ profile }} {{ current_user.id }}
 
-		<form action="" method="POST">
-			{{ form.hidden_tag() }}
-			<fieldset class="form-control d-grid gap-3">
-					<legend>
-							{{ legend }}
-					</legend>
-          <div class="form-group activity-title">
-            {{ form.title.label() }}
+    <form action="" method="POST">
+      {{ form.hidden_tag() }}
+      <fieldset class="form-control d-grid gap-3">
+        <legend>{{ legend }}</legend>
+        <div class="form-group activity-title">
+          {{ form.title.label() }} {% if form.title.errors %} {{
+          form.title(class="form-control-label is-invalid", placeholder="title")
+          }}
+          <div class="invalid-feedback">
+            {% for error in form.title.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.title(class="form-control-label",
+          placeholder="title") }} {% endif %}
+        </div>
+        <div class="form-group activity-type">
+          {{ form.activity_type.label() }} {% if form.activity_type.errors %} {{
+          form.activity_type(class="form-control-label is-invalid",
+          placeholder="activity_type") }}
+          <div class="invalid-feedback">
+            {% for error in form.activity_type.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.activity_type(class="form-control-label",
+          placeholder="Type") }} {% endif %}
+        </div>
+        <div class="form-group address">
+          {{ form.address.label(class="form-control-label") }} {% if
+          form.address.errors %}
+          <div id="addressField">
+            <input
+              id="autocomplete"
+              placeholder="Enter your address"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <p id="details"></p>
+          <div class="invalid-feedback">
+            {% for error in form.address.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div id="addressField">
+            <input
+              id="autocomplete"
+              placeholder="Enter your address"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <p id="details"></p>
 
-							{% if form.title.errors %}
-							{{ form.title(class="form-control-label is-invalid", placeholder="title") }}
-							<div class="invalid-feedback">
-								{% for error in form.title.errors %}
-								<span>{{ error }}</span>
-								{% endfor %}
-							</div>
-							{% else %}
-							{{ form.title(class="form-control-label", placeholder="title") }}
-							{% endif %}
-					</div>
-					<div class="form-group activity-type">
-            {{ form.activity_type.label() }}
+          {% endif %}
+        </div>
+        <div class="form-group description">
+          {{ form.description.label() }} {% if form.description.errors %} {{
+          form.description(class="form-control-label is-invalid",
+          placeholder="description") }}
+          <div class="invalid-feedback">
+            {% for error in form.description.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.description(class="form-control-label",
+          placeholder="description") }} {% endif %}
+        </div>
 
-							{% if form.activity_type.errors %}
-							{{ form.activity_type(class="form-control-label is-invalid", placeholder="activity_type") }}
-							<div class="invalid-feedback">
-								{% for error in form.activity_type.errors %}
-								<span>{{ error }}</span>
-								{% endfor %}
-							</div>
-							{% else %}
-							{{ form.activity_type(class="form-control-label", placeholder="Type") }}
-							{% endif %}
-					</div>
-					<div class="form-group address">
-						{{ form.address.label(class="form-control-label") }}
-
-						{% if form.address.errors %}
-						<div id="addressField">
-								<input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
-							</div>
-								<p id="details"></p>
-						<div class="invalid-feedback">
-										{% for error in form.address.errors %}
-										<span>{{ error }}</span>
-										{% endfor %}
-						</div>
-						{% else %}
-						<div id="addressField">
-								<input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
-							</div>
-								<p id="details"></p>
-
-						{% endif %}
-		</div>
-					<div class="form-group description">
-            {{ form.description.label() }}
-							{% if form.description.errors %}
-							{{ form.description(class="form-control-label is-invalid", placeholder="description") }}
-							<div class="invalid-feedback">
-									{% for error in form.description.errors %}
-									<span>{{ error }}</span>
-									{% endfor %}
-							</div>
-							{% else %}
-							{{ form.description(class="form-control-label", placeholder="description") }}
-
-							{% endif %}
-					</div>
-				
-					<div class="form-group">
-							{{ form.submit(class="btn btn-outline-info")}}
-					</div>
-			</fieldset>
-		</form>
+        <div class="form-group">
+          {{ form.submit(class="btn btn-outline-info")}}
+        </div>
+      </fieldset>
+    </form>
   </div>
 </div>
-<script async
-        src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initAutocomplete">
-</script>
+<script
+  async
+  src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initAutocomplete"
+></script>
 {% endblock %}

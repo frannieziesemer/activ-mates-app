@@ -1,35 +1,34 @@
-{% extends 'layout.html' %}
+{% extends 'layout.html' %} {% block head %}
 
-{% block head %}
+<script src="{{ url_for('static', filename='javascript/map-home.js') }}"></script>
 
-<script src="{{ url_for('static', filename='javascript/map-home.js') }}"> </script>
-
-{% endblock %}
-
-{% block body %}
+{% endblock %} {% block body %}
 <h1>main search page</h1>
 <a href="{{ url_for('home_list_view') }}">list view </a>
-    <div id="map-section">
-        <div id="locationField">
-            <input id="autocomplete" placeholder="Enter your address"  type="text" class="form-control">
-          </div>
-            <p id="details"></p>
-          <div id="map">
-            
-          </div>
-    </div>
-    <div class="content-section">
-        <div class="activity-card">
-            <h2 id="title"></h2>
-            <h6 id="userName"></h6>
-            <h3 id="activityType"></h3>
-            <p id="address"></p>
-            <p id="description"></p>
-        </div>
-    </div>
+<div id="map-section">
+  <div id="locationField">
+    <input
+      id="autocomplete"
+      placeholder="Enter your address"
+      type="text"
+      class="form-control"
+    />
+  </div>
+  <p id="details"></p>
+  <div id="map"></div>
+</div>
+<div class="content-section">
+  <div class="activity-card">
+    <h2 id="title"></h2>
+    <h6 id="userName"></h6>
+    <h3 id="activityType"></h3>
+    <p id="address"></p>
+    <p id="description"></p>
+  </div>
+</div>
 
- 
-    <script async
-    src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&libraries=places&callback=initMap">
-</script>
+<script
+  async
+  src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&libraries=places&callback=initMap"
+></script>
 {% endblock %}
