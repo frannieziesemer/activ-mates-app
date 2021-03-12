@@ -4,7 +4,7 @@
 
 {% endblock %} {% block body %}
 <h1>main search page</h1>
-<a href="{{ url_for('home_list_view') }}"> map view </a>
+<a href="{{ url_for('main.home_list_view') }}"> map view </a>
 <div class="content-section list-activities">
   {% for activity in activities.items %}
   <div class="card" style="width: 18rem">
@@ -17,7 +17,7 @@
         {{ activity.profile.user.username }}
       </h6>
       <a
-        href="{{ url_for('user_activities', username=activity.profile.user.username) }}"
+        href="{{ url_for('posts.user_activities', username=activity.profile.user.username) }}"
         >other posts by user</a
       >
       <h6 class="card-subtitle mb-2 text-muted">{{ activity.address }}</h6>
@@ -25,7 +25,7 @@
       <p class="card-text">{{ activity.location}}</p>
 
       <a
-        href="{{ url_for('view_activity', activity_id=activity.id) }}"
+        href="{{ url_for('posts.view_activity', activity_id=activity.id) }}"
         class="card-link"
         >Card link</a
       >
@@ -38,11 +38,11 @@
   activities.page == page_num %}
   <a
     class="btn btn-outline-info mb-4"
-    href="{{ url_for('home', page=page_num) }}"
+    href="{{ url_for('main.home', page=page_num) }}"
     >{{ page_num }}</a
   >
   {% else %}
-  <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}"
+  <a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}"
     >{{ page_num }}</a
   >
   {% endif %} {% else %} {% endif %} {% endfor %}

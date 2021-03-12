@@ -29,7 +29,7 @@
       <nav id="navbar" class="navbar navbar-expand-md navbar-light">
         <div class="container-fluid">
           <!-- can i put and if signed in href = search page ???? -->
-          <a class="navbar-brand" href="{{ url_for('home') }}">ActivMates</a>
+          <a class="navbar-brand" href="{{ url_for('main.home') }}">ActivMates</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -48,27 +48,27 @@
             <ul class="navbar-nav">
               {% if current_user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('home') }}">Search</a>
+                <a class="nav-link" href="{{ url_for('main.home') }}">Search</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('new_activity') }}"
+                <a class="nav-link" href="{{ url_for('posts.new_activity') }}"
                   >Post an activity</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('account_profile') }}"
+                <a class="nav-link" href="{{ url_for('profiles.account_profile') }}"
                   >Profile</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                <a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a>
               </li>
               {% else %}
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('sign_up') }}">Sign Up</a>
+                <a class="nav-link" href="{{ url_for('users.sign_up') }}">Sign Up</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                <a class="nav-link" href="{{ url_for('users.login') }}">Login</a>
               </li>
               {% endif %}
             </ul>

@@ -16,12 +16,12 @@
 					<p class="body">
 						Sign up today to connect with someone in your area
 					</p>
-					<a href="{{ url_for('sign_up') }}" >
+					<a href="{{ url_for('users.sign_up') }}" >
 						<button id="sign-up" class="primary">
 							Sign Up
 						</button>
 					</a>
-					<a href="{{ url_for('login') }}" >
+					<a href="{{ url_for('users.login') }}" >
 						<button id="login" class="secondary">
 								Login
 						</button>
@@ -70,7 +70,7 @@
 									{% endif %}
 							</div>
 							<small class="text-muted ml-2">
-									<a href="{{ url_for('reset_request') }}">Forgot password?</a>
+									<a href="{{ url_for('users.reset_request') }}">Forgot password?</a>
 							</small>
 							<div class="form-check">
 									{{ form.remember(class="form-check-input")}}
@@ -84,7 +84,7 @@
 			</form>
 			<div class="pt-3">
 					<small class="text-muted">
-							Don't have an account yet? <a class="ml-2" href="{{ url_for('sign_up')}}">Sign In</a>
+							Don't have an account yet? <a class="ml-2" href="{{ url_for('users.sign_up')}}">Sign In</a>
 					</small>
 			</div>
 			</div>

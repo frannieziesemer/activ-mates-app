@@ -5,7 +5,7 @@
     <div id="user-card">
       <h4>Username: {{ current_user.username }}</h4>
       <h4>Email: {{ current_user.email }}</h4>
-      <a href="{{ url_for('update_account') }}">Update account</a>
+      <a href="{{ url_for('main.update_account') }}">Update account</a>
     </div>
   </div>
   <div class="col">
@@ -23,9 +23,9 @@
       {% endfor %}
     </div>
     {% if profile_data %}
-    <a href="{{ url_for('edit_profile') }}">Update Profile</a>
+    <a href="{{ url_for('profile.edit_profile') }}">Update Profile</a>
     {% else %}
-    <a href="{{ url_for('create_profile') }}">Create profile</a>
+    <a href="{{ url_for('profile.create_profile') }}">Create profile</a>
     {% endif %}
   </div>
 </div>

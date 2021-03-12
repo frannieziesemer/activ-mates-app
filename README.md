@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-##ActivMates - an app to connect through sports
-=======
 ## ActivMates - an app to connect through sports 
->>>>>>> f8557318927d335bb73cc839d7fedb457a92bd84
 
 this app is a project completed with FrauenLoop end-2-end web developlemt cohort Jan-March 2021
 
