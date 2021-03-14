@@ -23,8 +23,8 @@ function initMap() {
 
   google.maps.event.addListener(map, "idle", function () {
     let center = map.getCenter();
-    //let zoom = map.getZoom();
-    renderData(center);
+    let zoom = map.getZoom();
+    renderData(center, zoom);
   });
   // event listene for pan to current location
   locationButton.addEventListener("click", () => {
@@ -51,14 +51,37 @@ function initMap() {
     }
   });
 
-  const renderData = (center) => {
-    clearMarkers();
+  const zoomRadius = [
+    800000, // zoom: 0
+    800000, // zoom: 1
+    800000, // zoom: 2
+    800000, // zoom: 3
+    800000, // zoom: 4
+    800000, // zoom: 5
+    800000, // zoom: 6
+    400000, // zoom: 7
+    200000, // zoom: 8
+    100000, // zoom: 9
+    51000, // zoom: 10
+    26000, // zoom: 11
+    13000, // zoom: 12
+    6500, // zoom: 13
+    3500, // zoom: 14
+    1800, // zoom: 15
+    900, // zoom: 16
+    430, // zoom: 17
+    210, // zoom: 18
+    120, // zoom: 19
+  ];
 
+  const renderData = (center, zoom) => {
+    clearMarkers();
     const params = {
       lat: center.lat(),
       lng: center.lng(),
-      radius: 6000,
+      radius: zoomRadius[zoom],
     };
+    console.log(params.radius);
     //add parameters to url
     const url = new URL("http://127.0.0.1:5000/api/get_activities");
     const searchParams = url.searchParams;
@@ -78,7 +101,6 @@ function initMap() {
       //JSPN parse response data
       //call place markers on map function - passing JSON response in
       addMarkersToMap(activities);
-      console.log(activities);
     });
   };
 }
@@ -95,7 +117,7 @@ const loadJSON = (url, parseJSON) => {
       const response = xhr.responseText;
       parseJSON(response);
     } else {
-      console.log("request failed");
+      console.info("request failed");
       //TODO: a more meaningful response on failed data
     }
   };
@@ -119,7 +141,7 @@ function addMarkersToMap(activities) {
     });
     return markers.push(marker);
   });
-  //TODO add click functionality to marker - to display activity info when clicked
+  console.log(activities);
 }
 
 function clearMarkers() {
@@ -138,8 +160,6 @@ function displayActivity(activity) {
   document.getElementById("activityType").textContent = activity.activity_type;
   document.getElementById("address").textConent = activity.address;
   document.getElementById("description").textContent = activity.description;
-
-  console.log(activity);
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
