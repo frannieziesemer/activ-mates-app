@@ -1,4 +1,12 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+    current_app,
+)
 from flask_login import login_user, current_user, logout_user, login_required
 from activmatesApp import bcrypt, db
 from activmatesApp.models import Activity, Profile, User
@@ -102,7 +110,7 @@ def user_activities(username):
         user=user,
         profiles=profile,
         activities=activities,
-        map_key=users.config["GOOGLE_MAPS_API_KEY"],
+        map_key=current_app.config["GOOGLE_MAPS_API_KEY"],
     )
 
 

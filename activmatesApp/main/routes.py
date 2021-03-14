@@ -1,5 +1,4 @@
-from flask import Blueprint, render_template, request
-from activmatesApp import app
+from flask import Blueprint, render_template, request, current_app
 from activmatesApp.models import Activity, Profile
 from flask_login import login_required
 
@@ -22,7 +21,7 @@ def home():
         title="Search",
         profiles=profiles,
         activities=activities,
-        map_key=app.config["GOOGLE_MAPS_API_KEY"],
+        map_key=current_app.config["GOOGLE_MAPS_API_KEY"],
     )
 
 
@@ -39,5 +38,5 @@ def home_list_view():
         title="Search",
         profiles=profiles,
         activities=activities,
-        map_key=app.config["GOOGLE_MAPS_API_KEY"],
+        map_key=current_app.config["GOOGLE_MAPS_API_KEY"],
     )

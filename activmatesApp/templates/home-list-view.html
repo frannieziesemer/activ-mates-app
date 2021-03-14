@@ -17,7 +17,7 @@
         {{ activity.profile.user.username }}
       </h6>
       <a
-        href="{{ url_for('posts.user_activities', username=activity.profile.user.username) }}"
+        href="{{ url_for('users.user_activities', username=activity.profile.user.username) }}"
         >other posts by user</a
       >
       <h6 class="card-subtitle mb-2 text-muted">{{ activity.address }}</h6>

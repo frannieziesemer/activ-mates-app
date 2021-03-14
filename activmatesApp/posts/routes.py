@@ -1,5 +1,14 @@
-from flask import abort, flash, redirect, render_template, request, url_for, Blueprint
-from activmatesApp import app, db
+from flask import (
+    abort,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+    Blueprint,
+    current_app,
+)
+from activmatesApp import db
 from activmatesApp.posts.forms import CreateActivityForm
 from activmatesApp.models import Activity, ActivityType
 from flask_login import current_user, login_required
@@ -15,9 +24,9 @@ def new_activity():
     for item in profile:
         profile_id = item.id
     form = CreateActivityForm()
-    form.activity_type.choices = [
-        (item.id, item.name) for item in ActivityType.query.all()
-    ]
+    # set choice values on dropdown form field
+    form.activity_type.choices = [(t.id, t.name) for t in ActivityType.query.all()]
+    print(profile_id)
     if form.validate_on_submit():
         activity = Activity(
             title=form.title.data,
@@ -36,7 +45,7 @@ def new_activity():
         title="New Activity",
         form=form,
         profile=profile,
-        map_key=app.config["GOOGLE_MAPS_API_KEY"],
+        map_key=current_app.config["GOOGLE_MAPS_API_KEY"],
         legend="New Activity",
     )
 
@@ -57,27 +66,31 @@ def update_activity(activity_id):
     # checks that only the owner of post can update this
     if activity.profile.id != current_user.profile[0].id:
         abort(403)
+    print(type(activity))
     form = CreateActivityForm()
+    form.activity_type.choices = [(t.id, t.name) for t in ActivityType.query.all()]
     if form.validate_on_submit():
-        activity.title = form.title.data
-        activity.description = form.description.data
-        activity.street_address = form.street_address.data
-        activity.location = (
-            Activity.point_representation(form.lat.data, form.lng.data),
-        )
+        activity.title=form.title.data
+        activity.description=form.description.data
+        activity.address=form.address.data
+        activity.location=Activity.point_representation(form.lat.data, form.lng.data)
+        activity.activity_type_id=form.activity_type.data
         db.session.commit()
         flash("Your post has been updated!", "success")
         return redirect(url_for("posts.view_activity", activity_id=activity.id))
     elif request.method == "GET":
         form.title.data = activity.title
         form.description.data = activity.description
-        form.street_address.data = activity.street_address
+        form.address.data = activity.address
+        form.activity_type.data = activity.activity_type_id
+
     return render_template(
         "new-activity.html",
         title="Update Activity",
         form=form,
         legend="Update Post",
         activity=activity,
+        map_key=current_app.config["GOOGLE_MAPS_API_KEY"],
     )
 
 
@@ -87,7 +100,7 @@ def delete_activity(activity_id):
     activity = Activity.query.get_or_404(activity_id)
     if activity.profile.id != current_user.profile[0].id:
         abort(403)
-    db.session.delete(post)
+    db.session.delete(activity)
     db.session.commit()
     flash("Your post has been deleted!", "success")
     return redirect(url_for("main.home"))

@@ -1,8 +1,8 @@
 import secrets
 import os
 from PIL import Image
-from flask import url_for
-from activmatesApp import app, mail
+from flask import url_for, current_app
+from activmatesApp import mail
 from flask_mail import Message
 
 
@@ -11,7 +11,7 @@ def save_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)  # - returns  file extension
     picture_filename = random_hex + f_ext  # - changes filename to a hex
     picture_path = os.path.join(
-        app.root_path, "static/images/profile-pics", picture_filename
+        current_app.root_path, "static/images/profile-pics", picture_filename
     )  # - creates path to where we want to save the file
 
     # resize image

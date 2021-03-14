@@ -1,5 +1,6 @@
+import os
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from activmatesApp import app, db
+from activmatesApp import db
 from activmatesApp.profiles.forms import ProfileForm
 from activmatesApp.models import Profile
 from flask_login import current_user, login_required
@@ -94,5 +95,5 @@ def edit_profile():
         form=form,
         image_file=image_file,
         title="Update profile",
-        map_key=app.config["GOOGLE_MAPS_API_KEY"],
+        map_key=os.environ.get(""),
     )
