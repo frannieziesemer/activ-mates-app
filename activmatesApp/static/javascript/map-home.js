@@ -101,29 +101,21 @@ const renderData = (center, zoom) => {
 
   const newUrl = url.toString();
 
-  loadJSON(newUrl, function parseJSON(response) {
-    const activities = JSON.parse(response);
-    addMarkersToMap(activities);
-  });
+  loadJSON(newUrl);
 };
 
-const loadJSON = (url, parseJSON) => {
-  let xhr = new XMLHttpRequest();
-  // 'open' the http request
-  xhr.open("GET", url, true);
-  // function handles what to do when the data is loaded / handles a failed request
-  xhr.onload = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      // Request finished. Do processing here  //response text = string
-      const response = xhr.responseText;
-      parseJSON(response);
-    } else {
-      console.info("request failed");
-      //TODO: a more meaningful response on failed data
-    }
-  };
-  //no data is being sent back becasue we want to fetch
-  xhr.send(null);
+const loadJSON = (url) => {
+  fetch(url, { mode: "cors" })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (response) {
+      const activities = response;
+      addMarkersToMap(activities);
+    })
+    .catch(function () {
+      console.log("request failed");
+    });
 };
 
 function addMarkersToMap(activities) {
