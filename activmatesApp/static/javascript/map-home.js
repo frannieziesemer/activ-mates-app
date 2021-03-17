@@ -5,6 +5,7 @@
 let map, infoWindow, markers;
 
 function initMap() {
+  //append map
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 52.52, lng: 13.405 },
     zoom: 10,
@@ -14,19 +15,24 @@ function initMap() {
     rotateControl: false,
     fullscreenControl: false,
   });
-
-  infoWindow = new google.maps.InfoWindow();
+  //infoWindow = new google.maps.InfoWindow();
   const locationButton = document.createElement("button");
   locationButton.textContent = "Pan to Current Location";
-  locationButton.classList.add("custom-map-control-button");
-  map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+  locationButton.classList.add("pan-to-location-button");
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locationButton);
+
+  const geocoder = new google.maps.Geocoder();
+
+  document.getElementById("submit").addEventListener("click", () => {
+    searchAddress(geocoder, map);
+  });
 
   google.maps.event.addListener(map, "idle", function () {
     let center = map.getCenter();
     let zoom = map.getZoom();
     renderData(center, zoom);
   });
-  // event listene for pan to current location
+  // event listener for pan to current location
   locationButton.addEventListener("click", () => {
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
@@ -36,9 +42,9 @@ function initMap() {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          infoWindow.setPosition(pos);
-          infoWindow.setContent("Location found.");
-          infoWindow.open(map);
+          // infoWindow.setPosition(pos);
+          // infoWindow.setContent("Location found.");
+          // infoWindow.open(map);
           map.setCenter(pos);
         },
         () => {
@@ -50,62 +56,57 @@ function initMap() {
       handleLocationError(false, infoWindow, map.getCenter());
     }
   });
-
-  const zoomRadius = [
-    800000, // zoom: 0
-    800000, // zoom: 1
-    800000, // zoom: 2
-    800000, // zoom: 3
-    800000, // zoom: 4
-    800000, // zoom: 5
-    800000, // zoom: 6
-    400000, // zoom: 7
-    200000, // zoom: 8
-    100000, // zoom: 9
-    51000, // zoom: 10
-    26000, // zoom: 11
-    13000, // zoom: 12
-    6500, // zoom: 13
-    3500, // zoom: 14
-    1800, // zoom: 15
-    900, // zoom: 16
-    430, // zoom: 17
-    210, // zoom: 18
-    120, // zoom: 19
-  ];
-
-  const renderData = (center, zoom) => {
-    clearMarkers();
-    const params = {
-      lat: center.lat(),
-      lng: center.lng(),
-      radius: zoomRadius[zoom],
-    };
-    console.log(params.radius);
-    //add parameters to url
-    const url = new URL("http://127.0.0.1:5000/api/get_activities");
-    const searchParams = url.searchParams;
-    for (const prop in params) {
-      searchParams.set(
-        encodeURIComponent(prop),
-        encodeURIComponent(params[prop])
-      );
-    }
-    url.search = searchParams.toString();
-    const newUrl = url.toString();
-    // is it better to have a callback ?
-    //- yes because now all of the functions to render the data are being called inside RenderData function -
-    // clearMarkers - addMarkers
-    loadJSON(newUrl, function parseJSON(response) {
-      const activities = JSON.parse(response);
-      //JSPN parse response data
-      //call place markers on map function - passing JSON response in
-      addMarkersToMap(activities);
-    });
-  };
 }
+//convert zoom level provided by google to a value of meters
+const zoomRadius = [
+  800000, // zoom: 0
+  800000, // zoom: 1
+  800000, // zoom: 2
+  800000, // zoom: 3
+  800000, // zoom: 4
+  800000, // zoom: 5
+  800000, // zoom: 6
+  400000, // zoom: 7
+  200000, // zoom: 8
+  100000, // zoom: 9
+  51000, // zoom: 10
+  26000, // zoom: 11
+  13000, // zoom: 12
+  6500, // zoom: 13
+  3500, // zoom: 14
+  1800, // zoom: 15
+  900, // zoom: 16
+  430, // zoom: 17
+  210, // zoom: 18
+  120, // zoom: 19
+];
 
-//https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/send#example_get
+const renderData = (center, zoom) => {
+  clearMarkers();
+  const params = {
+    lat: center.lat(),
+    lng: center.lng(),
+    radius: zoomRadius[zoom],
+  };
+  //add parameters to url
+  const url = new URL("http://127.0.0.1:5000/api/get_activities");
+  const searchParams = url.searchParams;
+  for (const prop in params) {
+    searchParams.set(
+      encodeURIComponent(prop),
+      encodeURIComponent(params[prop])
+    );
+  }
+  url.search = searchParams.toString();
+
+  const newUrl = url.toString();
+
+  loadJSON(newUrl, function parseJSON(response) {
+    const activities = JSON.parse(response);
+    addMarkersToMap(activities);
+  });
+};
+
 const loadJSON = (url, parseJSON) => {
   let xhr = new XMLHttpRequest();
   // 'open' the http request
@@ -126,14 +127,14 @@ const loadJSON = (url, parseJSON) => {
 };
 
 function addMarkersToMap(activities) {
-  //maybe it is better to use map here..
   activities.map((activity) => {
     const latLng = { lat: activity.location.lat, lng: activity.location.lng };
     const marker = new google.maps.Marker({
       position: latLng,
-      map,
-      icon: "http://127.0.0.1:5000/static/images/icons/run.svg",
       title: activity.description,
+      map: map,
+      //labelContent: '<span class="material-icons">directions_run</span>',
+      labelAnchor: new google.maps.Point(22, 50),
     });
     //add event listener to each marker
     marker.addListener("click", () => {
@@ -155,11 +156,28 @@ function clearMarkers() {
 
 function displayActivity(activity) {
   //when clicked i want to display information below
+  const card = document.querySelector(".activity-card");
+  card.toggleAttribute("hidden");
   document.getElementById("title").textContent = activity.title;
   document.getElementById("userName").textContent = activity.user_name;
   document.getElementById("activityType").textContent = activity.activity_type;
   document.getElementById("address").textConent = activity.address;
   document.getElementById("description").textContent = activity.description;
+  document.getElementById(
+    "view-activity"
+  ).href = `http://127.0.0.1:5000/activity/${activity.id}`;
+}
+
+function searchAddress(geocoder, resultsMap) {
+  const address = document.getElementById("address").value;
+  geocoder.geocode({ address: address }, (results, status) => {
+    if (status === "OK") {
+      resultsMap.setCenter(results[0].geometry.location);
+      resultsMap.setZoom(12);
+    } else {
+      alert("Geocode was not successful for the following reason: " + status);
+    }
+  });
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -171,13 +189,3 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   );
   infoWindow.open(map);
 }
-
-// load the markers
-// call the api url = /api/get_activities
-//add params to the api ?lat=111111&lng=22222
-
-//tutorial - how to make json request
-//https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON
-
-//info - edit map controls
-// https://www.w3schools.com/graphics/google_maps_controls.asp

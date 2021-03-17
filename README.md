@@ -17,7 +17,7 @@ Lucid Chart - [Database ER Diagram ](https://lucid.app/lucidchart/invitations/ac
 3. Run the Flask app:
    `python run.py`
 
-###### What did I learn?
+###### What have I learned?
 
 - local settings and secure password / API key storage
 -
@@ -30,6 +30,7 @@ Lucid Chart - [Database ER Diagram ](https://lucid.app/lucidchart/invitations/ac
   -  routes and connection to all pages and templates is complete. 
 ###### To do:
 - FRONT END - I have not started working on the front end and UI component of this app yet. Until now all work has been focused on ensuring the backend and database functionality is completed 
+- accessibility audit
 - NEXT STEPS: integrate react onto the application and start to build efficient front end compontents
 
 ###### Skills Demonstrated

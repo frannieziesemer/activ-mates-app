@@ -4,7 +4,7 @@
 
 {% endblock %} {% block body %}
 <h1>main search page</h1>
-<a href="{{ url_for('main.home_list_view') }}"> map view </a>
+<a href="{{ url_for('main.home') }}"> map view </a>
 <div class="content-section list-activities">
   {% for activity in activities.items %}
   <div class="card" style="width: 18rem">

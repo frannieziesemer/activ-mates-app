@@ -5,25 +5,27 @@
 {% endblock %} {% block body %}
 <h1>main search page</h1>
 <a href="{{ url_for('main.home_list_view') }}">list view </a>
-<div id="map-section">
-  <div id="locationField">
-    <input
-      id="autocomplete"
-      placeholder="Enter your address"
-      type="text"
-      class="form-control"
-    />
-  </div>
+
+  
   <p id="details"></p>
-  <div id="map"></div>
-</div>
+  <div class="map-wrapper">
+    <div class="map-user-controls">
+    <div id="floating-panel">
+      <input id="address" type="textbox" value="Berlin, Germany" />
+      <input id="submit" type="button" value="search" />
+    </div>
+    </div>
+    <div id="map"></div>
+  </div>
+
 <div class="content-section">
-  <div class="activity-card">
+  <div class="activity-card" hidden>
     <h2 id="title"></h2>
     <h6 id="userName"></h6>
     <h3 id="activityType"></h3>
     <p id="address"></p>
     <p id="description"></p>
+    <a id="view-activity" href="" >View Activity</a>
   </div>
 </div>
 
