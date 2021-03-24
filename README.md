@@ -12,9 +12,8 @@ Lucid Chart - [Database ER Diagram ](https://lucid.app/lucidchart/invitations/ac
 
 1. Activate virtual environment:
    `. venv/bin/activate`
-2. Set evn variable pointing to local settings file:
-   `export APPLICATIONSETTNGS=local_settings.py`
-3. Run the Flask app:
+
+2. Run the Flask app:
    `python run.py`
 
 ###### What have I learned?

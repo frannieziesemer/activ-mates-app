@@ -1,6 +1,6 @@
 console.log("it works ");
 
-let placeSearch, autocomplete;
+let autocomplete;
 
 function initAutocomplete() {
   console.log("autocomplete");
