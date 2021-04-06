@@ -1,3 +1,4 @@
+
 body {
   background-color: #f3ffe8;
 }
@@ -16,7 +17,7 @@ h5 {
 }
 
 .content-section {
-  margin: 30px;
+  margin: 20px 30px;
 }
 
 h1,
@@ -69,62 +70,67 @@ h5 {
 }
 
 button.primary,
-button.secondary {
+input.secondary, .pan-to-location-button   {
   border-radius: 30px;
   padding: 0px 40px;
   font-weight: 300;
 }
 
-button.primary {
+button.primary, .pan-to-location-button  {
+  background-color: #fb6007e3;
+  color: #454851;
+  border: none;
+}
+
+button.primary:hover, .pan-to-location-button:hover  {
   background-color: #fb6107;
-  color: #ffff;
-  border: 3px solid #fb6107;
+  color: #454851;
+  border: none;
 }
 
-button.primary:hover {
-  background-color: #fda572;
-  border: 3px solid #fb6107;
-  color: #ffff;
-}
-
-button.secondary {
+input.secondary {
   border: 3px solid #7bae7f;
   background-color: #ffff;
   color: #7bae7f;
 }
 
-button.secondary:hover {
+input.secondary:hover {
   border: 3px solid #7bae7f;
   background-color: #7bae7f;
   color: #ffff;
 }
-
-#login-form fieldset {
-  width: 100%;
+/* login page */
+.login-image {
+  transform: rotateY(180deg);
 }
+/* home page map */
 .map-wrapper {
   position: relative;
 }
 .pan-to-location-button {
-  background-color: green;
+  margin-top: 20px;
+  font-size: 18px;
 }
+
 #map {
   height: 75vmin;
-  width: 75%;
+  width: 100%;
   margin: 0 auto;
 }
 #floating-panel {
-  position: absolute;
-  top: 10px;
-  left: 25%;
+  /* position: absolute;
+  top: 20px;
+  left: 25%; */
   z-index: 5;
-  background-color: #fff;
-  padding: 5px;
-  border: 1px solid #999;
+  margin: 5px;
   text-align: center;
-  font-family: "Roboto", "sans-serif";
   line-height: 30px;
   padding-left: 10px;
+}
+#address {
+  background: none;
+  border: none;
+  border-bottom: 2px solid #7bae7f;
 }
 .activity-card {
   border: 1px solid #7bae7f;

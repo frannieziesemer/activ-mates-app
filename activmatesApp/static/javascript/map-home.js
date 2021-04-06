@@ -19,7 +19,7 @@ function initMap() {
   const locationButton = document.createElement("button");
   locationButton.textContent = "Pan to Current Location";
   locationButton.classList.add("pan-to-location-button");
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locationButton);
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
 
   const geocoder = new google.maps.Geocoder();
 

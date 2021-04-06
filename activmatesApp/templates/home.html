@@ -1,22 +1,24 @@
-{% extends 'layout.html' %} {% block head %}
+{% extends 'layout.html' %} 
+
+{% block head %}
 
 <script src="{{ url_for('static', filename='javascript/map-home.js') }}"></script>
 
-{% endblock %} {% block body %}
-<h1>main search page</h1>
-<a href="{{ url_for('main.home_list_view') }}">list view </a>
+{% endblock %} 
+{% block body %}
 
+<a href="{{ url_for('main.home_list_view') }}">list view </a>  
+<p id="details"></p>
+<div id="floating-panel">
+  <input id="address"  type="textbox" value="Berlin, Germany" />
+  <input id="submit" class="secondary" type="button" value="search" />
+</div>
+<div class="map-wrapper">
+  <div class="map-user-controls">
   
-  <p id="details"></p>
-  <div class="map-wrapper">
-    <div class="map-user-controls">
-    <div id="floating-panel">
-      <input id="address" type="textbox" value="Berlin, Germany" />
-      <input id="submit" type="button" value="search" />
-    </div>
-    </div>
-    <div id="map"></div>
   </div>
+  <div id="map"></div>
+</div>
 
 <div class="content-section">
   <div class="activity-card" hidden>
