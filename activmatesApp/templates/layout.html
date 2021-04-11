@@ -20,8 +20,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/main.css') }}"
     />
-    {% block head %} {% endblock %} {% if title %}
-    <title>ActivMates - {{ title }}</title>
+    {% block head %} 
+    {% endblock %} 
+    {% if title %}
+     <title>ActivMates - {{ title }}</title>
     {% else %}
     <title>ActivMates</title>
     {% endif %}
@@ -82,12 +84,13 @@
     </header>
 
     <div class="container-fluid">
-      <div class="row">
+      <div class="row mt-2">
         <div class="col"></div>
         <div class="col">
-          {% with messages = get_flashed_messages(with_categories=true)%} {% if
-          messages %} {% for category, message in messages %}
-          <div class="alert alert-{{ category }} ">{{ message }}</div>
+          {% with messages = get_flashed_messages(with_categories=true)%} 
+          {% if messages %} 
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} ">{{ message }}</div>
           {% endfor%} {% endif %} {% endwith %}
         </div>
         <div class="col"></div>

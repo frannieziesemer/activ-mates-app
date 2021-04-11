@@ -1,42 +1,62 @@
-{% extends 'layout.html' %} {% block head %} {% endblock %} {% block body %}
-<h1>user activities page</h1>
-<h2>Activities from {{ user.username }} ({{ activities.total }})</h2>
+{% extends 'layout.html' %} 
+
+{% block head %} 
+{% endblock %} 
+{% block body %}
+<div class="content-section">
+<h2>Activities posted by {{ user.username }} ({{ activities.total }})</h2>
 
 {% for activity in activities.items %}
-<div class="card" style="width: 18rem">
-  <div class="card-body">
-    <h5 class="card-title">{{ activity.title }}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">
-      {{ activity.activity_type.name }}
-    </h6>
-    <h6 class="card-subtitle mb-2 text-muted">
-      {{ activity.profile.user.username }}
-    </h6>
-    <h6 class="card-subtitle mb-2 text-muted">{{ activity.address }}</h6>
-    <p class="card-text">{{ activity.description}}</p>
-    <p class="card-text">{{ activity.id}}</p>
-
-    <a
-      href="{{ url_for('posts.view_activity', activity_id=activity.id) }}"
-      class="card-link"
-      >Card link</a
-    >
-    <a href="#" class="card-link">Another link</a>
+  <div class="d-flex justify-content-center">
+    <div class="card  shadow w-75 m-3 bg-body rounded" >
+      <div class="card-body">
+        <div class="row">
+          <div class="col-3">
+            <img src="{{ url_for('static', filename='images/activity-pics/' + activity.image_file) }}" class="h-75" alt="">
+          </div>
+          <div class="col-9">
+            <h3 class="card-title">
+              {{ activity.title }}
+            </h3>
+            <h6 class="card-subtitle mb-2 text-muted">
+              {{ activity.activity_type.name }}
+            </h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+              username: {{ activity.profile.user.username }}
+            </h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+              {{ activity.address }}
+            </h6>
+            <p class="card-text">
+              {{ activity.description}}
+            </p>
+            <a
+              href="{{ url_for('posts.view_activity', activity_id=activity.id) }}"
+              class="card-link"
+              >
+              View Card
+            </a>
+            <a href="#" class="card-link">Contact</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+{% endfor %} 
 
-{% endfor %} {% for page_num in activities.iter_pages(left_edge=1, right_edge=1,
-left_current=1, right_current=2) %} {% if page_num %} {% if activities.page ==
-page_num %}
-<a
-  class="btn btn-info mb-4"
-  href="{{ url_for('users.user_activities', username=user.username, page=page_num) }}"
-  >{{ page_num }}</a
->
-{% else %}
-<a
-  class="btn btn-info-outline mb-4"
-  href="{{ url_for('users.user_activities', username=user.username, page=page_num) }}"
-  >{{ page_num }}</a
->
-{% endif %} {% else %} {% endif %} {% endfor %} {% endblock %}
+{% for page_num in activities.iter_pages(left_edge=1, right_edge=1,left_current=1, right_current=2) %} 
+  {% if page_num %} 
+  {% if activities.page == page_num %}
+    <a class="btn btn-info mb-4" href="{{ url_for('users.user_activities', username=user.username, page=page_num) }}" >
+      {{ page_num }}
+    </a>
+  {% else %}
+    <a class="btn btn-info-outline mb-4" href="{{ url_for('users.user_activities', username=user.username, page=page_num) }}" >
+      {{ page_num }}
+    </a>
+  {% endif %} 
+  {% else %} 
+  {% endif %} 
+  {% endfor %}
+</div>
+ {% endblock %}

@@ -1,98 +1,101 @@
-{% extends 'layout.html' %} {% block head %}
+{% extends 'layout.html' %} 
+{% block head %}
 
 <script src="{{ url_for('static', filename='javascript/map-address-field.js') }}"></script>
 
-{% endblock %} {% block body %}
+{% endblock %} 
+{% block body %}
+<div class="content-section ">
+  <div class="row w-75 mx-auto">
+    <div class="col mt-3">
+      <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        <fieldset class=" card form-control d-grid gap-3">
+          <legend>{{ legend }}</legend>
+          <div class="form-group activity-title">
+            {{ form.title.label() }} {% if form.title.errors %} {{
+            form.title(class="form-control-label is-invalid", placeholder="title")
+            }}
+            <div class="invalid-feedback">
+              {% for error in form.title.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.title(class="form-control-label",
+            placeholder="title") }} {% endif %}
+          </div>
+          <div class="form-group activity-type">
+            {{ form.activity_type.label() }} {% if form.activity_type.errors %} {{
+            form.activity_type(class="form-control-label is-invalid",
+            placeholder="activity_type") }}
+            <div class="invalid-feedback">
+              {% for error in form.activity_type.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.activity_type(class="form-control-label",
+            placeholder="Type") }} {% endif %}
+          </div>
+          <div class="form-group address">
+            {{ form.address.label(class="d-inline form-control-label") }} {% if
+            form.address.errors %}
+            <div id="addressField">
+              <input
+                id="autocomplete"
+                placeholder="Enter your address"
+                type="text"
+                class="d-inline w-75"
+              />
+            </div>
+            
+            <div class="invalid-feedback">
+              {% for error in form.address.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %}
+            <div id="addressField">
+              <input
+                id="autocomplete"
+                placeholder= "{{ address_placeholder }}"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <p id="details"></p>
 
-<div class="row">
-  <div class="col mt-3">
-    <form action="" method="POST">
-      {{ form.hidden_tag() }}
-      <fieldset class=" card form-control d-grid gap-3">
-        <legend>{{ legend }}</legend>
-        <div class="form-group activity-title">
-          {{ form.title.label() }} {% if form.title.errors %} {{
-          form.title(class="form-control-label is-invalid", placeholder="title")
-          }}
-          <div class="invalid-feedback">
-            {% for error in form.title.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
+            {% endif %}
           </div>
-          {% else %} {{ form.title(class="form-control-label",
-          placeholder="title") }} {% endif %}
-        </div>
-        <div class="form-group activity-type">
-          {{ form.activity_type.label() }} {% if form.activity_type.errors %} {{
-          form.activity_type(class="form-control-label is-invalid",
-          placeholder="activity_type") }}
-          <div class="invalid-feedback">
-            {% for error in form.activity_type.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
+          <div class="form-group description">
+            {{ form.description.label() }} {% if form.description.errors %} {{
+            form.description(class="form-control-label is-invalid",
+            placeholder="description") }}
+            <div class="invalid-feedback">
+              {% for error in form.description.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.description(class="d-block form-control-label",
+            placeholder="description") }} {% endif %}
           </div>
-          {% else %} {{ form.activity_type(class="form-control-label",
-          placeholder="Type") }} {% endif %}
-        </div>
-        <div class="form-group address">
-          {{ form.address.label(class="d-inline form-control-label") }} {% if
-          form.address.errors %}
-          <div id="addressField">
-            <input
-              id="autocomplete"
-              placeholder="Enter your address"
-              type="text"
-              class="d-inline w-75"
-            />
+          <div class="form-group activity-pciture">
+            {{ form.picture.label() }} {% if form.picture.errors %} {{
+            form.picture(class="form-control-label is-invalid", placeholder="picture")
+            }}
+            <div class="invalid-feedback">
+              {% for error in form.picture.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.picture(class="form-control-label",
+            placeholder="picture") }} {% endif %}
           </div>
-          
-          <div class="invalid-feedback">
-            {% for error in form.address.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
+          <div class="form-group">
+            {{ form.submit(class="secondary")}}
           </div>
-          {% else %}
-          <div id="addressField">
-            <input
-              id="autocomplete"
-              placeholder= "{{ address_placeholder }}"
-              type="text"
-              class="form-control"
-            />
-          </div>
-          <p id="details"></p>
-
-          {% endif %}
-        </div>
-        <div class="form-group description">
-          {{ form.description.label() }} {% if form.description.errors %} {{
-          form.description(class="form-control-label is-invalid",
-          placeholder="description") }}
-          <div class="invalid-feedback">
-            {% for error in form.description.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
-          </div>
-          {% else %} {{ form.description(class="d-block form-control-label",
-          placeholder="description") }} {% endif %}
-        </div>
-        <div class="form-group activity-pciture">
-          {{ form.picture.label() }} {% if form.picture.errors %} {{
-          form.picture(class="form-control-label is-invalid", placeholder="picture")
-          }}
-          <div class="invalid-feedback">
-            {% for error in form.picture.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
-          </div>
-          {% else %} {{ form.picture(class="form-control-label",
-          placeholder="picture") }} {% endif %}
-        </div>
-        <div class="form-group">
-          {{ form.submit(class="secondary")}}
-        </div>
-      </fieldset>
-    </form>
+        </fieldset>
+      </form>
+    </div>
   </div>
 </div>
 <script

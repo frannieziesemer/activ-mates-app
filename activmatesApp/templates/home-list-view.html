@@ -5,35 +5,62 @@
 {% endblock %} {% block body %}
 <h1>main search page</h1>
 <a href="{{ url_for('main.home') }}"> map view </a>
-<div class="content-section list-activities">
+<div class="content-section">
   {% for activity in activities.items %}
-  <div class="card" style="width: 18rem">
+  <div class="d-flex justify-content-center">
+  <div class="card  shadow w-75 m-3 bg-body rounded" >
     <div class="card-body">
-      <h5 class="card-title">{{ activity.title }}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">
-        {{ activity.activity_type.name }}
-      </h6>
-      <h6 class="card-subtitle mb-2 text-muted">
-        {{ activity.profile.user.username }}
-      </h6>
-      <a
-        href="{{ url_for('users.user_activities', username=activity.profile.user.username) }}"
-        >other posts by user</a
-      >
-      <h6 class="card-subtitle mb-2 text-muted">{{ activity.address }}</h6>
-      <p class="card-text">{{ activity.description}}</p>
-      <p class="card-text">{{ activity.location}}</p>
-
-      <a
-        href="{{ url_for('posts.view_activity', activity_id=activity.id) }}"
-        class="card-link"
-        >Card link</a
-      >
-      <a href="#" class="card-link">Another link</a>
+      <div class="row">
+        <div class="col-4">
+          <img src="{{ url_for('static', filename='images/activity-pics/' + activity.image_file) }}" class="h-75" alt="">
+        </div>
+        <div class="col-8">
+          <h3 class="card-title">
+            {{ activity.title }}
+          </h3>
+          <h6 class="card-subtitle mb-2 text-muted">
+            {{ activity.activity_type.name }}
+          </h6>
+          <h6 class="card-subtitle mb-2 text-muted">
+            username: {{ activity.profile.user.username }}
+          </h6>
+          <h6 class="card-subtitle mb-2 text-muted">
+            {{ activity.address }}
+          </h6>
+          <p class="card-text">
+            {{ activity.description}}
+          </p>
+          <a
+            href="{{ url_for('posts.view_activity', activity_id=activity.id) }}"
+            class="card-link"
+            >
+            View all user activities
+          </a>
+          <a href="#" class="card-link">Contact</a>
+          {% if activity.profile.id == current_user.profile[0].id %}
+          <div class="mt-3">
+            <a
+              href="{{ url_for('posts.update_activity', activity_id=activity.id)}}"
+              class="btn-secondary btn btn-sm m-1"
+              >
+              Update
+            </a>
+            <button
+              class="btn btn-danger btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+            >
+              Delete
+            </button>
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
   </div>
-
-  {% endfor %} {% for page_num in activities.iter_pages(left_edge=1,
+</div>
+  {% endfor %} 
+  {% for page_num in activities.iter_pages(left_edge=1,
   right_edge=1, left_current=1, right_current=2) %} {% if page_num %} {% if
   activities.page == page_num %}
   <a
