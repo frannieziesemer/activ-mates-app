@@ -24,6 +24,7 @@ def new_activity():
     for item in profile:
         profile_id = item.id
     form = CreateActivityForm()
+    address_placeholder = "Enter your address"
     # set choice values on dropdown form field
     form.activity_type.choices = [(t.id, t.name) for t in ActivityType.query.all()]
     if form.validate_on_submit():
@@ -46,6 +47,7 @@ def new_activity():
         profile=profile,
         map_key=current_app.config["GOOGLE_MAPS_API_KEY"],
         legend="New Activity",
+        address_placeholder=address_placeholder
     )
 
 
@@ -82,6 +84,7 @@ def update_activity(activity_id):
         form.description.data = activity.description
         form.address.data = activity.address
         form.activity_type.data = activity.activity_type_id
+        address_placeholder = activity.address
 
     return render_template(
         "new-activity.html",
@@ -90,6 +93,7 @@ def update_activity(activity_id):
         legend="Update Post",
         activity=activity,
         map_key=current_app.config["GOOGLE_MAPS_API_KEY"],
+        address_placeholder=address_placeholder
     )
 
 

@@ -8,8 +8,8 @@ from wtforms.validators import DataRequired, Length
 
 class CreateActivityForm(FlaskForm):
     title = StringField(u"Title", validators=[DataRequired()])
-    lat = HiddenField("lat", validators=[DataRequired()])
-    lng = HiddenField("lng", validators=[DataRequired()])
+    lat = HiddenField("lat", )
+    lng = HiddenField("lng", )
     address = HiddenField(
         "address", validators=[DataRequired(), Length(min=2, max=200)]
     )

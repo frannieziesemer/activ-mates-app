@@ -32,6 +32,8 @@ function onPlaceChanged() {
     document.getElementById("lat").value = place.geometry.location.lat();
     document.getElementById("lng").value = place.geometry.location.lng();
     document.getElementById("address").value = place.formatted_address;
+    document.getElementById("autocomplete").placeholder =
+      place.formatted_address;
   }
 }
 // Bias the autocomplete object to the user's geographical location,

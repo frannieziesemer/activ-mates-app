@@ -14,7 +14,7 @@
     </h6>
     <h6 class="card-subtitle mb-2 text-muted">{{ activity.address }}</h6>
     <p class="card-text">{{ activity.description}}</p>
-    <p class="card-text">{{ activity.location}}</p>
+    <p class="card-text">{{ activity.id}}</p>
 
     <a
       href="{{ url_for('posts.view_activity', activity_id=activity.id) }}"
