@@ -17,7 +17,7 @@ from activmatesApp.users.forms import (
     RequestPasswordResetForm,
     ResetPasswordForm,
 )
-from activmatesApp.users.utils import save_picture, send_reset_email
+from activmatesApp.users.utils import send_reset_email
 
 
 # instance of blueprint

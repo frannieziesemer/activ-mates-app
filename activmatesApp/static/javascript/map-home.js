@@ -219,6 +219,9 @@ function displayActivity(marker) {
   document.getElementById(
     "view-activity"
   ).href = `http://127.0.0.1:5000/activity/${marker.profile.id}`;
+  document.getElementById(
+    "activity-image"
+  ).src = `static/images/activity-pics/${marker.profile.image}`;
 
   selectedMarker = marker;
 }

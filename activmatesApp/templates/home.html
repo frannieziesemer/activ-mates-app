@@ -22,15 +22,17 @@
   </div>
   <div class="col-md-4">
     <div class="activity-card shadow p-3 mb-5 bg-body rounded" hidden>
+      <img id="activity-image" height="150px" width="150px" src="" alt="">
       <h2 id="title"></h2>
-      <h6 id="userName"></h6>
-      <h3 id="activityType"></h3>
+        <h6 id="userName"></h6>
+        <h3 id="activityType"></h3>
+   
       <p id="address-display"></p>
       <p id="description"></p>
       <a id="view-activity" href="" >View Activity</a>
     </div>
   </div>
-</div>
+  </div>
 <script
   async
   src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&libraries=places&callback=initMap"

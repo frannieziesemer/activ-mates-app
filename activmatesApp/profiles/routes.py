@@ -3,6 +3,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from activmatesApp import db
 from activmatesApp.profiles.forms import ProfileForm
 from activmatesApp.models import Profile
+from activmatesApp.profiles.utils import save_picture
 from flask_login import current_user, login_required
 
 

@@ -55,7 +55,7 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default="default.png")
+    image_file = db.Column(db.String(20), nullable=False, default="activity_default.png")
     phone_number = db.Column(db.Integer, nullable=False)
     twitter = db.Column(db.String(20), nullable=False)
     facebook = db.Column(db.String(20), nullable=False)
@@ -86,7 +86,7 @@ class Activity(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
-    # image_file = db.Column(db.String(20), nullable=False)
+    image_file = db.Column(db.String(20), nullable=False, default="default_activity.jpg")
     description = db.Column(db.Text, nullable=False)
     address = db.Column(db.String(150), nullable=False)
     location = db.Column(Geometry("POINT", srid=4326, dimension=2, management=True))
@@ -131,6 +131,7 @@ class Activity(db.Model):
             },
             "description": self.description,
             "activity_type": self.activity_type.name,
+            "image": self.image_file,
         }
 
     @staticmethod

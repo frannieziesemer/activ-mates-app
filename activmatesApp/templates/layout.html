@@ -31,7 +31,9 @@
       <nav id="navbar" class="navbar navbar-expand-md navbar-light">
         <div class="container-fluid">
           <!-- can i put and if signed in href = search page ???? -->
-          <a class="navbar-brand" href="{{ url_for('main.home') }}">ActivMates</a>
+          <a class="navbar-brand" href="{{ url_for('main.home') }}">
+            <img id="logo" src="{{ url_for('static', filename='images/icons/logo.svg') }}" alt="">
+          </a>
           <button
             class="navbar-toggler"
             type="button"

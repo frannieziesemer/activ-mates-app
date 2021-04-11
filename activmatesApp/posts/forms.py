@@ -1,9 +1,7 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, SubmitField, HiddenField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Length
-
-# from activmatesApp.models import User, Profile
-# from flask_login import current_user
 
 
 class CreateActivityForm(FlaskForm):
@@ -19,5 +17,8 @@ class CreateActivityForm(FlaskForm):
     description = TextAreaField(
         u"Let us know what you do, your skill level, your availability",
         validators=[DataRequired()],
+    )
+    picture = FileField(
+        "Add Picture", validators=[FileAllowed(["jpg", "png", "jpeg"])]
     )
     submit = SubmitField("Post")

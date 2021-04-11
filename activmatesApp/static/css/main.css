@@ -7,6 +7,10 @@ body {
   background-color: #7bae7f;
 }
 
+#logo {
+  max-height: 50px;
+}
+
 #navbar a,
 h1,
 h2,
@@ -135,7 +139,7 @@ input.secondary:hover {
 }
 .activity-card {
   border: 1px solid #7bae7f;  
-  margin: 100px 30px 10px 0px;
+  margin: 50px 30px 10px 0px;
 }
 
 /* view activity card */

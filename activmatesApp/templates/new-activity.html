@@ -76,7 +76,18 @@
           {% else %} {{ form.description(class="d-block form-control-label",
           placeholder="description") }} {% endif %}
         </div>
-
+        <div class="form-group activity-pciture">
+          {{ form.picture.label() }} {% if form.picture.errors %} {{
+          form.picture(class="form-control-label is-invalid", placeholder="picture")
+          }}
+          <div class="invalid-feedback">
+            {% for error in form.picture.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.picture(class="form-control-label",
+          placeholder="picture") }} {% endif %}
+        </div>
         <div class="form-group">
           {{ form.submit(class="secondary")}}
         </div>

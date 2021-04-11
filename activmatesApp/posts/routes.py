@@ -11,6 +11,7 @@ from flask import (
 from activmatesApp import db
 from activmatesApp.posts.forms import CreateActivityForm
 from activmatesApp.models import Activity, ActivityType
+from activmatesApp.posts.utils import save_picture
 from flask_login import current_user, login_required
 
 # instance of blueprint
@@ -36,6 +37,9 @@ def new_activity():
             activity_type_id=form.activity_type.data,
             profile_id=profile_id,
         )
+        if form.picture.data:
+            image_file_upload = save_picture(form.picture.data)
+            activity.image_file=image_file_upload,
         db.session.add(activity)
         db.session.commit()
         flash(f"new activity posted!", "success")

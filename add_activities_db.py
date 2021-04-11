@@ -1,6 +1,9 @@
-from activmatesApp import db, bcrypt
+from activmatesApp import db, bcrypt, create_app
 from activmatesApp.models import User, UserTypes, Profile, ActivityType, Activity
 
+
+app = create_app()
+app.app_context().push()
 
 db.drop_all()
 
@@ -16,6 +19,8 @@ db.session.add(admin)
 #insert test user 
 user1 = User(username='jonas123', email='jonas@demo.com', password=hashed_password)
 user2 = User(username='ted123', email='ted@demo.com', password=hashed_password)
+
+
 
 db.session.add(user1)
 db.session.add(user2)
@@ -38,6 +43,16 @@ db.session.add(ping_pong)
 db.session.add(walking)
 db.session.add(swimming)
 
+activity_ted = Activity(title="Running Training", 
+            description="I am an intermediate runner looking for someone to train with on Wednesdays",
+            address="Savinyplatz, Berlin, Germany",
+            location='0101000020E6100000FD0BA947BF404A40571696896CA52A40',
+            activity_type_id=1,
+            profile_id=2,
+            image_file="default_activity.jpg"
+        )
+
+db.session.add(activity_ted)
 
 
 
