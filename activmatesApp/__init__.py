@@ -23,10 +23,8 @@ def load_spatialite(dbapi_conn, connection_record):
 
 bcrypt = Bcrypt()
 login_manager = LoginManager()
-login_manager.login_view = "users.login"
-login_manager.login_message = "info"
+mail = Mail()   
 
-mail = Mail()
 
 
 def create_app(config_class=Config):
@@ -36,7 +34,10 @@ def create_app(config_class=Config):
     db.init_app(app)
 
     listen(Pool, "connect", load_spatialite)
+    login_manager.login_view = "users.login"
+    login_manager.login_message = "info"
 
+    
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)

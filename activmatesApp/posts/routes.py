@@ -26,7 +26,6 @@ def new_activity():
     form = CreateActivityForm()
     # set choice values on dropdown form field
     form.activity_type.choices = [(t.id, t.name) for t in ActivityType.query.all()]
-    print(profile_id)
     if form.validate_on_submit():
         activity = Activity(
             title=form.title.data,
