@@ -12,7 +12,7 @@ class ProfileForm(FlaskForm):
         "Last Name", validators=[DataRequired(), Length(min=2, max=20)]
     )
     picture = FileField(
-        "Update Profile Picture", validators=[FileAllowed(["jpg", "png", "jpeg"])]
+        "Add/ update Profile Picture", validators=[FileAllowed(["jpg", "png", "jpeg"])]
     )
     ## direct the info from google maps to the address field
     phone_number = IntegerField("Phone Number", validators=[DataRequired()])

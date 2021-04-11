@@ -77,7 +77,7 @@ h5 {
 .primary,
 input.secondary, .pan-to-location-button   {
   border-radius: 30px;
-  padding: 0px 40px;
+  padding: 5px 40px;
   font-weight: 300;
 }
 

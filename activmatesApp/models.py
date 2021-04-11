@@ -55,7 +55,7 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default="activity_default.png")
+    image_file = db.Column(db.String(20), nullable=False, default="default.png")
     phone_number = db.Column(db.Integer, nullable=False)
     twitter = db.Column(db.String(20), nullable=False)
     facebook = db.Column(db.String(20), nullable=False)

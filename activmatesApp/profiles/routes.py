@@ -52,6 +52,7 @@ def create_profile():
     return render_template(
         "create-profile.html",
         form=form,
+        legend="Create a Profile"
     )
 
 
@@ -92,9 +93,10 @@ def edit_profile():
         "static", filename="images/profile-pics/" + display_profile_picture
     )
     return render_template(
-        "edit-profile.html",
+        "create-profile.html",
         form=form,
         image_file=image_file,
         title="Update profile",
         map_key=os.environ.get(""),
+        legend="Update profile"
     )

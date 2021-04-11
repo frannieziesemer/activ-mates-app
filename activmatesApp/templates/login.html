@@ -22,44 +22,50 @@
 					</button>
 				</a>
 			</div>
+			<div class="mt-5">
+				<img src="{{ url_for('static', filename='images/open-doodles-roller-skating.png') }}" height="80px" alt="illustration of person rollerskating">
+				<img src="{{ url_for('static', filename='images/open-doodles-dancing.png') }}" height="80px" class="flip-image" alt="illustration of person jumping">
+				<img src="{{ url_for('static', filename='images/open-doodles-rolling.png') }}" height="80px" height="250px" alt="illustration of person rollerskating">
+				<img src="{{ url_for('static', filename='images/open-doodles-jumping.png') }}" height="80px" height="250px" alt="illustration of person rollerskating">
+				<img src="{{ url_for('static', filename='images/open-doodles-running.png') }}" height="80px" height="250px" alt="illustration of person rollerskating">
+				<img src="{{ url_for('static', filename='images/open-doodles-zombieing.png') }}" height="80px" height="250px" alt="illustration of person rollerskating">
+			</div>
 		</div>	
 		<div class="col-md-4">
 			{% if error %}
 					<p class=error>{{ error }} </p>
 			{% endif %}
-			<div>
-				<img src="{{ url_for('static', filename='images/open-doodles-roller-skating.png') }}" height="80px" alt="illustration of person rollerskating">
-				<img src="{{ url_for('static', filename='images/open-doodles-dancing.png') }}" height="80px" class="flip-image" alt="illustration of person jumping">
-				<img src="{{ url_for('static', filename='images/open-doodles-rolling.png') }}" height="80px" height="250px" alt="illustration of person rollerskating">
-			</div>
+
 			<form action="" method="POST" id="login-form">
 				{{ form.hidden_tag() }}
 				<fieldset class="form-control d-grid gap-3">
 					<legend class="border-bottom">
 						Login
 					</legend>
-					<div class="form-group email">
+					<div class="form-group">
+            {{ form.email.label() }} 
 						{% if form.email.errors %}
-						{{ form.email(class="form-control-label is-invalid", placeholder="Email") }}
+						{{ form.email(class="form-control is-invalid") }}
 						<div class="invalid-feedback">
 								{% for error in form.email.errors %}
 								<span>{{ error }}</span>
 								{% endfor %}
 						</div>
 						{% else %}
-							{{ form.email(class="form-control-label", placeholder="Email") }}
+							{{ form.email(class="form-control") }}
 						{% endif %}
 					</div>
 					<div class="form-group password">
+            {{ form.password.label() }} 
 						{% if form.password.errors %}
-						{{ form.password(class="form-control-label is-invalid", placeholder="Password")}}
+						{{ form.password(class="form-control is-invalid")}}
 						<div class="invalid-feedback">
 							{% for error in form.password.errors %}
 								<span>{{ error }}</span>
 							{% endfor %}
 						</div>
 						{% else %}
-							{{ form.password(class="form-control-label", placeholder="Password") }}
+							{{ form.password(class="form-control") }}
 						{% endif %}
 					</div>
 					<small class="text-muted ml-2">
@@ -67,7 +73,7 @@
 					</small>
 					<div class="form-check">
 						{{ form.remember(class="form-check-input")}}
-						{{ form.remember.label(class="form-check-label")}}
+						{{ form.remember.label(class="form-check")}}
 					</div>
 					<div class="" id="login">
 						{{ form.submit(class="secondary") }}
@@ -76,18 +82,10 @@
 			</form>
 			<div class="pt-3">
 				<small class="text-muted">
-					Don't have an account yet? <a class="ml-2" href="{{ url_for('users.sign_up')}}">Sign In</a>
+					Don't have an account yet? <a class="ml-2" href="{{ url_for('users.sign_up')}}">Sign Up</a>
 				</small>
 			</div>
 		</div>	
-	</div>
-		
-	
-		<div class="col-md-6">
-		</div>
-		<div class="col-md-6 pe-5">
-			
-		</div>
 	</div>
 </div>
 {% endblock %}

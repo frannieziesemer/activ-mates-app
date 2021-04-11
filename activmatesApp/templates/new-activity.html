@@ -6,39 +6,40 @@
 {% endblock %} 
 {% block body %}
 <div class="content-section ">
-  <div class="row w-75 mx-auto">
+  <div class="row w-50 mx-auto">
     <div class="col mt-3">
       <form action="" method="POST">
         {{ form.hidden_tag() }}
-        <fieldset class=" card form-control d-grid gap-3">
+        <fieldset class="card form-control d-grid gap-3">
           <legend>{{ legend }}</legend>
-          <div class="form-group activity-title">
-            {{ form.title.label() }} {% if form.title.errors %} {{
-            form.title(class="form-control-label is-invalid", placeholder="title")
-            }}
+          <div class="">
+            {{ form.title.label() }} 
+            {% if form.title.errors %} 
+            {{ form.title(class="form-control is-invalid", placeholder="eg. Running training") }}
             <div class="invalid-feedback">
               {% for error in form.title.errors %}
               <span>{{ error }}</span>
               {% endfor %}
             </div>
-            {% else %} {{ form.title(class="form-control-label",
-            placeholder="title") }} {% endif %}
+            {% else %} 
+            {{ form.title(class="form-control", placeholder="eg. Running training") }} 
+            {% endif %}
           </div>
-          <div class="form-group activity-type">
-            {{ form.activity_type.label() }} {% if form.activity_type.errors %} {{
-            form.activity_type(class="form-control-label is-invalid",
-            placeholder="activity_type") }}
+          <div class="form-group ">
+            {{ form.activity_type.label() }} 
+            {% if form.activity_type.errors %} 
+            {{ form.activity_type(class="form-control is-invalid", placeholder="Select activity type") }}
             <div class="invalid-feedback">
               {% for error in form.activity_type.errors %}
               <span>{{ error }}</span>
               {% endfor %}
             </div>
-            {% else %} {{ form.activity_type(class="form-control-label",
+            {% else %} {{ form.activity_type(class="form-control",
             placeholder="Type") }} {% endif %}
           </div>
-          <div class="form-group address">
-            {{ form.address.label(class="d-inline form-control-label") }} {% if
-            form.address.errors %}
+          <div class="form-group ">
+            {{ form.address.label() }} 
+            {% if form.address.errors %}
             <div id="addressField">
               <input
                 id="autocomplete"
@@ -47,7 +48,6 @@
                 class="d-inline w-75"
               />
             </div>
-            
             <div class="invalid-feedback">
               {% for error in form.address.errors %}
               <span>{{ error }}</span>
@@ -62,33 +62,33 @@
                 class="form-control"
               />
             </div>
-            <p id="details"></p>
-
             {% endif %}
           </div>
           <div class="form-group description">
-            {{ form.description.label() }} {% if form.description.errors %} {{
-            form.description(class="form-control-label is-invalid",
-            placeholder="description") }}
+            {{ form.description.label() }} 
+            {% if form.description.errors %} 
+              {{ form.description(class="form-control is-invalid", placeholder="Let us know what you do, your skill level, your availability etc.") }}
             <div class="invalid-feedback">
               {% for error in form.description.errors %}
               <span>{{ error }}</span>
               {% endfor %}
             </div>
-            {% else %} {{ form.description(class="d-block form-control-label",
-            placeholder="description") }} {% endif %}
+            {% else %} 
+              {{ form.description(class="d-block form-control", placeholder="Let us know what you do, your skill level, your availability etc. ") }} 
+            {% endif %}
           </div>
           <div class="form-group activity-pciture">
-            {{ form.picture.label() }} {% if form.picture.errors %} {{
-            form.picture(class="form-control-label is-invalid", placeholder="picture")
-            }}
+            {{ form.picture.label() }} 
+            {% if form.picture.errors %} 
+              {{ form.picture(class="form-control is-invalid", placeholder="picture") }}
             <div class="invalid-feedback">
               {% for error in form.picture.errors %}
               <span>{{ error }}</span>
               {% endfor %}
             </div>
-            {% else %} {{ form.picture(class="form-control-label",
-            placeholder="picture") }} {% endif %}
+            {% else %} 
+              {{ form.picture(class="form-control", placeholder="picture") }} 
+            {% endif %}
           </div>
           <div class="form-group">
             {{ form.submit(class="secondary")}}

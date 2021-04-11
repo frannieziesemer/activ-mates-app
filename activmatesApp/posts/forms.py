@@ -9,13 +9,13 @@ class CreateActivityForm(FlaskForm):
     lat = HiddenField("lat", )
     lng = HiddenField("lng", )
     address = HiddenField(
-        "address", validators=[DataRequired(), Length(min=2, max=200)]
+        "Address", validators=[DataRequired(), Length(min=2, max=200)]
     )
     activity_type = SelectField(
         u"Type of activity", choices=[], validators=[DataRequired()]
     )
     description = TextAreaField(
-        u"Let us know what you do, your skill level, your availability",
+        u"Description",
         validators=[DataRequired()],
     )
     picture = FileField(

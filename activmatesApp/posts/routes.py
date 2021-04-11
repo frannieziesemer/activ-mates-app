@@ -50,7 +50,7 @@ def new_activity():
         form=form,
         profile=profile,
         map_key=current_app.config["GOOGLE_MAPS_API_KEY"],
-        legend="New Activity",
+        legend="Add New Activity",
         address_placeholder=address_placeholder
     )
 
