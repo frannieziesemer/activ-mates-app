@@ -1,29 +1,23 @@
 {% extends 'layout.html' %} {% block body %}
-<h1>view activity page</h1>
-<h2>{{ activity.profile.id }}</h2>
-<div class="card" style="width: 18rem">
+
+<div class="card">
   <div class="card-body">
-    <h5 class="card-title">{{ activity.title }}</h5>
+    <h5 class="card-title border-bottom">{{ activity.title }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">{{ activity.type}}</h6>
-    <h6 class="card-subtitle mb-2 text-muted">
-      {{ current_user.profile[0].id }}
-    </h6>
     <p class="card-text">{{ activity.description}}</p>
     <h6>{{ activity.address }}</h6>
     <a
       href="{{ url_for('users.user_activities', username=activity.profile.user.username) }}"
       >other posts by user</a
     >
-
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
-    {% if activity.profile.id == current_user.profile[0].id %}
+    {% if activity.profile.id == current_user.profile.id %}
     <div>
       <a
         href="{{ url_for('posts.update_activity', activity_id=activity.id)}}"
         class="btn-secondary btn btn-sm m-1"
-        >Update</a
-      >
+        >
+        Update
+      </a>
       <button
         class="btn btn-danger btn-sm"
         data-bs-toggle="modal"
@@ -36,10 +30,7 @@
   </div>
 </div>
 
-<script
-  async
-  src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&libraries=places&callback=initMap"
-></script>
+
 
 <!-- Modal -->
 <div

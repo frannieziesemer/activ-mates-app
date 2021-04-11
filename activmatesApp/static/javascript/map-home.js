@@ -2,7 +2,7 @@
 // prompted by your browser. If you see the error "The Geolocation service
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
-let map, infoWindow, markers;
+let map, infoWindow, markers, queryCenter, queryZoom;
 
 function initMap() {
   //append map
@@ -15,7 +15,6 @@ function initMap() {
     rotateControl: false,
     fullscreenControl: false,
   });
-  //infoWindow = new google.maps.InfoWindow();
   const locationButton = document.createElement("button");
   locationButton.textContent = "Pan to Current Location";
   locationButton.classList.add("pan-to-location-button");
@@ -28,9 +27,26 @@ function initMap() {
   });
 
   google.maps.event.addListener(map, "idle", function () {
-    let center = map.getCenter();
-    let zoom = map.getZoom();
-    renderData(center, zoom);
+    let newCenter = map.getCenter();
+    let newZoom = map.getZoom();
+
+    var distanceChange =
+      queryCenter == null
+        ? 0
+        : google.maps.geometry.spherical.computeDistanceBetween(
+            queryCenter,
+            newCenter
+          );
+
+    if (
+      queryCenter == null ||
+      queryZoom == null ||
+      distanceChange > 600 ||
+      newZoom < queryZoom
+    ) {
+      //if we have not queried for markers yet, query
+      renderData(newCenter, newZoom);
+    }
   });
   // event listener for pan to current location
   locationButton.addEventListener("click", () => {
@@ -42,9 +58,7 @@ function initMap() {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          // infoWindow.setPosition(pos);
-          // infoWindow.setContent("Location found.");
-          // infoWindow.open(map);
+
           map.setCenter(pos);
         },
         () => {
@@ -82,6 +96,9 @@ const zoomRadius = [
 ];
 
 const renderData = (center, zoom) => {
+  queryZoom = zoom;
+  queryCenter = center;
+
   clearMarkers();
   const params = {
     lat: center.lat(),
@@ -118,6 +135,28 @@ const loadJSON = (url) => {
     });
 };
 
+const DEFAULT_ICON = {
+  path:
+    "M13.49,5.48 C14.59,5.48 15.49,4.58 15.49,3.48 C15.49,2.38 14.59,1.48 13.49,1.48 C12.39,1.48 11.49,2.38 11.49,3.48 C11.49,4.58 12.39,5.48 13.49,5.48 Z M10.32,17.48 L10.89,14.98 L12.99,16.98 L12.99,21.98 C12.99,22.53 13.44,22.98 13.99,22.98 C14.54,22.98 14.99,22.53 14.99,21.98 L14.99,16.34 C14.99,15.79 14.77,15.27 14.37,14.89 L12.89,13.48 L13.49,10.48 C14.56,11.72 16.11,12.61 17.85,12.89 C18.45,12.98 18.99,12.5 18.99,11.89 C18.99,11.4 18.63,10.99 18.14,10.91 C16.62,10.66 15.36,9.76 14.69,8.58 L13.69,6.98 C13.29,6.38 12.69,5.98 11.99,5.98 C11.69,5.98 11.49,6.08 11.19,6.08 L7.21,7.76 C6.47,8.08 5.99,8.8 5.99,9.61 L5.99,11.98 C5.99,12.53 6.44,12.98 6.99,12.98 C7.54,12.98 7.99,12.53 7.99,11.98 L7.99,9.58 L9.79,8.88 L8.19,16.98 L4.27,16.18 C3.73,16.07 3.2,16.42 3.09,16.96 L3.09,17 C2.98,17.54 3.33,18.07 3.87,18.18 L7.98,19 C9.04,19.21 10.08,18.54 10.32,17.48 Z",
+  fillColor: "black",
+  fillOpacity: 1,
+  strokeColor: "black",
+  strokeWeight: 0.7,
+  scale: 1.3,
+};
+
+const SELECTED_ICON = {
+  path:
+    "M13.49,5.48 C14.59,5.48 15.49,4.58 15.49,3.48 C15.49,2.38 14.59,1.48 13.49,1.48 C12.39,1.48 11.49,2.38 11.49,3.48 C11.49,4.58 12.39,5.48 13.49,5.48 Z M10.32,17.48 L10.89,14.98 L12.99,16.98 L12.99,21.98 C12.99,22.53 13.44,22.98 13.99,22.98 C14.54,22.98 14.99,22.53 14.99,21.98 L14.99,16.34 C14.99,15.79 14.77,15.27 14.37,14.89 L12.89,13.48 L13.49,10.48 C14.56,11.72 16.11,12.61 17.85,12.89 C18.45,12.98 18.99,12.5 18.99,11.89 C18.99,11.4 18.63,10.99 18.14,10.91 C16.62,10.66 15.36,9.76 14.69,8.58 L13.69,6.98 C13.29,6.38 12.69,5.98 11.99,5.98 C11.69,5.98 11.49,6.08 11.19,6.08 L7.21,7.76 C6.47,8.08 5.99,8.8 5.99,9.61 L5.99,11.98 C5.99,12.53 6.44,12.98 6.99,12.98 C7.54,12.98 7.99,12.53 7.99,11.98 L7.99,9.58 L9.79,8.88 L8.19,16.98 L4.27,16.18 C3.73,16.07 3.2,16.42 3.09,16.96 L3.09,17 C2.98,17.54 3.33,18.07 3.87,18.18 L7.98,19 C9.04,19.21 10.08,18.54 10.32,17.48 Z",
+  fillColor: "green",
+  fillOpacity: 1,
+  strokeColor: "green",
+  strokeWeight: 0.7,
+  scale: 1.3,
+};
+
+let selectedMarker = null;
+
 function addMarkersToMap(activities) {
   activities.map((activity) => {
     const latLng = { lat: activity.location.lat, lng: activity.location.lng };
@@ -125,13 +164,28 @@ function addMarkersToMap(activities) {
       position: latLng,
       title: activity.description,
       map: map,
-      //labelContent: '<span class="material-icons">directions_run</span>',
-      labelAnchor: new google.maps.Point(22, 50),
+      icon: DEFAULT_ICON,
     });
+
+    // define info window content
+    const contentString = `
+      <div class="infoWindow">
+        <h5>${activity.title}</h5>
+        <a href=http://127.0.0.1:5000/activity/${activity.id} target="_blank"> more.. </a>
+      </div>
+    `;
+
+    marker.profile = activity;
+
     //add event listener to each marker
-    marker.addListener("click", () => {
-      displayActivity(activity);
+    google.maps.event.addListener(marker, "click", () => {
+      infoWindow = new google.maps.InfoWindow();
+      infoWindow.setContent(contentString);
+      infoWindow.open(map, marker);
+
+      displayActivity(marker);
     });
+
     return markers.push(marker);
   });
   console.log(activities);
@@ -143,21 +197,30 @@ function clearMarkers() {
     console.log("markers cleared");
   } else {
     markers = [];
+    selectedMarker = null;
   }
 }
 
-function displayActivity(activity) {
+function displayActivity(marker) {
+  if (selectedMarker) selectedMarker.setIcon(DEFAULT_ICON);
+
+  marker.setIcon(SELECTED_ICON);
   //when clicked i want to display information below
   const card = document.querySelector(".activity-card");
-  card.toggleAttribute("hidden");
-  document.getElementById("title").textContent = activity.title;
-  document.getElementById("userName").textContent = activity.user_name;
-  document.getElementById("activityType").textContent = activity.activity_type;
-  document.getElementById("address").textConent = activity.address;
-  document.getElementById("description").textContent = activity.description;
+  card.removeAttribute("hidden");
+  document.getElementById("title").textContent = marker.profile.title;
+  document.getElementById("userName").textContent = marker.profile.user_name;
+  document.getElementById("activityType").textContent =
+    marker.profile.activity_type;
+  document.getElementById("address-display").textConent =
+    marker.profile.address;
+  document.getElementById("description").textContent =
+    marker.profile.description;
   document.getElementById(
     "view-activity"
-  ).href = `http://127.0.0.1:5000/activity/${activity.id}`;
+  ).href = `http://127.0.0.1:5000/activity/${marker.profile.id}`;
+
+  selectedMarker = marker;
 }
 
 function searchAddress(geocoder, resultsMap) {

@@ -8,29 +8,29 @@
 {% block body %}
 
 <a href="{{ url_for('main.home_list_view') }}">list view </a>  
-<p id="details"></p>
-<div id="floating-panel">
-  <input id="address"  type="textbox" value="Berlin, Germany" />
-  <input id="submit" class="secondary" type="button" value="search" />
-</div>
-<div class="map-wrapper">
-  <div class="map-user-controls">
-  
+<div class="row">
+  <div class="col-md-8">
+    <div id="floating-panel">
+      <input id="address"  type="textbox" value="Berlin, Germany" />
+      <input id="submit" class="secondary" type="button" value="search" />
+    </div>
+    <div class="map-wrapper">
+      <div class="map-user-controls"> 
+      </div>
+      <div id="map"></div>
+    </div>
   </div>
-  <div id="map"></div>
-</div>
-
-<div class="content-section">
-  <div class="activity-card" hidden>
-    <h2 id="title"></h2>
-    <h6 id="userName"></h6>
-    <h3 id="activityType"></h3>
-    <p id="address"></p>
-    <p id="description"></p>
-    <a id="view-activity" href="" >View Activity</a>
+  <div class="col-md-4">
+    <div class="activity-card shadow p-3 mb-5 bg-body rounded" hidden>
+      <h2 id="title"></h2>
+      <h6 id="userName"></h6>
+      <h3 id="activityType"></h3>
+      <p id="address-display"></p>
+      <p id="description"></p>
+      <a id="view-activity" href="" >View Activity</a>
+    </div>
   </div>
 </div>
-
 <script
   async
   src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&libraries=places&callback=initMap"

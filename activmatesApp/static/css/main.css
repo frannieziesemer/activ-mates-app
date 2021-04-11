@@ -12,9 +12,10 @@ h1,
 h2,
 h3,
 h4,
-h5 {
+h5, legend, input {
   color: #284d3b;
 }
+
 
 .content-section {
   margin: 20px 30px;
@@ -69,14 +70,14 @@ h5 {
   line-height: 28px;
 }
 
-button.primary,
+.primary,
 input.secondary, .pan-to-location-button   {
   border-radius: 30px;
   padding: 0px 40px;
   font-weight: 300;
 }
 
-button.primary, .pan-to-location-button  {
+.primary, .pan-to-location-button  {
   background-color: #fb6007e3;
   color: #454851;
   border: none;
@@ -114,7 +115,7 @@ input.secondary:hover {
 
 #map {
   height: 75vmin;
-  width: 100%;
+  width: 95%;
   margin: 0 auto;
 }
 #floating-panel {
@@ -133,7 +134,13 @@ input.secondary:hover {
   border-bottom: 2px solid #7bae7f;
 }
 .activity-card {
-  border: 1px solid #7bae7f;
-  border-radius: 25px;
+  border: 1px solid #7bae7f;  
+  margin: 100px 30px 10px 0px;
 }
 
+/* view activity card */
+
+.card {
+  margin: 30px auto;
+  width: 75%;
+}
