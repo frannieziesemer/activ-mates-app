@@ -32,7 +32,7 @@ h4,
 h5,
 button {
   font-family: "Titillium Web", sans-serif;
-  line-height: 42px;
+
 }
 h2,
 h3,
@@ -109,6 +109,14 @@ input.secondary:hover {
   transform: rotateY(180deg);
 }
 /* home page map */
+.view-toggle:hover {
+  color: #284d3b;
+}
+
+a.view-toggle {
+  color: #7bae7f;
+}
+
 .map-wrapper {
   position: relative;
 }

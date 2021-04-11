@@ -188,7 +188,6 @@ function addMarkersToMap(activities) {
 
     return markers.push(marker);
   });
-  console.log(activities);
 }
 
 function clearMarkers() {
@@ -203,16 +202,18 @@ function clearMarkers() {
 
 function displayActivity(marker) {
   if (selectedMarker) selectedMarker.setIcon(DEFAULT_ICON);
+  console.log(marker.profile.address);
 
   marker.setIcon(SELECTED_ICON);
   //when clicked i want to display information below
   const card = document.querySelector(".activity-card");
   card.removeAttribute("hidden");
   document.getElementById("title").textContent = marker.profile.title;
-  document.getElementById("userName").textContent = marker.profile.user_name;
+  document.getElementById("userName").textContent =
+    "Username: " + marker.profile.user_name;
   document.getElementById("activityType").textContent =
     marker.profile.activity_type;
-  document.getElementById("address-display").textConent =
+  document.getElementById("address-display").textContent =
     marker.profile.address;
   document.getElementById("description").textContent =
     marker.profile.description;

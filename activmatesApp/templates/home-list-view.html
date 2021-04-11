@@ -3,9 +3,10 @@
 <script src="{{ url_for('static', filename='javascript/map-home.js') }}"></script>
 
 {% endblock %} {% block body %}
-<h1>main search page</h1>
-<a href="{{ url_for('main.home') }}"> map view </a>
+
 <div class="content-section">
+  <!-- <h1>All activities</h1> -->
+  <a href="{{ url_for('main.home') }}" class="text-decoration-none view-toggle"> map view </a>
   {% for activity in activities.items %}
   <div class="d-flex justify-content-center">
   <div class="card  shadow w-75 m-3 bg-body rounded" >
@@ -18,15 +19,15 @@
           <h3 class="card-title">
             {{ activity.title }}
           </h3>
-          <h6 class="card-subtitle mb-2 text-muted">
+          <h5 class="card-subtitle mb-2 text-muted">
             {{ activity.activity_type.name }}
-          </h6>
-          <h6 class="card-subtitle mb-2 text-muted">
-            username: {{ activity.profile.user.username }}
-          </h6>
-          <h6 class="card-subtitle mb-2 text-muted">
+          </h5>
+          <h5 class="card-subtitle mb-2 text-muted">
+            Username: {{ activity.profile.user.username }}
+          </h5>
+          <h5 class="card-subtitle mb-2 text-muted">
             {{ activity.address }}
-          </h6>
+          </h5>
           <p class="card-text">
             {{ activity.description}}
           </p>
